@@ -4,7 +4,7 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp src/Tilemap.hh)
+set(SOURCE_FILES main.cpp src/Tilemap.hh src/Worm.cpp src/Worm.hh src/Animation.cpp src/Animation.hh src/AnimatedSprite.cpp src/AnimatedSprite.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
