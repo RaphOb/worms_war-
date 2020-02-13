@@ -4,34 +4,22 @@
 #include "src/Animation.hh"
 #include "src/AnimatedSprite.hh"
 #include "src/Worm.hh"
+#include "src/Platform.hh"
+
+static const float VIEW_HEIGHT = 800.f;
+static const float VIEW_WIDTH = 800.f;
+
+void resizeView(const sf::RenderWindow& window, sf::View &view)
+{
+    float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
+    view.setSize(VIEW_WIDTH * aspectRatio, VIEW_HEIGHT);
+}
 
 int main() {
-    int height = 8;
-    int width = 16;
-    int tileWidth = 32;
-    int tileHeight = 32;
-
-    sf::Vector2i screenDimensions(1600, 900);
+    sf::Vector2i screenDimensions(VIEW_WIDTH, VIEW_HEIGHT);
     sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "Animations!");
+    sf::View view(sf::Vector2f(0.0f, 0.0f), sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
     window.setFramerateLimit(60);
-
-    const int level[] =
-            {
-                    0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-                    0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
-                    1, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    0, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-                    0, 1, 1, 1, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-                    0, 0, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-                    2, 0, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
-                    0, 0, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
-            };
-
-    Tilemap map;
-
-    if (!map.load("../resources/tilemap.png", sf::Vector2u(tileWidth, tileHeight), level, width, height))
-        return -1;
-
 
     // load texture (spritesheet)
     sf::Texture texture;
@@ -54,17 +42,22 @@ int main() {
 
     Animation walkingAnimationLeft = Animation(left, texture);
     Animation walkingAnimationRight = Animation(right, texture);
-    Animation *currentAnimation = &walkingAnimationLeft;
 
     // set up AnimatedSprite
-    AnimatedSprite animatedSprite(sf::seconds(0.2), true, true);
-    animatedSprite.setPosition(sf::Vector2f(screenDimensions / 2));
-    animatedSprite.setScale(3.0f, 3.0f);
+    sf::RectangleShape shape;
+    AnimatedSprite animatedSprite(shape, sf::seconds(0.2), true, true);
+    animatedSprite.getBody().setPosition(sf::Vector2f(screenDimensions / 2));
 
-    Worm worm;
+//    animatedSprite.setScale(3.0f, 3.0f);
+    std::cout << animatedSprite.getBody().getPosition().x << animatedSprite.getBody().getPosition().y << std::endl;
+    Worm worm(animatedSprite, {walkingAnimationRight, walkingAnimationLeft});
 
+    // TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
-    bool noKeyWasPressed = true;
+
+
+    Platform platformMiddle(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(600.f, 300.f));
+    Platform platformTop(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 0.f));
 
     while (window.isOpen()) {
         sf::Event event;
@@ -73,41 +66,29 @@ int main() {
                 window.close();
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
                 window.close();
+            if (event.type == sf::Event::Resized)
+                resizeView(window, view);
         }
 
-        sf::Time frameTime = frameClock.restart();
-        worm.resetMovement();
-        // if a key was pressed set the correct animation and move correctly
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            currentAnimation = &walkingAnimationLeft;
-            worm.move(LEFT);
-            noKeyWasPressed = false;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            currentAnimation = &walkingAnimationRight;
-            worm.move(RIGHT);
-            noKeyWasPressed = false;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            worm.jump();
-            noKeyWasPressed = false;
-        }
-        animatedSprite.play(*currentAnimation);
-        animatedSprite.move(worm.getMovement() * frameTime.asSeconds());
-        std::cout << worm.getMovement().x << ", " << worm.getMovement().y << std::endl;
+        worm.update(frameClock.restart());
+        Collider playerCollider = worm.getCollider();
+//        std::cout << "platform 1" << std::endl;
+        platformMiddle.getCollider().checkCollision(playerCollider, 1.0f);
+        std::cout << "platform top" << std::endl;
+//        Collider playerCollider2 = worm.getCollider();
+//        platformTop.getCollider().checkCollision(playerCollider, 1.0f);
 
-        // if no key was pressed stop the animation
-        if (noKeyWasPressed) {
-            animatedSprite.stop();
-        }
-        noKeyWasPressed = true;
+        view.setCenter(worm.getPosition());
 
-        // update AnimatedSprite
-        animatedSprite.update(frameTime);
+//        worm.setYVelocity(worm.getVelocity().y + 981.0f);
+//        std::cout << worm.getVelocity().x << ", " << worm.getVelocity().y << std::endl;
 
         // draw
-        window.clear(sf::Color(255, 255, 255));
-        window.draw(animatedSprite);
+        window.clear(sf::Color(150, 150, 150));
+        window.setView(view);
+        worm.draw(window);
+        platformMiddle.draw(window);
+        platformTop.draw(window);
         window.display();
     }
 

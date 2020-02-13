@@ -4,7 +4,14 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp src/Tilemap.hh src/Worm.cpp src/Worm.hh src/Animation.cpp src/Animation.hh src/AnimatedSprite.cpp src/AnimatedSprite.hh)
+set(SOURCE_FILES main.cpp src/Tilemap.hh
+        src/Worm.cpp src/Worm.hh
+        src/Animation.cpp src/Animation.hh
+        src/AnimatedSprite.cpp src/AnimatedSprite.hh
+        src/AbstractEntity.cpp src/AbstractEntity.hh
+        src/Character.cpp src/Character.hh
+        src/ISerializable.hh
+        src/IObservable.hh src/IObserver.hh src/Collider.cpp src/Collider.hh src/Platform.cpp src/Platform.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

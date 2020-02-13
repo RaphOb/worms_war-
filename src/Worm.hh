@@ -4,46 +4,71 @@
 
 
 #include <SFML/System.hpp>
+#include "Character.hh"
+#include "AnimatedSprite.hh"
+#include "Collider.hh"
 
 enum Direction {
-    RIGHT, LEFT
+    RIGHT = 0, LEFT = 1, JUMP = 2
 };
 
-class Worm {
+class Worm : public Character {
 private:
-    /**
-     * @var Position on the X axis, maybe
-     */
-    double m_x;
-    /**
-     * @ar Position on the Y axis, maybe
-     */
-    double m_y;
     /**
      * @var
      */
-    sf::Vector2f m_movement;
+    std::vector<Animation> m_animations;
+    /**
+     * @var Current animation
+     */
+    Animation *m_currentAnimation;
+    /**
+     * @var
+     */
+    AnimatedSprite m_animatedSprite;
+    /**
+     * @var Velocity for moving
+     */
+    sf::Vector2f m_velocity;
     /**
      * @var Speed of the worm
      */
     double m_speed;
     /**
-     * @var Velocity for jumping
+     * @var Boolean to know when the worm can jump or not
      */
-     sf::Vector2f m_velocity;
-     /**
-      * @var
-      */
-     bool m_canJump;
-     /**
-      * @var
-      */
-      float m_jumpHeight;
+    bool m_canJump;
+    /**
+     * @var Height of the jump
+     */
+    float m_jumpHeight;
+
+    sf::RectangleShape body;
 public:
-    Worm();
-    sf::Vector2f getMovement() const;
-    void resetMovement();
+//    Worm();
+    explicit Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations);
+
+    sf::Vector2f getVelocity() const;
+
+    void resetVelocity();
+
     void move(Direction d);
+
+    sf::Vector2f getPosition() const;
+
     void jump();
+
+    bool canJump() const;
+
+    void setYVelocity(float v);
+
+    void onCollision(sf::Vector2f direction);
+
+    Collider getCollider();
+
+    void update(sf::Time frameTime) override;
+
+    void draw(sf::RenderWindow &window) override;
 };
+
 #endif //LITTLEBIGGAME_WORM_HH
