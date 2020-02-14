@@ -14,7 +14,7 @@ public:
 
 
 
-    bool checkCollision(Collider& other, float push);
+    bool checkCollision(Collider& other, sf::Vector2f& direction, float push);
     sf::Vector2f getPosition();
     sf::Vector2f getHalfSize();
     void move(float dx, float dy);

@@ -148,7 +148,7 @@ void AnimatedSprite::draw(sf::RenderTarget &target, sf::RenderStates states) con
 //        states.transform *= m_body.getTransform();
 //        states.texture = m_texture;
         target.draw(m_body, states);
-        std::cout << m_body.getPosition().x << ", " << m_body.getPosition().y << std::endl;
+//        std::cout << m_body.getPosition().x << ", " << m_body.getPosition().y << std::endl;
     }
 }
 

@@ -43,7 +43,10 @@ private:
      */
     float m_jumpHeight;
 
-    sf::RectangleShape body;
+    int m_orientation;
+
+
+    sf::RectangleShape* body;
 public:
 //    Worm();
     explicit Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations);
@@ -55,8 +58,6 @@ public:
     void move(Direction d);
 
     sf::Vector2f getPosition() const;
-
-    void jump();
 
     bool canJump() const;
 
