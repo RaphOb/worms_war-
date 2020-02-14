@@ -53,8 +53,6 @@ public:
 
     sf::Vector2f getVelocity() const;
 
-    void resetVelocity();
-
     void move(Direction d);
 
     sf::Vector2f getPosition() const;

@@ -70,7 +70,7 @@ int main() {
     AnimatedSprite animatedSprite(shape, sf::seconds(0.2), true, true);
     animatedSprite.getBody().setPosition(sf::Vector2f(screenDimensions / 2));
 
-//    animatedSprite.setScale(3.0f, 3.0f);
+//    animatedSprite.getBody().setScale(3.0f, 3.0f);
     std::cout << animatedSprite.getBody().getPosition().x << animatedSprite.getBody().getPosition().y << std::endl;
     Worm worm(animatedSprite, {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
 

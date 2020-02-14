@@ -14,6 +14,8 @@ sf::Vector2f Collider::getPosition() {
 }
 
 sf::Vector2f Collider::getHalfSize() {
+    std::cout << body.getSize().x << std::endl;
+
     return body.getSize() / 2.0f;
 }
 
@@ -76,7 +78,5 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 }
 
 void Collider::move(float dx, float dy) {
-//    std::cout << "dx: " << dx << ", dy: " << dy << std::endl;
     body.move(dx, dy);
-//    std::cout << "afterMove: " << body.getPosition().x << ", " << body.getPosition().y << std::endl;
 }
