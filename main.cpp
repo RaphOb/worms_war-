@@ -9,8 +9,7 @@
 static const float VIEW_HEIGHT = 800.f;
 static const float VIEW_WIDTH = 800.f;
 
-void resizeView(const sf::RenderWindow& window, sf::View &view)
-{
+void resizeView(const sf::RenderWindow &window, sf::View &view) {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(VIEW_WIDTH * aspectRatio, VIEW_HEIGHT);
 }
@@ -67,17 +66,19 @@ int main() {
 
     // set up AnimatedSprite
     sf::RectangleShape shape;
-    AnimatedSprite animatedSprite(shape, sf::seconds(0.2), true, true);
+    AnimatedSprite animatedSprite(shape, sf::seconds(0.1), true, true);
     animatedSprite.getBody().setPosition(sf::Vector2f(screenDimensions / 2));
 
 //    animatedSprite.getBody().setScale(3.0f, 3.0f);
     std::cout << animatedSprite.getBody().getPosition().x << animatedSprite.getBody().getPosition().y << std::endl;
-    Worm worm(animatedSprite, {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
+    Worm worm(animatedSprite,
+              {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
 
     // TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
     std::vector<Platform> platforms;
+    platforms.reserve(2);
     platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(300.f, 600.f));
     platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(600.f, 400.f));
 
@@ -104,7 +105,7 @@ int main() {
 
         sf::Vector2f direction;
 
-        for (Platform& platform: platforms) {
+        for (Platform &platform: platforms) {
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
             }
@@ -117,7 +118,7 @@ int main() {
         window.clear(sf::Color(150, 150, 150));
         window.setView(view);
         worm.draw(window);
-        for (Platform& platform: platforms) {
+        for (Platform &platform: platforms) {
             platform.draw(window);
         }
         window.display();
