@@ -4,6 +4,7 @@
 
 
 #include <SFML/System.hpp>
+#include <iostream>
 #include "Character.hh"
 #include "AnimatedSprite.hh"
 #include "Collider.hh"
@@ -44,6 +45,24 @@ private:
     float m_jumpHeight;
 
     int m_orientation;
+    sf::Sprite sprite;
+    int leftorright;
+
+    sf::Texture bazookaTexture;
+    std::vector<sf::IntRect> left = {
+            sf::IntRect(0, 0, 50, 34)
+    };
+    std::vector<sf::IntRect> right = {
+            sf::IntRect(50, 0, 50, 34)
+    };
+
+    int textureLoad() {
+        if (!bazookaTexture.loadFromFile("../resources/bazooka.png")) {
+            std::cout << "Failed to load worms spritesheet!" << std::endl;
+            return -1;
+        }
+    };
+
 
 
     sf::RectangleShape* body;
