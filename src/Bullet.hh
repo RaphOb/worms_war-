@@ -18,7 +18,8 @@ public:
     ~Bullet();
     void fireBullet(sf::Vector2f position);
     Collider getCollider();
-    void update(sf::Time frametime, sf::RenderWindow&);
+    void update(sf::Time frametime);
+    void draw(sf::RenderWindow& window);
 
 
 private:

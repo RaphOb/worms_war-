@@ -32,13 +32,17 @@ void Worm::setYVelocity(float v) {
 }
 
 void Worm::draw(sf::RenderWindow &window) {
+    // TODO a deplacer dans update
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
     if(leftorright == 0){
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
     } else if (leftorright == 1) {
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 10, Worm::getPosition().y - 15));
     }
+
+
     window.draw(sprite);
+    if (bullet) bullet->draw(window);
     window.draw(m_animatedSprite);
 }
 
@@ -95,9 +99,8 @@ void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
         std::cout << "PUSH SUR A !"<< std::endl;
     }
     if(hasshot) {
-    bullet->update(frameTime, window);
+        bullet->update(frameTime);
     }
-
     m_velocity.y += 981.f * frameTime.asSeconds();
 
     m_animatedSprite.play(*m_currentAnimation);
