@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "Collider.hh"
 
 class Bullet {
@@ -16,11 +18,13 @@ public:
     ~Bullet();
     void fireBullet(sf::Vector2f position);
     Collider getCollider();
+    void update(sf::Time frametime, sf::RenderWindow&);
 
 
 private:
     sf::RectangleShape body;
     sf::Texture texture;
+    sf::Sprite sprite;
 
 };
 

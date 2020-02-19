@@ -100,7 +100,7 @@ int main() {
                 resizeView(window, view);
         }
 
-        worm.update(frameTime);
+        worm.update(frameTime, window);
         Collider playerCollider = worm.getCollider();
 
         sf::Vector2f direction;

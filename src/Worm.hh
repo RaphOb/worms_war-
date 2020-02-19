@@ -8,6 +8,7 @@
 #include "Character.hh"
 #include "AnimatedSprite.hh"
 #include "Collider.hh"
+#include "Bullet.hh"
 
 enum Direction {
     RIGHT = 0, LEFT = 1, JUMP = 2
@@ -48,6 +49,8 @@ private:
     sf::Sprite sprite;
     int leftorright;
     sf::Clock lastShot{};
+    std::unique_ptr<Bullet> bullet;
+    bool hasshot = false;
 
     sf::Texture bazookaTexture;
     std::vector<sf::IntRect> left = {
@@ -85,7 +88,7 @@ public:
 
     Collider getCollider();
 
-    void update(sf::Time frameTime) override;
+    void update(sf::Time frameTime, sf::RenderWindow&);
 
     void draw(sf::RenderWindow &window) override;
 };

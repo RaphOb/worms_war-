@@ -68,7 +68,7 @@ void Worm::move(Direction d) {
     }
 }
 
-void Worm::update(sf::Time frameTime) {
+void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
 
     bool noKeyWasPressed = true;
 
@@ -86,6 +86,16 @@ void Worm::update(sf::Time frameTime) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canJump) {
         move(JUMP);
         noKeyWasPressed = false;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        bullet = std::make_unique<Bullet>();
+        bullet->fireBullet(getPosition());
+        hasshot = true;
+        noKeyWasPressed = false;
+        std::cout << "PUSH SUR A !"<< std::endl;
+    }
+    if(hasshot) {
+    bullet->update(frameTime, window);
     }
 
     m_velocity.y += 981.f * frameTime.asSeconds();
