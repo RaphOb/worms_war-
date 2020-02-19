@@ -16,6 +16,7 @@ Worm::Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations) : m
     m_orientation = LEFT;
     m_animatedSprite.setOrigin(m_currentAnimation->getFrame(0).width / 2, m_currentAnimation->getFrame(0).height / 2);
     Worm::textureLoad();
+    sprite.setTexture(bazookaTexture);
 }
 
 sf::Vector2f Worm::getVelocity() const {
@@ -31,7 +32,7 @@ void Worm::setYVelocity(float v) {
 }
 
 void Worm::draw(sf::RenderWindow &window) {
-    sprite.setTexture(bazookaTexture);
+    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
     if(leftorright == 0){
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
     } else if (leftorright == 1) {
