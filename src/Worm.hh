@@ -47,6 +47,7 @@ private:
     int m_orientation;
     sf::Sprite sprite;
     int leftorright;
+    sf::Clock lastShot{};
 
     sf::Texture bazookaTexture;
     std::vector<sf::IntRect> left = {
