@@ -1,23 +1,5 @@
 #include "Character.hh"
 
-double Character::getX() const {
-    return m_x;
-}
-
-void Character::setX(double x) {
-    this->m_x = x;
-    this->NotifyAll();
-}
-
-double Character::getY() const {
-    return m_y;
-}
-
-void Character::setY(double y) {
-    this->m_y = y;
-    this->NotifyAll();
-}
-
 int Character::getLife() const {
     return m_life;
 }
@@ -31,9 +13,9 @@ void Character::draw(sf::RenderWindow& window) {
 
 }
 
-void Character::update(sf::Time frameTime) {
-
-}
+//void Character::update(sf::Time frameTime) {
+//
+//}
 
 
 
@@ -55,16 +37,25 @@ void Character::NotifyAll() {
     }
 }
 
-Character::Character() {
-    this->m_life = 0;
-    this->m_x = 0;
-    this->m_y = 0;
-}
+//Character::Character() {
+//    this->m_life = 0;
+//    this->m_x = 0;
+//    this->m_y = 0;
+//}
 
 std::string Character::Serialize() {
     std::string str;
     str.append("m_life:").append(std::to_string(this->m_life)).append(";");
-    str.append("m_x:").append(std::to_string(this->m_x)).append(";");
-    str.append("m_y:").append(std::to_string(this->m_y));
+//    str.append("m_x:").append(std::to_string(this->m_x)).append(";");
+//    str.append("m_y:").append(std::to_string(this->m_y));
     return str;
+}
+
+Character::Character(int l, sf::RectangleShape body):
+    AbstractEntity(body),
+    m_life(l),
+    m_animatedSprite(body)
+
+    {
+
 }

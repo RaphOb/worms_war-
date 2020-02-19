@@ -1,4 +1,11 @@
 #include "AbstractEntity.hh"
 
 void AbstractEntity::draw(sf::RenderWindow& window) {}
-void AbstractEntity::update(sf::Time frameTime) {}
+
+AbstractEntity::AbstractEntity(sf::RectangleShape body) {
+    this->m_body = &body;
+}
+
+void AbstractEntity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    target.draw(*m_body, states);
+}

@@ -74,6 +74,7 @@ int main() {
     Worm worm(animatedSprite,
               {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
 
+
     // TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
@@ -84,6 +85,7 @@ int main() {
 
     while (window.isOpen()) {
 
+//        shape = sf::RectangleShape();
 
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
