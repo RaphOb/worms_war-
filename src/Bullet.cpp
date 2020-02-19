@@ -4,12 +4,19 @@
 
 #include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <math.h>
 #include "Bullet.hh"
 
-void Bullet::fireBullet(sf::Vector2f position) {
+void Bullet::fireBullet(sf::Vector2f position, int leftorright) {
     sprite.setTexture(texture);
+    if (leftorright == 1) {
+        sprite.setTextureRect(sf::IntRect(0, 0, 20, 15));
+    } else {
+        sprite.setTextureRect(sf::IntRect(0, 15, 20 , 15));
+
+    }
     std::cout << position.x << position.y << std::endl;
-    sprite.setPosition((position.x + 50), (position.y-  10));
+    sprite.setPosition((position.x - 10), (position.y-10));
 //    sprite.setScale(10,10);
 }
 
@@ -18,7 +25,7 @@ Bullet::Bullet() {
         std::cout << "Failed to load worms spritesheet!" << std::endl;
 //        body.setTexture(&texture);
     }
-    std::cout <<" bullet construit" << std::endl;
+    std::cout << " bullet construit" << std::endl;
 
 }
 
@@ -26,9 +33,14 @@ Collider Bullet::getCollider() {
     return {body};
 }
 
-void Bullet::update(sf::Time frametime) {
-    sprite.setPosition((sprite.getPosition().x + 1.f), (sprite.getPosition().y));
-    std::cout << " bullet x : " << sprite.getPosition().x << std::endl;
+void Bullet::update(int leftorright) {
+    if (leftorright) {
+    sprite.setPosition((sprite.getPosition().x + 10.f), (sprite.getPosition().y));
+
+    } else  {
+        sprite.setPosition((sprite.getPosition().x - 10.f), (sprite.getPosition().y));
+
+    }
     std::cout << " bullet y : " << sprite.getPosition().y << std::endl;
 
 }

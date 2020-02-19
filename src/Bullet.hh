@@ -16,9 +16,9 @@ class Bullet {
 public:
     Bullet();
     ~Bullet();
-    void fireBullet(sf::Vector2f position);
+    void fireBullet(sf::Vector2f position, int leftorright);
     Collider getCollider();
-    void update(sf::Time frametime);
+    void update(int leftorright);
     void draw(sf::RenderWindow& window);
 
 

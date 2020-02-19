@@ -85,13 +85,13 @@ void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
         bullet = std::make_unique<Bullet>();
-        bullet->fireBullet(getPosition());
+        bullet->fireBullet(getPosition(), leftorright);
         hasshot = true;
         noKeyWasPressed = false;
         std::cout << "PUSH SUR A !"<< std::endl;
     }
     if(hasshot) {
-        bullet->update(frameTime);
+        bullet->update(leftorright);
     }
     // update pos bazooka
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
