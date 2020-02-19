@@ -7,8 +7,9 @@
 #include "Bullet.hh"
 
 void Bullet::fireBullet(sf::Vector2f position) {
-    body.setPosition(position);
+    body.setPosition((body.getPosition().x + 10), (body.getPosition().y -  10));
     body.setTexture(&texture);
+    body.setScale(10,10);
 }
 
 Bullet::Bullet() {
@@ -16,6 +17,7 @@ Bullet::Bullet() {
         std::cout << "Failed to load worms spritesheet!" << std::endl;
         sprite.setTexture(texture);
     }
+    std::cout <<" bullet construit" << std::endl;
 
 }
 
@@ -24,7 +26,9 @@ Collider Bullet::getCollider() {
 }
 
 void Bullet::update(sf::Time frametime, sf::RenderWindow &window) {
-    body.setPosition((body.getPosition().x * frametime.asSeconds()), -(body.getPosition().y * 2.0f * 981.f));
+//    body.setPosition((body.getPosition().x), (body.getPosition().y - 0.1f));
+    std::cout << " bullet x : " << body.getPosition().x << std::endl;
+    std::cout << " bullet y : " << body.getPosition().y << std::endl;
     window.draw(body);
 
 

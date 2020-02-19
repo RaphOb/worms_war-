@@ -87,7 +87,7 @@ void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
         move(JUMP);
         noKeyWasPressed = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
         bullet = std::make_unique<Bullet>();
         bullet->fireBullet(getPosition());
         hasshot = true;
