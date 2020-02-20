@@ -48,12 +48,18 @@ int main() {
         }
 
         worm.update(frameTime);
+        raph->update(frameTime);
         Collider playerCollider = worm.getCollider();
         sf::Vector2f direction;
 
         for (Platform &platform: platforms) {
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
+            }
+        }
+        for (Platform &platform: platforms) {
+            if (platform.getCollider().checkCollision(monsterCollider, direction, 1.0f)) {
+                raph->onCollision(direction);
             }
         }
 

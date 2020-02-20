@@ -9,11 +9,11 @@
 
 using namespace std;
 
-Character* MonsterFactory::Create(const std::string &name) {
+Character* MonsterFactory::Create(const std::string &name, AnimatedSprite animatedSprite, std::vector<Animation> animations) {
     if (name == "GroundMonster") {
-        return new GroundMonster();
+        return new GroundMonster(animatedSprite, animations);
     } else if (name == "SkyMonster") {
-        return new SkyMonster();
+        return new SkyMonster(animatedSprite, animations);
     } else {
         return nullptr;
     }
