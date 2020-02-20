@@ -63,10 +63,10 @@ int main() {
         // draw
         window.clear(sf::Color(150, 150, 150));
         window.setView(view);
-        worm.draw(window);
         for (Platform &platform: platforms) {
             platform.draw(window);
         }
+        worm.draw(window);
         window.display();
     }
 

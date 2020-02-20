@@ -9,6 +9,7 @@
 #include "Character.hh"
 #include "AnimatedSprite.hh"
 #include "Collider.hh"
+#include "Bullet.hh"
 #include "Direction.hh"
 
 class Worm : public Character {
@@ -17,6 +18,8 @@ private:
     sf::Sprite sprite;
     int leftorright;
     sf::Clock lastShot{};
+    std::unique_ptr<Bullet> bullet;
+    bool hasshot = false;
 
     sf::Texture bazookaTexture;
     int textureLoad() {

@@ -8,19 +8,26 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "Collider.hh"
 
 class Bullet {
 public:
     Bullet();
     ~Bullet();
-    void fireBullet(sf::Vector2f position);
+    void fireBullet(sf::Vector2f position, int leftorright);
     Collider getCollider();
+    void update(int leftorright);
+    void draw(sf::RenderWindow& window);
 
 
 private:
     sf::RectangleShape body;
     sf::Texture texture;
+    sf::Sprite sprite;
+    sf::Clock clock1 {};
+    sf::Clock clock2 {};
 
 };
 

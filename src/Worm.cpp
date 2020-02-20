@@ -18,19 +18,15 @@ Worm::Worm(std::vector<Animation> animations) :
     Worm::textureLoad();
     leftorright = 0;
     sprite.setTexture(bazookaTexture);
+    sprite.setTextureRect(sf::IntRect(50, 0, 50, 28));
 
     m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
     m_body->setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
 }
 
 void Worm::draw(sf::RenderWindow &window) {
-    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
-    if(leftorright == 0){
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
-    } else if (leftorright == 1) {
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 10, Worm::getPosition().y - 15));
-    }
     window.draw(sprite);
+    if (bullet) bullet->draw(window);
     window.draw(m_animatedSprite);
 }
 
@@ -80,6 +76,24 @@ void Worm::update(sf::Time frameTime) {
         move(JUMP);
         noKeyWasPressed = false;
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
+        bullet = std::make_unique<Bullet>();
+        bullet->fireBullet(getPosition(), leftorright);
+        hasshot = true;
+        noKeyWasPressed = false;
+        std::cout << "PUSH SUR A !"<< std::endl;
+    }
+    if(hasshot) {
+        bullet->update(leftorright);
+    }
+    // update pos bazooka
+    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
+    if(leftorright == 0){
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 45, Worm::getPosition().y - 15));
+    } else if (leftorright == 1) {
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 10, Worm::getPosition().y - 15));
+    }
+    // end update pos bazooka
 
     m_velocity.y += 981.f * frameTime.asSeconds();
 
