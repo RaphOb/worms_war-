@@ -4,33 +4,60 @@
 #include <list>
 #include "AbstractEntity.hh"
 #include "IObservable.hh"
+#include "Animation.hh"
+#include "AnimatedSprite.hh"
+#include "Collider.hh"
+#include "Direction.hh"
+//#include "Worm.hh"
 
-class Character: public AbstractEntity, public IObservable {
-private:
+class Worm;
+
+class Character : public AbstractEntity, public IObservable {
+protected:
     /**
      * @var Life of the character
      */
     int m_life;
     /**
-     * @var Position on the X axis, maybe
+     *
      */
-    double m_x;
+    std::vector<Animation> m_animations;
     /**
-     * @ar Position on the Y axis, maybe
+     *
      */
-    double m_y;
+    Animation *m_currentAnimation;
     /**
-     * @var List of observers that would be notify when change occurs
+     *
      */
-    std::list<IObserver*> m_observers;
+    AnimatedSprite m_animatedSprite;
+    /**
+    *
+    */
+    sf::Vector2f m_velocity;
+    /**
+    *
+    */
+    double m_speed;
+    /**
+    *
+    */
+    bool m_canJump;
+    /**
+    *
+    */
+    float m_jumpHeight;
+    /**
+    *
+    */
+    int m_orientation;
+
+private:
+    /**
+     * List of observers that would be notify when change occurs
+     */
+    std::list<IObserver *> m_observers;
 public:
-    double getX() const;
 
-    void setX(double x);
-
-    double getY() const;
-
-    void setY(double y);
 
     int getLife() const;
 
@@ -38,16 +65,30 @@ public:
 
 protected:
     Character();
-    explicit Character(int l) : m_life(l), m_x(0), m_y(0) {};
-    Character(int l, double _x, double _y) : m_life(l), m_x(_x), m_y(_y) {};
+    explicit Character(int l, std::vector<Animation> animations, AnimatedSprite animatedSprite, sf::Vector2f velocity,
+            float speed, float jumpHeight);
 public:
     virtual ~Character() = default;
-    void draw(sf::RenderWindow& window) override ;
-    void update(sf::Time frameTime) override ;
-    void AddObserver(IObserver *obs) override ;
-    void RemoveObserver(IObserver *obs) override ;
+
+    void draw(sf::RenderWindow &window) override;
+
+//    virtual void update(sf::Time frameTime) = 0;
+
+    bool canJump() const;
+
+    void onCollision(sf::Vector2f direction);
+
+    Collider getCollider();
+
+    void AddObserver(IObserver *obs) override;
+
+    void RemoveObserver(IObserver *obs) override;
+
     void NotifyAll();
-    std::string Serialize() override ;
+
+    virtual void move(Direction d);
+
+    std::string Serialize() override;
 };
 
 

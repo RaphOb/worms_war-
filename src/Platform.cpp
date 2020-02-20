@@ -16,5 +16,5 @@ void Platform::draw(sf::RenderWindow &window) {
 }
 
 Collider Platform::getCollider() {
-    return Collider(body);
+    return {&body};
 }

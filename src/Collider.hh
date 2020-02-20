@@ -10,7 +10,7 @@
 
 class Collider {
 public:
-    Collider(sf::RectangleShape& body);
+    Collider(sf::RectangleShape* body);
 
 
 
@@ -20,7 +20,7 @@ public:
     void move(float dx, float dy);
 
 private:
-    sf::RectangleShape& body;
+    sf::RectangleShape* body;
 };
 
 
