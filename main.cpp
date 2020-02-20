@@ -22,64 +22,7 @@ int main() {
     Game game;
     Worm worm = game.initWorm();
 
-
-    // load walkingTexture (spritesheet)
-//    sf::Texture walkingTexture;
-//    if (!walkingTexture.loadFromFile("../resources/worms_character2.png")) {
-//        std::cout << "Failed to load worms spritesheet!" << std::endl;
-//        return -1;
-//    }
-//
-//    sf::Texture jumpingTexture;
-//    if (!jumpingTexture.loadFromFile("../resources/worms_jump.png")) {
-//        std::cout << "Failed to load worms jumps" << std::endl;
-//        return -1;
-//    }
-//
-//    std::vector<sf::IntRect> left = {
-//            sf::IntRect(0, 0, 32, 34),
-//            sf::IntRect(32, 0, 32, 34),
-//            sf::IntRect(64, 0, 32, 34)
-//    };
-//
-//    std::vector<sf::IntRect> right = {
-//            sf::IntRect(0, 34, 32, 34),
-//            sf::IntRect(32, 34, 32, 34),
-//            sf::IntRect(64, 34, 32, 34)
-//    };
-//
-//    std::vector<sf::IntRect> jumpLeft = {
-//            sf::IntRect(0, 0, 28, 52),
-//            sf::IntRect(28, 0, 28, 52),
-//            sf::IntRect(56, 0, 28, 52),
-//            sf::IntRect(84, 0, 28, 52)
-//    };
-//
-//    std::vector<sf::IntRect> jumpRight = {
-//            sf::IntRect(0, 52, 28, 52),
-//            sf::IntRect(28, 52, 28, 52),
-//            sf::IntRect(56, 52, 28, 52),
-//            sf::IntRect(84, 52, 28, 52)
-//    };
-//
-//    Animation walkingAnimationLeft = Animation(left, walkingTexture);
-//    Animation walkingAnimationRight = Animation(right, walkingTexture);
-//    Animation jumpingAnimationLeft = Animation(jumpLeft, jumpingTexture);
-//    Animation jumpingAnimationRight = Animation(jumpRight, jumpingTexture);
-//
-//    // set up AnimatedSprite
-//    sf::RectangleShape shape;
-//    AnimatedSprite animatedSprite(shape, sf::seconds(0.1), true, true);
-////    animatedSprite.getBody().setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
-//
-////    animatedSprite.getBody().setScale(3.0f, 3.0f);
-////    std::cout << animatedSprite.getBody().getPosition().x << animatedSprite.getBody().getPosition().y << std::endl;
-//    Worm worm(animatedSprite,
-//              {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
-
-
-
-    // TODO replace this by the time manager did in the steps ?
+//     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
     std::vector<Platform> platforms;
@@ -88,8 +31,6 @@ int main() {
     platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(600.f, 400.f));
 
     while (window.isOpen()) {
-
-//        shape = sf::RectangleShape();
 
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.

@@ -61,9 +61,6 @@ Worm Game::initWorm() {
     Animation jumpingAnimationLeft = Animation(jumpLeft, m_jumpingTexture);
     Animation jumpingAnimationRight = Animation(jumpRight, m_jumpingTexture);
 
-    AnimatedSprite animatedSprite(sf::seconds(0.1), true, true);
 
-    Worm worm(animatedSprite,
-              {walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
-    return worm;
+    return Worm({walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
 }

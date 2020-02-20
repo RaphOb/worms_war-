@@ -1,8 +1,9 @@
 #include "AbstractEntity.hh"
+#include "Constant.hh"
 
-void AbstractEntity::draw(sf::RenderWindow& window) {}
+void AbstractEntity::draw(sf::RenderWindow &window) {}
 
-AbstractEntity::AbstractEntity(sf::RectangleShape body) {
+AbstractEntity::AbstractEntity(sf::RectangleShape &body) {
     this->m_body = &body;
 }
 

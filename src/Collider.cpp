@@ -14,8 +14,6 @@ sf::Vector2f Collider::getPosition() {
 }
 
 sf::Vector2f Collider::getHalfSize() {
-    std::cout << body->getSize().x << std::endl;
-
     return body->getSize() / 2.0f;
 }
 

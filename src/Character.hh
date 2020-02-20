@@ -65,8 +65,8 @@ public:
 
 protected:
     Character();
-    explicit Character(int l, AnimatedSprite animatedSprite);
-//    explicit Character(int l, sf::RectangleShape body);
+    explicit Character(int l, std::vector<Animation> animations, AnimatedSprite animatedSprite, sf::Vector2f velocity,
+            float speed, float jumpHeight);
 public:
     virtual ~Character() = default;
 

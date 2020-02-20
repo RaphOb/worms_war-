@@ -7,8 +7,8 @@
 
 class AbstractEntity : public ISerializable, public sf::Drawable {
 public:
-	AbstractEntity() = default;
-	AbstractEntity(sf::RectangleShape body);
+	explicit AbstractEntity() = default;
+	explicit AbstractEntity(sf::RectangleShape& body);
 	virtual ~AbstractEntity() = default;
 	virtual void draw(sf::RenderWindow& window) = 0;
 	virtual void update(sf::Time frameTime) = 0;

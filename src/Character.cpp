@@ -1,4 +1,8 @@
+#include <iostream>
+#include <utility>
+#include <cmath>
 #include "Character.hh"
+#include "Constant.hh"
 
 int Character::getLife() const {
     return m_life;
@@ -51,7 +55,19 @@ std::string Character::Serialize() {
     return str;
 }
 
-Character::Character(int l, AnimatedSprite animatedSprite): m_life(l), m_animatedSprite(animatedSprite) {
+Character::Character(int l, std::vector<Animation> animations, AnimatedSprite animatedSprite, sf::Vector2f velocity,
+                    float speed, float jumpHeight):
+    AbstractEntity(animatedSprite.getBody()),
+    m_life(l),
+    m_animations(std::move(animations)),
+    m_currentAnimation(&m_animations[LEFT]),
+    m_animatedSprite(std::move(animatedSprite)),
+    m_velocity(velocity),
+    m_speed(speed),
+    m_canJump(true),
+    m_jumpHeight(jumpHeight),
+    m_orientation(LEFT)
+    {
 
 }
 
@@ -78,9 +94,27 @@ void Character::onCollision(sf::Vector2f direction) {
 }
 
 Collider Character::getCollider() {
-    return Collider(m_body);
+    return {&m_animatedSprite.getBody()};
 }
 
 void Character::move(Direction d) {
-
+    if (d == RIGHT) {
+        m_velocity.x += m_speed;
+        if (m_canJump)
+            m_currentAnimation = &m_animations[RIGHT];
+        m_orientation = RIGHT;
+    } else if (d == LEFT) {
+        m_velocity.x -= m_speed;
+        if (m_canJump)
+            m_currentAnimation = &m_animations[LEFT];
+        m_orientation = LEFT;
+    } else if (d == JUMP) {
+        m_canJump = false;
+        m_velocity.y = -sqrtf(2.0f * 981.f * m_jumpHeight);
+        if (m_orientation == LEFT) {
+            m_currentAnimation = &m_animations[2];
+        } else if (m_orientation == RIGHT) {
+            m_currentAnimation = &m_animations[3];
+        }
+    }
 }
