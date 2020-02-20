@@ -26,6 +26,8 @@ private:
     sf::RectangleShape body;
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::Clock clock1 {};
+    sf::Clock clock2 {};
 
 };
 
