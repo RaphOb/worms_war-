@@ -5,18 +5,16 @@
 #include <iostream>
 #include "Collider.hh"
 
-Collider::Collider(sf::RectangleShape &body) : body(body) {
+Collider::Collider(sf::RectangleShape* body) : body(body) {
 
 }
 
 sf::Vector2f Collider::getPosition() {
-    return body.getPosition();
+    return body->getPosition();
 }
 
 sf::Vector2f Collider::getHalfSize() {
-    std::cout << body.getSize().x << std::endl;
-
-    return body.getSize() / 2.0f;
+    return body->getSize() / 2.0f;
 }
 
 bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float push) {
@@ -78,5 +76,5 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 }
 
 void Collider::move(float dx, float dy) {
-    body.move(dx, dy);
+    body->move(dx, dy);
 }

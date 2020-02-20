@@ -15,7 +15,8 @@ class AnimatedSprite : public sf::Drawable
 //        , public sf::Transformable
 {
 public:
-    explicit AnimatedSprite(sf::RectangleShape& body, sf::Time frameTime = sf::seconds(0.2f), bool paused = false, bool looped = true);
+    AnimatedSprite() = default;
+    explicit AnimatedSprite(sf::Time frameTime = sf::seconds(0.2f), bool paused = false, bool looped = true);
 
     void update(sf::Time deltaTime);
     void setAnimation(const Animation& animation);
@@ -67,7 +68,7 @@ private:
      */
     sf::Vertex m_vertices[4];
 
-    sf::RectangleShape& m_body;
+    sf::RectangleShape* m_body;
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

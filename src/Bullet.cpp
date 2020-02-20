@@ -17,7 +17,7 @@ Bullet::Bullet() {
 }
 
 Collider Bullet::getCollider()  {
-    return {body};
+    return {&body};
 }
 
 Bullet::~Bullet() = default;
