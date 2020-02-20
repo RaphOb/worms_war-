@@ -19,9 +19,9 @@ private:
     int leftorright;
     sf::Clock lastShot{};
     std::unique_ptr<Bullet> bullet;
-    bool hasshot = false;
 
     sf::Texture bazookaTexture;
+
     int textureLoad() {
         if (!bazookaTexture.loadFromFile("../resources/bazooka.png")) {
             std::cout << "Failed to load worms spritesheet!" << std::endl;
@@ -30,15 +30,19 @@ private:
     };
 
 public:
+    bool hasshot = false;
+
     explicit Worm(std::vector<Animation> animations);
 
     sf::Vector2f getPosition() const;
 
-    void move(Direction d) override ;
+    void move(Direction d) override;
 
     void update(sf::Time frameTime) override;
 
     void draw(sf::RenderWindow &window) override;
+
+    Bullet &getBullet() const;
 };
 
 #endif //LITTLEBIGGAME_WORM_HH

@@ -49,9 +49,15 @@ int main() {
 
         worm.update(frameTime);
         Collider playerCollider = worm.getCollider();
+
+
         sf::Vector2f direction;
 
         for (Platform &platform: platforms) {
+            if (worm.hasshot) {
+                Collider bullet = worm.getBullet().getCollider();
+                platform.getCollider().checkCollision(bullet, direction, 1.0f);
+            }
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
             }

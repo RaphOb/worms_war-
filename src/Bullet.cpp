@@ -16,12 +16,16 @@ void Bullet::fireBullet(sf::Vector2f position, int leftorright) {
         sprite.setTextureRect(sf::IntRect(0, 15, 20 , 15));
 
     }
-    std::cout << position.x << position.y << std::endl;
+    std::cout << "pos x"<<position.x << "pos y"<<position.y << std::endl;
     sprite.setPosition((position.x - 10), (position.y-10));
 //    sprite.setScale(10,10);
 }
 
 Bullet::Bullet() {
+//    body->setSize(sf::Vector2f(10.f,10.f));
+    body->setOrigin(5, 5);
+    body->setTexture(&texture);
+//    sprite.setPosition((position.x - 10), (position.y-10));
     if (!texture.loadFromFile("../resources/bullet.png")) {
         std::cout << "Failed to load worms spritesheet!" << std::endl;
 //        body.setTexture(&texture);
@@ -31,18 +35,17 @@ Bullet::Bullet() {
 }
 
 Collider Bullet::getCollider()  {
-    return {&body};
+    return Collider(body);
 }
 
 void Bullet::update(int leftorright) {
     if (leftorright) {
     sprite.setPosition((sprite.getPosition().x + 0.410f/clock1.getElapsedTime().asSeconds()), (sprite.getPosition().y) + 1.0f* clock1.getElapsedTime().asSeconds());
     sprite.setRotation(sprite.getRotation()+0.9f);
-//    sprite.setPosition((sprite.getPosition().x + 98.1f* clock1.getElapsedTime().asSeconds()), (sqrtf(2*9.81f*sprite.getPosition().y)));
 
     } else  {
-        sprite.setPosition((sprite.getPosition().x - 10.f), (sprite.getPosition().y));
-
+        sprite.setPosition((abs(sprite.getPosition().x) - (0.410f/clock1.getElapsedTime().asSeconds())), (sprite.getPosition().y) + 1.0f* clock1.getElapsedTime().asSeconds());
+        sprite.setRotation(sprite.getRotation()-0.9f);
     }
     std::cout << " vitesse : " << clock1.getElapsedTime().asSeconds() << std::endl;
     std::cout << " bullet x : " << sprite.getPosition().x << std::endl;

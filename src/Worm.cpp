@@ -110,3 +110,7 @@ void Worm::update(sf::Time frameTime) {
 sf::Vector2f Worm::getPosition() const {
     return m_body->getPosition();
 }
+
+Bullet &Worm::getBullet() const {
+    return *bullet;
+}
