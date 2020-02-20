@@ -10,7 +10,14 @@
 
 class MonsterFactory {
 public:
-    Character* Create(const std::string&, AnimatedSprite, std::vector<Animation>);
+    MonsterFactory();
+    Character* Create(const std::string&);
+    bool initTextures();
+
+private:
+    sf::Texture m_walkingTexture;
+    sf::Texture m_jumpingTexture;
+    sf::RectangleShape shape;
 };
 
 #endif //LITTLEBIGGAME_MONSTERFACTORY_HH

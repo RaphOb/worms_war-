@@ -6,6 +6,6 @@
 
 using namespace std;
 
-GroundMonster::GroundMonster(AnimatedSprite animatedSprite, std::vector<Animation> animations) : Monster(animatedSprite, animations) {
+GroundMonster::GroundMonster(std::vector<Animation> animations) : Monster(animations) {
 
 }

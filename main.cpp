@@ -7,6 +7,8 @@
 #include "src/Platform.hh"
 #include "src/Constant.hh"
 #include "src/Game.hh"
+#include "src/Monster/MonsterFactory.hh"
+#include "src/Monster/GroundMonster.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -21,6 +23,8 @@ int main() {
 
     Game game;
     Worm worm = game.initWorm();
+    MonsterFactory mf;
+    GroundMonster *gm = dynamic_cast<GroundMonster *>(mf.Create("GroundMonster"));
 
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
@@ -48,8 +52,9 @@ int main() {
         }
 
         worm.update(frameTime);
-        raph->update(frameTime);
+        gm->update(frameTime);
         Collider playerCollider = worm.getCollider();
+        Collider monsterCollider = gm->getCollider();
         sf::Vector2f direction;
 
         for (Platform &platform: platforms) {
@@ -59,7 +64,7 @@ int main() {
         }
         for (Platform &platform: platforms) {
             if (platform.getCollider().checkCollision(monsterCollider, direction, 1.0f)) {
-                raph->onCollision(direction);
+                gm->onCollision(direction);
             }
         }
 
@@ -72,6 +77,7 @@ int main() {
         for (Platform &platform: platforms) {
             platform.draw(window);
         }
+        gm->draw(window);
         worm.draw(window);
         window.display();
     }

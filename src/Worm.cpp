@@ -31,7 +31,7 @@ void Worm::draw(sf::RenderWindow &window) {
 }
 
 void Worm::move(Direction d) {
-    std::cout << "move "<< std::endl;
+    //std::cout << "move "<< std::endl;
     if (d == RIGHT) {
         leftorright = 1;
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
