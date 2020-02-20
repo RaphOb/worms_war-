@@ -30,8 +30,8 @@ Bullet::Bullet() {
 
 }
 
-Collider Bullet::getCollider() {
-    return {body};
+Collider Bullet::getCollider()  {
+    return {&body};
 }
 
 void Bullet::update(int leftorright) {

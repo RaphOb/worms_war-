@@ -3,33 +3,25 @@
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <iostream>
 #include "Worm.hh"
+#include "Constant.hh"
 
 
-Worm::Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations) : m_animatedSprite(animatedSprite) {
-    m_velocity = sf::Vector2f(0.f, 0.f);
-    m_speed = 100.f;
-    m_jumpHeight = 300.f;
-    m_canJump = true;
-    m_animations = std::move(animations);
-    m_currentAnimation = &m_animations[LEFT];
-    m_orientation = LEFT;
-    m_animatedSprite.setOrigin(m_currentAnimation->getFrame(0).width / 2, m_currentAnimation->getFrame(0).height / 2);
+Worm::Worm(std::vector<Animation> animations) :
+    Character(100,
+            std::move(animations),
+            AnimatedSprite(sf::seconds(0.1), true, true),
+            sf::Vector2f(0.f, 0.f),
+            100.f,
+            300.f) {
     Worm::textureLoad();
+    leftorright = 0;
     sprite.setTexture(bazookaTexture);
-    sprite.setTextureRect(sf::IntRect(0, 0, 55, 34));
-}
+    sprite.setTextureRect(sf::IntRect(50, 0, 50, 28));
 
-sf::Vector2f Worm::getVelocity() const {
-    return m_velocity;
-}
-
-bool Worm::canJump() const {
-    return m_canJump;
-}
-
-void Worm::setYVelocity(float v) {
-    m_velocity.y = v;
+    m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
+    m_body->setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
 }
 
 void Worm::draw(sf::RenderWindow &window) {
@@ -39,16 +31,17 @@ void Worm::draw(sf::RenderWindow &window) {
 }
 
 void Worm::move(Direction d) {
+    std::cout << "move "<< std::endl;
     if (d == RIGHT) {
         leftorright = 1;
-        sprite.setTextureRect(sf::IntRect(54, 0, 55, 34));
+        sprite.setTextureRect(sf::IntRect(0, 0, 50, 28));
         m_velocity.x += m_speed;
         if (m_canJump)
             m_currentAnimation = &m_animations[RIGHT];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
         leftorright = 0;
-        sprite.setTextureRect(sf::IntRect(0, 0, 55, 34));
+        sprite.setTextureRect(sf::IntRect(50, 0, 50, 28));
         m_velocity.x -= m_speed;
         if (m_canJump)
             m_currentAnimation = &m_animations[LEFT];
@@ -64,7 +57,7 @@ void Worm::move(Direction d) {
     }
 }
 
-void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
+void Worm::update(sf::Time frameTime) {
 
     bool noKeyWasPressed = true;
 
@@ -105,7 +98,7 @@ void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
     m_velocity.y += 981.f * frameTime.asSeconds();
 
     m_animatedSprite.play(*m_currentAnimation);
-    m_animatedSprite.getBody().move(m_velocity * frameTime.asSeconds());
+    m_body->move(m_velocity * frameTime.asSeconds());
 
     if (noKeyWasPressed && m_canJump) {
         m_animatedSprite.stop();
@@ -115,28 +108,5 @@ void Worm::update(sf::Time frameTime, sf::RenderWindow& window) {
 }
 
 sf::Vector2f Worm::getPosition() const {
-    return m_animatedSprite.getBody().getPosition();
-}
-
-void Worm::onCollision(sf::Vector2f direction) {
-    if (direction.x < 0.0f) {
-        // Collision on the left
-        m_velocity.x = 0.0f;
-    } else if (direction.x > 0.0f) {
-        // Collision on the right
-        m_velocity.x = 0.0f;
-    } else if (direction.y < 0.0f) {
-        // Collision on the bottom
-        m_velocity.y = 0.0f;
-        m_canJump = true;
-        m_currentAnimation = &m_animations[m_orientation];
-    } else if (direction.y > 0.0f) {
-        // Collision on the top
-        m_velocity.y = 0.0f;
-    }
-}
-
-Collider Worm::getCollider() {
-    body = &m_animatedSprite.getBody();
-    return Collider(*body);
+    return m_body->getPosition();
 }

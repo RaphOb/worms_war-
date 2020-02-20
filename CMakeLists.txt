@@ -11,7 +11,13 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/AbstractEntity.cpp src/AbstractEntity.hh
         src/Character.cpp src/Character.hh
         src/ISerializable.hh
-        src/IObservable.hh src/IObserver.hh src/Collider.cpp src/Collider.hh src/Platform.cpp src/Platform.hh src/Bullet.cpp src/Bullet.hh)
+        src/IObservable.hh src/IObserver.hh
+        src/Collider.cpp src/Collider.hh
+        src/Platform.cpp src/Platform.hh
+        src/Game.cpp src/Game.hh
+        src/Constant.hh src/Constant.cpp
+        src/Direction.hh
+        src/Bullet.cpp src/Bullet.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
