@@ -10,7 +10,7 @@ void Character::setLife(int life) {
 }
 
 void Character::draw(sf::RenderWindow& window) {
-
+    window.draw(m_animatedSprite);
 }
 
 //void Character::update(sf::Time frameTime) {
@@ -51,11 +51,36 @@ std::string Character::Serialize() {
     return str;
 }
 
-Character::Character(int l, sf::RectangleShape body):
-    AbstractEntity(body),
-    m_life(l),
-    m_animatedSprite(body)
+Character::Character(int l, AnimatedSprite animatedSprite): m_life(l), m_animatedSprite(animatedSprite) {
 
-    {
+}
+
+bool Character::canJump() const {
+    return m_canJump;
+}
+
+void Character::onCollision(sf::Vector2f direction) {
+    if (direction.x < 0.0f) {
+        // Collision on the left
+        m_velocity.x = 0.0f;
+    } else if (direction.x > 0.0f) {
+        // Collision on the right
+        m_velocity.x = 0.0f;
+    } else if (direction.y < 0.0f) {
+        // Collision on the bottom
+        m_velocity.y = 0.0f;
+        m_canJump = true;
+        m_currentAnimation = &m_animations[m_orientation];
+    } else if (direction.y > 0.0f) {
+        // Collision on the top
+        m_velocity.y = 0.0f;
+    }
+}
+
+Collider Character::getCollider() {
+    return Collider(m_body);
+}
+
+void Character::move(Direction d) {
 
 }

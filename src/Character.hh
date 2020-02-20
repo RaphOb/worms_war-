@@ -6,9 +6,14 @@
 #include "IObservable.hh"
 #include "Animation.hh"
 #include "AnimatedSprite.hh"
+#include "Collider.hh"
+#include "Direction.hh"
+//#include "Worm.hh"
+
+class Worm;
 
 class Character : public AbstractEntity, public IObservable {
-private:
+protected:
     /**
      * @var Life of the character
      */
@@ -46,6 +51,7 @@ private:
     */
     int m_orientation;
 
+private:
     /**
      * List of observers that would be notify when change occurs
      */
@@ -59,8 +65,8 @@ public:
 
 protected:
     Character();
-
-    explicit Character(int l, sf::RectangleShape body);
+    explicit Character(int l, AnimatedSprite animatedSprite);
+//    explicit Character(int l, sf::RectangleShape body);
 public:
     virtual ~Character() = default;
 
@@ -68,11 +74,19 @@ public:
 
 //    virtual void update(sf::Time frameTime) = 0;
 
+    bool canJump() const;
+
+    void onCollision(sf::Vector2f direction);
+
+    Collider getCollider();
+
     void AddObserver(IObserver *obs) override;
 
     void RemoveObserver(IObserver *obs) override;
 
     void NotifyAll();
+
+    virtual void move(Direction d);
 
     std::string Serialize() override;
 };

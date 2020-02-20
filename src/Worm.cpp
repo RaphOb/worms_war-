@@ -3,9 +3,10 @@
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 #include "Worm.hh"
+#include "Constant.hh"
 
 
-Worm::Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations) : m_animatedSprite(animatedSprite){
+Worm::Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations) : Character(100, animatedSprite) {
     m_velocity = sf::Vector2f(0.f, 0.f);
     m_speed = 100.f;
     m_jumpHeight = 300.f;
@@ -14,23 +15,24 @@ Worm::Worm(AnimatedSprite animatedSprite, std::vector<Animation> animations) : m
     m_currentAnimation = &m_animations[LEFT];
     m_orientation = LEFT;
     m_animatedSprite.setOrigin(m_currentAnimation->getFrame(0).width / 2, m_currentAnimation->getFrame(0).height / 2);
+    m_animatedSprite.getBody().setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
 }
 
 sf::Vector2f Worm::getVelocity() const {
     return m_velocity;
 }
 
-bool Worm::canJump() const {
-    return m_canJump;
-}
+//bool Worm::canJump() const {
+//    return m_canJump;
+//}
 
 void Worm::setYVelocity(float v){
     m_velocity.y = v;
 }
 
-void Worm::draw(sf::RenderWindow& window) {
-    window.draw(m_animatedSprite);
-}
+//void Worm::draw(sf::RenderWindow& window) {
+//    window.draw(m_animatedSprite);
+//}
 
 void Worm::move(Direction d) {
     if (d == RIGHT) {
@@ -90,25 +92,25 @@ sf::Vector2f Worm::getPosition() const {
     return m_animatedSprite.getBody().getPosition();
 }
 
-void Worm::onCollision(sf::Vector2f direction) {
-    if (direction.x < 0.0f) {
-        // Collision on the left
-        m_velocity.x = 0.0f;
-    } else if (direction.x > 0.0f) {
-        // Collision on the right
-        m_velocity.x = 0.0f;
-    } else if (direction.y < 0.0f) {
-        // Collision on the bottom
-        m_velocity.y = 0.0f;
-        m_canJump = true;
-        m_currentAnimation = &m_animations[m_orientation];
-    } else if (direction.y > 0.0f) {
-        // Collision on the top
-        m_velocity.y = 0.0f;
-    }
-}
+//void Worm::onCollision(sf::Vector2f direction) {
+//    if (direction.x < 0.0f) {
+//         Collision on the left
+//        m_velocity.x = 0.0f;
+//    } else if (direction.x > 0.0f) {
+//         Collision on the right
+//        m_velocity.x = 0.0f;
+//    } else if (direction.y < 0.0f) {
+//         Collision on the bottom
+//        m_velocity.y = 0.0f;
+//        m_canJump = true;
+//        m_currentAnimation = &m_animations[m_orientation];
+//    } else if (direction.y > 0.0f) {
+//         Collision on the top
+//        m_velocity.y = 0.0f;
+//    }
+//}
 
-Collider Worm::getCollider() {
-    body = &m_animatedSprite.getBody();
-    return Collider(*body);
-}
+//Collider Worm::getCollider() {
+//    body = &m_animatedSprite.getBody();
+//    return Collider(*body);
+

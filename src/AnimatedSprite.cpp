@@ -2,17 +2,16 @@
 #include <iostream>
 #include "AnimatedSprite.hh"
 
-AnimatedSprite::AnimatedSprite(sf::RectangleShape& body, sf::Time frameTime, bool paused, bool looped) :
+AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
         m_animation(nullptr), m_frameTime(frameTime), m_currentFrame(0), m_isPaused(paused), m_isLooped(looped),
-        m_texture(nullptr), m_body(body){
-
-
+        m_texture(nullptr) {
+    m_body = new sf::RectangleShape();
 }
 
 void AnimatedSprite::setAnimation(const Animation &animation) {
     m_animation = &animation;
     m_texture = m_animation->getSpriteSheet();
-    m_body.setTexture(m_texture);
+    m_body->setTexture(m_texture);
     m_currentFrame = 0;
     setFrame(m_currentFrame);
 }
@@ -51,7 +50,7 @@ void AnimatedSprite::setColor(const sf::Color &color) {
 //    m_vertices[1].color = color;
 //    m_vertices[2].color = color;
 //    m_vertices[3].color = color;
-    m_body.setFillColor(color);
+    m_body->setFillColor(color);
 }
 
 const Animation *AnimatedSprite::getAnimation() const {
@@ -69,7 +68,7 @@ sf::FloatRect AnimatedSprite::getLocalBounds() const {
 
 sf::FloatRect AnimatedSprite::getGlobalBounds() const {
 //    return getTransform().transformRect(getLocalBounds());
-    return m_body.getGlobalBounds();
+    return m_body->getGlobalBounds();
 }
 
 bool AnimatedSprite::isLooped() const {
@@ -88,7 +87,7 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime) {
     if (m_animation) {
         //calculate new vertex positions and texture coordiantes
         sf::IntRect rect = m_animation->getFrame(newFrame);
-        m_body.setSize({float(rect.width), float(rect.height)});
+        m_body->setSize({float(rect.width), float(rect.height)});
 //        m_body.setPosition(100.0f, 100.f);
 //        m_vertices[0].position = sf::Vector2f(0.f, 0.f);
 //        m_vertices[1].position = sf::Vector2f(0.f, static_cast<float>(rect.height));
@@ -100,7 +99,7 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime) {
 //        float top = static_cast<float>(rect.top);
 //        float bottom = top + static_cast<float>(rect.height);
 
-        m_body.setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
+        m_body->setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height));
 
 //        m_vertices[0].texCoords = sf::Vector2f(left, top);
 //        m_vertices[1].texCoords = sf::Vector2f(left, bottom);
@@ -147,15 +146,15 @@ void AnimatedSprite::draw(sf::RenderTarget &target, sf::RenderStates states) con
     if (m_animation && m_texture) {
 //        states.transform *= m_body.getTransform();
 //        states.texture = m_texture;
-        target.draw(m_body, states);
+        target.draw(*m_body, states);
 //        std::cout << m_body.getPosition().x << ", " << m_body.getPosition().y << std::endl;
     }
 }
 
 sf::RectangleShape& AnimatedSprite::getBody() const {
-    return m_body;
+    return *m_body;
 }
 
 void AnimatedSprite::setOrigin(float x, float y) {
-    m_body.setOrigin(x, y);
+    m_body->setOrigin(x, y);
 }

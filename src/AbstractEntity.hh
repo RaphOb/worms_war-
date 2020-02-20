@@ -16,6 +16,6 @@ public:
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-private:
+protected:
     sf::RectangleShape* m_body;
 };
