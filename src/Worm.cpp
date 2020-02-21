@@ -13,10 +13,9 @@ Worm::Worm(std::vector<Animation> animations) :
             std::move(animations),
             AnimatedSprite(sf::seconds(0.1), true, true),
             sf::Vector2f(0.f, 0.f),
-            100.f,
+            200.f,
             300.f) {
     Worm::textureLoad();
-    leftorright = 0;
     sprite.setTexture(bazookaTexture);
     sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
 
@@ -25,25 +24,23 @@ Worm::Worm(std::vector<Animation> animations) :
 }
 
 void Worm::draw(sf::RenderWindow &window) {
-    window.draw(sprite);
-    window.draw(m_animatedSprite);
     if (hasshot) {
 //        window.draw(bullet);
         bullet->draw(window);
     }
+    window.draw(sprite);
+    window.draw(m_animatedSprite);
 }
 
 void Worm::move(Direction d) {
     std::cout << "move "<< std::endl;
     if (d == RIGHT) {
-        leftorright = 1;
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
         if (m_canJump)
             m_currentAnimation = &m_animations[RIGHT];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
-        leftorright = 0;
         sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
         m_velocity.x -= m_speed;
         if (m_canJump)
@@ -80,19 +77,19 @@ void Worm::update(sf::Time frameTime) {
         noKeyWasPressed = false;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
-        bullet = new Bullet();
-        bullet->fireBullet(getPosition(), leftorright);
+        bullet = new Bullet(m_orientation);
+        bullet->fireBullet(getPosition());
         hasshot = true;
         noKeyWasPressed = false;
     }
     if(hasshot) {
-        bullet->update(leftorright);
+        bullet->update();
     }
     // update pos bazooka
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
-    if(leftorright == 0){
+    if(m_orientation == LEFT){
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
-    } else if (leftorright == 1) {
+    } else if (m_orientation == RIGHT) {
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 5, Worm::getPosition().y - 15));
     }
     // end update pos bazooka

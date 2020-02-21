@@ -15,11 +15,11 @@
 
 class Bullet: public AbstractEntity {
 public:
-    Bullet();
+    Bullet(int);
     ~Bullet() override;
-    void fireBullet(sf::Vector2f position, int leftorright);
+    void fireBullet(sf::Vector2f position);
     Collider getCollider();
-    void update(int leftorright);
+    void update();
     void draw(sf::RenderWindow& window)  ;
     void update(sf::Time frameTime) override ;
     std::string Serialize() override ;
@@ -31,6 +31,8 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Clock clock1;
+    float speed =  35;
+    int m_orientation;
 
 };
 

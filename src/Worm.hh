@@ -16,7 +16,6 @@ class Worm : public Character {
 private:
 
     sf::Sprite sprite;
-    int leftorright;
     sf::Clock lastShot{};
     Bullet* bullet;
 
