@@ -7,6 +7,8 @@
 #include "src/Platform.hh"
 #include "src/Constant.hh"
 #include "src/Game.hh"
+#include "src/Monster/MonsterFactory.hh"
+#include "src/Monster/GroundMonster.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -27,8 +29,9 @@ int main() {
     sf::Time frameTime;
     std::vector<Platform> platforms;
     platforms.reserve(2);
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
+    platforms.emplace_back(sf::Vector2f(3000.f, 300.f), sf::Vector2f(1000.f, 850.f), false);
+    platforms.emplace_back(sf::Vector2f(300.f, 70.f), sf::Vector2f(600.f, 600.f), true);
+    std::vector<Monster*> listMonsters;
 
     while (window.isOpen()) {
 
@@ -37,22 +40,16 @@ int main() {
         if (frameTime.asSeconds() > 1.0f / 60.0f) {
             frameTime = sf::seconds(1.0f / 60.0f);
         }
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-                window.close();
-            if (event.type == sf::Event::Resized)
-                resizeView(window, view);
-        }
 
         worm.update(frameTime);
+
         Collider playerCollider = worm.getCollider();
 
         sf::Vector2f direction;
+        listMonsters = {};
 
         for (Platform &platform: platforms) {
+            platform.update(frameTime);
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
@@ -62,6 +59,24 @@ int main() {
             }
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
+            }
+
+            for (Monster* m : platform.getSpawner().getListMonsters()) {
+                listMonsters.push_back(m);
+            }
+
+        }
+
+        for (Monster* m: listMonsters) {
+            Collider monsterCollider = m->getCollider();
+            sf::Vector2f monsterDirection;
+            for (Platform &p: platforms) {
+                if (p.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
+                    m->onCollision(direction);
+                }
+                if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
+                    m->onCollision(direction);
+                }
             }
         }
 
@@ -73,9 +88,21 @@ int main() {
         window.setView(view);
         for (Platform &platform: platforms) {
             platform.draw(window);
+            platform.getSpawner().draw(window); // draw monsters
         }
+
         worm.draw(window);
         window.display();
+
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+                window.close();
+            if (event.type == sf::Event::Resized)
+                resizeView(window, view);
+        }
     }
 
     return 0;

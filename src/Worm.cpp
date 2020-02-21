@@ -33,7 +33,7 @@ void Worm::draw(sf::RenderWindow &window) {
 }
 
 void Worm::move(Direction d) {
-    std::cout << "move "<< std::endl;
+    //std::cout << "move "<< std::endl;
     if (d == RIGHT) {
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
