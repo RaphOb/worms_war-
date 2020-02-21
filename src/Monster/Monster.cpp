@@ -14,7 +14,7 @@
 
 using namespace std;
 
-Monster::Monster(std::vector<Animation> animations) :
+Monster::Monster(std::vector<Animation> animations, const sf::Vector2f& position) :
     Character(100,
               std::move(animations),
               AnimatedSprite(sf::seconds(0.1), true, true),
@@ -23,7 +23,7 @@ Monster::Monster(std::vector<Animation> animations) :
               300.f) {
 
         m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
-        m_body->setPosition(Constant::SCREEN_DIMENSIONS / 3.f);
+        m_body->setPosition(position);
 }
 
 
@@ -60,14 +60,12 @@ void Monster::update(sf::Time frameTime) {
 //     m_velocity.x *= 0.5f;
     m_velocity.x = 0.0f;
 
+    move(LEFT);
+
     m_velocity.y += 981.f * frameTime.asSeconds();
 
     m_animatedSprite.play(*m_currentAnimation);
     m_body->move(m_velocity * frameTime.asSeconds());
-
-    if (noKeyWasPressed && m_canJump) {
-        m_animatedSprite.stop();
-    }
 
     m_animatedSprite.update(frameTime);
 }

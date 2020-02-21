@@ -20,7 +20,6 @@ bool MonsterFactory::initTextures() {
         return false;
     }
 
-    sf::Texture jumpingTexture;
     if (!m_jumpingTexture.loadFromFile("../resources/ground_monster.png")) {
         std::cout << "Failed to load monster jumps" << std::endl;
         return false;
@@ -29,7 +28,7 @@ bool MonsterFactory::initTextures() {
     return true;
 }
 
-Character* MonsterFactory::Create(const std::string &name) {
+Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& position) {
     if (name == "GroundMonster") {
         std::vector<sf::IntRect> leftMonster = {
                 sf::IntRect(0, 29, 44, 25),
@@ -60,7 +59,7 @@ Character* MonsterFactory::Create(const std::string &name) {
         Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, m_jumpingTexture);
         Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, m_jumpingTexture);
 
-        return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster});
+        return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
     } else if (name == "SkyMonster") {
         std::vector<sf::IntRect> leftMonster = {
                 sf::IntRect(0, 29, 44, 25),
@@ -91,7 +90,7 @@ Character* MonsterFactory::Create(const std::string &name) {
         Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, m_jumpingTexture);
         Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, m_jumpingTexture);
 
-        return new SkyMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster});
+        return new SkyMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
     } else {
         return nullptr;
     }

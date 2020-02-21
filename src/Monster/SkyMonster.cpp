@@ -6,6 +6,6 @@
 
 using namespace std;
 
-SkyMonster::SkyMonster(std::vector<Animation> animations) : Monster(animations) {
+SkyMonster::SkyMonster(std::vector<Animation> animations, const sf::Vector2f& position) : Monster(animations, position) {
 
 }

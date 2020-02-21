@@ -12,15 +12,15 @@
 
 class Monster : public Character {
 public:
-    explicit Monster(std::vector<Animation> animations);
+    explicit Monster(std::vector<Animation>, const sf::Vector2f&);
 
     sf::Vector2f getPosition() const;
 
-    void move(Direction d) override ;
+    void move(Direction) override ;
 
-    void update(sf::Time frameTime) override;
+    void update(sf::Time) override;
 
-    void draw(sf::RenderWindow &window) override;
+    void draw(sf::RenderWindow &) override;
 private:
 
 };

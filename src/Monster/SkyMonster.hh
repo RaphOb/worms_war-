@@ -11,7 +11,7 @@ using namespace std;
 
 class SkyMonster : public Monster {
 public:
-    SkyMonster(std::vector<Animation>);
+    SkyMonster(std::vector<Animation>, const sf::Vector2f&);
 };
 
 #endif //LITTLEBIGGAME_SKYMONSTER_HH

@@ -7,17 +7,17 @@
 
 #include "../Character.hh"
 #include "../AnimatedSprite.hh"
+#include "Monster.hh"
 
 class MonsterFactory {
 public:
     MonsterFactory();
-    Character* Create(const std::string&);
+    Monster* Create(const std::string&, const sf::Vector2f&);
     bool initTextures();
 
 private:
     sf::Texture m_walkingTexture;
     sf::Texture m_jumpingTexture;
-    sf::RectangleShape shape;
 };
 
 #endif //LITTLEBIGGAME_MONSTERFACTORY_HH

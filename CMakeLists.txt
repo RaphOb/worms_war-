@@ -17,14 +17,18 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/Game.cpp src/Game.hh
         src/Constant.hh src/Constant.cpp
         src/Direction.hh
-        src/Bullet.cpp src/Bullet.hh 
+        src/Bullet.cpp src/Bullet.hh
         src/Monster/MonsterFactory.hh src/Monster/MonsterFactory.cpp
         src/Monster/Monster.cpp
         src/Monster/Monster.hh
         src/Monster/GroundMonster.cpp
         src/Monster/GroundMonster.hh
         src/Monster/SkyMonster.cpp
-        src/Monster/SkyMonster.hh)
+        src/Monster/SkyMonster.hh
+        src/Monster/Spawner.cpp
+        src/Monster/Spawner.hh
+        src/TimeManager.hh
+        src/TimeManager.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

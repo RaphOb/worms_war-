@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include "Worm.hh"
+#include "Platform.hh"
 
 class Game {
 private:
