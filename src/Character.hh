@@ -76,7 +76,7 @@ public:
 
     bool canJump() const;
 
-    void onCollision(sf::Vector2f direction);
+    void onCollision(sf::Vector2f direction) override ;
 
     Collider getCollider();
 

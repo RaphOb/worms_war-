@@ -26,8 +26,11 @@ Worm::Worm(std::vector<Animation> animations) :
 
 void Worm::draw(sf::RenderWindow &window) {
     window.draw(sprite);
-    if (bullet) bullet->draw(window);
     window.draw(m_animatedSprite);
+    if (hasshot) {
+//        window.draw(bullet);
+        bullet->draw(window);
+    }
 }
 
 void Worm::move(Direction d) {
@@ -77,11 +80,10 @@ void Worm::update(sf::Time frameTime) {
         noKeyWasPressed = false;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
-        bullet = std::make_unique<Bullet>();
+        bullet = new Bullet();
         bullet->fireBullet(getPosition(), leftorright);
         hasshot = true;
         noKeyWasPressed = false;
-        std::cout << "PUSH SUR A !"<< std::endl;
     }
     if(hasshot) {
         bullet->update(leftorright);
@@ -109,4 +111,8 @@ void Worm::update(sf::Time frameTime) {
 
 sf::Vector2f Worm::getPosition() const {
     return m_body->getPosition();
+}
+
+Bullet &Worm::getBullet() const {
+    return *bullet;
 }
