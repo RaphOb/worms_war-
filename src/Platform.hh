@@ -22,6 +22,7 @@ public:
     void setSpawnerDifficulty(int);
     Spawner getSpawner();
     std::string Serialize() override;
+    void onCollision(sf::Vector2f direction) override;
 private:
     sf::RectangleShape body;
     sf::RectangleShape shape;

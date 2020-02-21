@@ -60,3 +60,7 @@ std::string Platform::Serialize() {
     std::string str;
     return str;
 }
+
+void Platform::onCollision(sf::Vector2f direction) {
+    
+}
