@@ -18,7 +18,7 @@ private:
     sf::Sprite sprite;
     int leftorright;
     sf::Clock lastShot{};
-    std::unique_ptr<Bullet> bullet;
+    Bullet* bullet;
 
     sf::Texture bazookaTexture;
 

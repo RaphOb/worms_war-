@@ -27,8 +27,8 @@ int main() {
     sf::Time frameTime;
     std::vector<Platform> platforms;
     platforms.reserve(2);
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(300.f, 600.f));
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(600.f, 400.f));
+    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
+    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
     while (window.isOpen()) {
 
@@ -50,13 +50,15 @@ int main() {
         worm.update(frameTime);
         Collider playerCollider = worm.getCollider();
 
-
         sf::Vector2f direction;
 
         for (Platform &platform: platforms) {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
-                platform.getCollider().checkCollision(bullet, direction, 1.0f);
+                if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
+                    worm.hasshot = false;
+                    worm.getBullet().onCollision(direction);
+                }
             }
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);

@@ -57,7 +57,7 @@ std::string Character::Serialize() {
 
 Character::Character(int l, std::vector<Animation> animations, AnimatedSprite animatedSprite, sf::Vector2f velocity,
                     float speed, float jumpHeight):
-    AbstractEntity(animatedSprite.getBody()),
+    AbstractEntity(&animatedSprite.getBody()),
     m_life(l),
     m_animations(std::move(animations)),
     m_currentAnimation(&m_animations[LEFT]),

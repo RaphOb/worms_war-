@@ -11,19 +11,23 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include "Collider.hh"
+#include "AbstractEntity.hh"
 
-class Bullet {
+class Bullet: public AbstractEntity {
 public:
     Bullet();
-    ~Bullet();
+    ~Bullet() override;
     void fireBullet(sf::Vector2f position, int leftorright);
     Collider getCollider();
     void update(int leftorright);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window)  ;
+    void update(sf::Time frameTime) override ;
+    std::string Serialize() override ;
+    void  onCollision(sf::Vector2f direction) override;
 
 
 private:
-    sf::RectangleShape* body;
+//    sf::RectangleShape* body;
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Clock clock1;
