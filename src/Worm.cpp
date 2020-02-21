@@ -13,7 +13,7 @@ Worm::Worm(std::vector<Animation> animations) :
             std::move(animations),
             AnimatedSprite(sf::seconds(0.1), true, true),
             sf::Vector2f(0.f, 0.f),
-            100.f,
+            200.f,
             300.f) {
     Worm::textureLoad();
     sprite.setTexture(bazookaTexture);
@@ -24,12 +24,12 @@ Worm::Worm(std::vector<Animation> animations) :
 }
 
 void Worm::draw(sf::RenderWindow &window) {
-    window.draw(sprite);
-    window.draw(m_animatedSprite);
     if (hasshot) {
 //        window.draw(bullet);
         bullet->draw(window);
     }
+    window.draw(sprite);
+    window.draw(m_animatedSprite);
 }
 
 void Worm::move(Direction d) {

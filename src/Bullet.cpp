@@ -13,13 +13,13 @@ void Bullet::fireBullet(sf::Vector2f position) {
     m_body->setTexture(&texture);
     std::cout << "bidule" << std::endl;
     if (m_orientation == RIGHT) {
-        m_body->setTextureRect(sf::IntRect(0, 0, 20, 15));
+        m_body->setTextureRect(sf::IntRect(0, 0, 11, 8));
     } else {
-        m_body->setTextureRect(sf::IntRect(0, 15, 20, 15));
+        m_body->setTextureRect(sf::IntRect(0, 8, 11, 8));
 
     }
     std::cout << "pos x" << position.x << "pos y" << position.y << std::endl;
-    m_body->setPosition((position.x - 10), (position.y - 10));
+    m_body->setPosition((position.x - 10), (position.y - 7));
 //    m_body->setScale(10,10);
     clock1.restart();
 }
