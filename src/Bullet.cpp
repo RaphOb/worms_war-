@@ -13,11 +13,11 @@ void Bullet::fireBullet(sf::Vector2f position, int leftorright) {
     if (leftorright == 1) {
         sprite.setTextureRect(sf::IntRect(0, 0, 20, 15));
     } else {
-        sprite.setTextureRect(sf::IntRect(0, 15, 20 , 15));
+        sprite.setTextureRect(sf::IntRect(0, 15, 20, 15));
 
     }
-    std::cout << "pos x"<<position.x << "pos y"<<position.y << std::endl;
-    sprite.setPosition((position.x - 10), (position.y-10));
+    std::cout << "pos x" << position.x << "pos y" << position.y << std::endl;
+    sprite.setPosition((position.x - 10), (position.y - 10));
 //    sprite.setScale(10,10);
 }
 
@@ -34,18 +34,20 @@ Bullet::Bullet() {
 
 }
 
-Collider Bullet::getCollider()  {
+Collider Bullet::getCollider() {
     return Collider(body);
 }
 
 void Bullet::update(int leftorright) {
     if (leftorright) {
-    sprite.setPosition((sprite.getPosition().x + 0.410f/clock1.getElapsedTime().asSeconds()), (sprite.getPosition().y) + 1.0f* clock1.getElapsedTime().asSeconds());
-    sprite.setRotation(sprite.getRotation()+0.9f);
+        sprite.setPosition((sprite.getPosition().x + 0.410f / clock1.getElapsedTime().asSeconds()),
+                           (sprite.getPosition().y) + 1.0f * clock1.getElapsedTime().asSeconds());
+        sprite.setRotation(sprite.getRotation() + 0.9f);
 
-    } else  {
-        sprite.setPosition((abs(sprite.getPosition().x) - (0.410f/clock1.getElapsedTime().asSeconds())), (sprite.getPosition().y) + 1.0f* clock1.getElapsedTime().asSeconds());
-        sprite.setRotation(sprite.getRotation()-0.9f);
+    } else {
+        sprite.setPosition((abs(sprite.getPosition().x) - (0.410f / clock1.getElapsedTime().asSeconds())),
+                           (sprite.getPosition().y) + 1.0f * clock1.getElapsedTime().asSeconds());
+        sprite.setRotation(sprite.getRotation() - 0.9f);
     }
     std::cout << " vitesse : " << clock1.getElapsedTime().asSeconds() << std::endl;
     std::cout << " bullet x : " << sprite.getPosition().x << std::endl;
