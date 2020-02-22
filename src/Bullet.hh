@@ -24,6 +24,7 @@ public:
     void update(sf::Time frameTime) override ;
     std::string Serialize() override ;
     void  onCollision(sf::Vector2f direction) override;
+    sf::Vector2f getposition();
 
 
 private:

@@ -9,16 +9,13 @@
 #include "Direction.hh"
 
 void Bullet::fireBullet(sf::Vector2f position) {
-    std::cout << "bidule" << std::endl;
     m_body->setTexture(&texture);
-    std::cout << "bidule" << std::endl;
     if (m_orientation == RIGHT) {
         m_body->setTextureRect(sf::IntRect(0, 0, 11, 8));
     } else {
         m_body->setTextureRect(sf::IntRect(0, 8, 11, 8));
 
     }
-    std::cout << "pos x" << position.x << "pos y" << position.y << std::endl;
     m_body->setPosition((position.x - 10), (position.y - 7));
 //    m_body->setScale(10,10);
     clock1.restart();
@@ -29,15 +26,12 @@ Bullet::Bullet(int orientation): AbstractEntity() {
         std::cout << "Failed to load worms spritesheet!" << std::endl;
     }
     m_body->setOrigin(5, 5);
-    m_body->setTexture(nullptr);
     m_body->setSize(sf::Vector2f(20.f, 15.f));
     m_orientation = orientation;
-    std::cout << " bullet construit" << std::endl;
 
 }
 
 Collider Bullet::getCollider() {
-    std::cout << " position body x" << m_body->getPosition().x<< " position y : "<< m_body->getPosition().y << std::endl;
     return Collider(m_body);
 }
 
@@ -53,8 +47,6 @@ void Bullet::update() {
         m_body->setRotation(m_body->getRotation() - 0.9f);
     }
     speed = speed/1.1f;
-    std::cout << " vitesse : " << clock1.getElapsedTime().asSeconds() << std::endl;
-    std::cout << " position body x DANS UPDATE" << m_body->getPosition().x<< " position y : "<< m_body->getPosition().y << std::endl;
 
 //    std::cout << " bullet x : " << m_body->getPosition().x << std::endl;
 //clock1.restart();
@@ -81,6 +73,10 @@ std::string Bullet::Serialize() {
 void Bullet::onCollision(sf::Vector2f direction) {
     delete(this);
 
+}
+
+sf::Vector2f Bullet::getposition() {
+    return m_body->getPosition();
 }
 
 Bullet::~Bullet() = default;

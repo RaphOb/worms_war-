@@ -9,6 +9,7 @@
 #include "src/Game.hh"
 #include "src/Monster/MonsterFactory.hh"
 #include "src/Monster/GroundMonster.hh"
+#include "src/InitBoomer.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -32,6 +33,7 @@ int main() {
     platforms.emplace_back(sf::Vector2f(3000.f, 300.f), sf::Vector2f(1000.f, 850.f), false);
     platforms.emplace_back(sf::Vector2f(300.f, 70.f), sf::Vector2f(600.f, 600.f), true);
     std::vector<Monster*> listMonsters;
+    InitBoomer initboomer = InitBoomer();
 
     while (window.isOpen()) {
 
@@ -53,8 +55,12 @@ int main() {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
-                    worm.hasshot = false;
-                    worm.getBullet().onCollision(direction);
+                   Boom boom =  initboomer.createBoom(worm.getBullet().getposition());
+                   boom.draw(window);
+                   boom.update(frameTime);
+//                    worm.hasshot = false;
+//                    worm.getBullet().onCollision(direction);
+
                 }
             }
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
