@@ -29,9 +29,10 @@ int main() {
     sf::Time frameTime;
     std::vector<Platform> platforms;
     srand (time(NULL));
-    platforms.reserve(2);
+    platforms.reserve(3);
     platforms.emplace_back(sf::Vector2f(3000.f, 50.f), sf::Vector2f(1000.f, 850.f), false, true);
     platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(600.f, 600.f), true, false);
+    platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(1000.f, 500.f), false, false);
 
     std::vector<Monster*> listMonsters;
 
