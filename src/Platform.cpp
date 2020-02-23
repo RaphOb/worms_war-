@@ -5,50 +5,109 @@
 #include <iostream>
 #include "Platform.hh"
 
-Platform::Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner) {
+Platform::Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner, bool isWall) : m_isSpawner(isSpawner), m_isWall(isWall) {
+    if (m_isWall) m_isSpawner=false; // prevent illogical issue
+    if (m_isSpawner) m_isWall=false; // prevent illogical issue
+    initTextures(size, pos);
     tm.Start();
-    tm.SetFrequenceHit(1000);
-    body.setSize(size);
-    body.setPosition(pos);
-    body.setOrigin(size / 2.0f);
-    m_countDownToSpawner = 30;
+    tm.SetFrequenceHit(1000); // Get every 1s
+    m_body->setTexture(&m_bodyTextureDefault);
+    m_body->setSize(size);
+    m_body->setPosition(pos);
+    m_body->setOrigin(size / 2.0f);
     m_spawner = Spawner();
-    m_spawner.setPosition(pos);
-    m_spawner.setDifficulty(1);
-    m_spawner.setNameMonster("GroundMonster");
-    if (isSpawner)
-        body.setFillColor(sf::Color::Black);
+
+    if (!m_isWall) {
+        m_initialCountDownToSpawner = rand() % 60 + 30;
+        m_countDownToSpawner = m_initialCountDownToSpawner;
+        m_spawner.setPosition(pos);
+        m_spawner.setDifficulty(1);
+        m_spawner.setNameMonster("GroundMonster");
+
+        if (m_isSpawner) {
+            m_body->setTexture(&m_bodyTextureSpawner);
+        }
+    }
+}
+
+void Platform::initTextures(sf::Vector2f size, sf::Vector2f pos) {
+    if (!m_bodyTextureDefault.loadFromFile("../resources/platforms/platformDefault.png")) {
+        std::cout << "Failed to load platform spritesheet!" << std::endl;
+    }
+    if (!m_bodyTextureCursed.loadFromFile("../resources/platforms/platformCursed.png")) {
+        std::cout << "Failed to load platform spritesheet!" << std::endl;
+    }
+    if (!m_bodyTextureSpawner.loadFromFile("../resources/platforms/platformSpawner.png")) {
+        std::cout << "Failed to load platform spritesheet!" << std::endl;
+    }
+    m_bodyTextureDefault.setRepeated(true);
+    m_bodyTextureCursed.setRepeated(true);
+    m_bodyTextureSpawner.setRepeated(true);
+    if (size.x != 50) {
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, 50));
+    } else if (size.y != 50) {
+        m_body->setTextureRect(sf::IntRect(0, 0, 50, size.y));
+    } else {
+        m_body->setTextureRect(sf::IntRect(0, 0, 50, 50));
+    }
+
+    if (!m_isWall) {
+        if (!m_font.loadFromFile("../resources/fonts/arial.ttf"))
+        {
+            std::cout << "Failed to load platform font!" << std::endl;
+        }
+
+        sf::Vector2f percentPos = pos;
+        percentPos.x -= 15;
+        percentPos.y -= 10;
+        m_text = new sf::Text();
+        m_text->setPosition(percentPos);
+        m_text->setFont(m_font);
+        m_text->setCharacterSize(20);
+        m_text->setFillColor(sf::Color(255, 255, 255));
+        m_text->setOutlineColor(sf::Color(0, 0, 0));
+        m_text->setOutlineThickness(3);
+    }
 }
 
 void Platform::draw(sf::RenderWindow &window) {
-    window.draw(body);
+    window.draw(*m_body);
+    if (!m_isWall)
+        window.draw(*m_text);
 }
 
 Collider Platform::getCollider() {
-    return {&body};
+    return Collider(m_body);
 }
 
 void Platform::update(sf::Time frameTime) {
-    if (m_isSpawner) {
-        m_spawner.update(frameTime);
-    } else {
-        if (tm.FrequenceHit()) {
-            m_countDownToSpawner -= 1;
-
-            if (m_countDownToSpawner<=0) {
-                m_isSpawner = true;
-                body.setFillColor(sf::Color::Black);
-            } else if (m_countDownToSpawner<=15) {
-                body.setFillColor(sf::Color::Red);
-            } else {
-                body.setFillColor(sf::Color::Yellow);
+    if (!m_isWall) {
+        if (m_isSpawner) {
+            m_spawner.update(frameTime);
+        } else {
+            if (tm.FrequenceHit()) {
+                m_countDownToSpawner -= 1;
+                m_text->setString(to_string(getPercentCurse()) + "%");
+                m_text->setFillColor(sf::Color(255, 255, 255));
+                if (m_countDownToSpawner<=0) {
+                    m_isSpawner = true;
+                    m_body->setTexture(&m_bodyTextureSpawner);
+                } else if (getPercentCurse() >= 50) {
+                    m_body->setTexture(&m_bodyTextureCursed);
+                } else {
+                    m_body->setTexture(&m_bodyTextureDefault);
+                }
             }
         }
     }
-
 }
 
 void Platform::setSpawnerDifficulty(int difficulty) {
+    // TODO reset   m_initialCountDownToSpawner = rand() % 60 + 30;
+    //              m_countDownToSpawner = m_initialCountDownToSpawner;
+    //              with less rand()
+    //              +
+    //              increase spawner difficulty
     m_spawner.setDifficulty(difficulty);
 }
 
@@ -61,6 +120,23 @@ std::string Platform::Serialize() {
     return str;
 }
 
-void Platform::onCollision(sf::Vector2f direction) {
-    
+void Platform::onCollision(sf::Vector2f direction) {}
+
+void Platform::onCollision(sf::Vector2f direction, bool isWorm) {
+    if (isWorm && !m_isWall && direction.y < 0.0f) {
+        resetOnWalk();
+    }
+}
+
+unsigned int Platform::getPercentCurse() {
+    unsigned int percent = m_countDownToSpawner*100/m_initialCountDownToSpawner;
+    return 100-percent;
+}
+
+void Platform::resetOnWalk() {
+    if (!m_isSpawner) {
+        m_countDownToSpawner = m_initialCountDownToSpawner;
+        m_text->setFillColor(sf::Color(0, 255, 0));
+        m_body->setTexture(&m_bodyTextureDefault);
+    }
 }
