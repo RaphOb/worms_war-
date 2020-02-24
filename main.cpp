@@ -7,6 +7,7 @@
 #include "src/Platform.hh"
 #include "src/Constant.hh"
 #include "src/Game.hh"
+#include "src/Map.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -21,14 +22,14 @@ int main() {
 
     Game game;
     Worm worm = game.initWorm();
-
+    Map map;
+    map.initMap();
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
-    std::vector<Platform> platforms;
-    platforms.reserve(2);
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
-    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
+//    platforms.reserve(2);
+//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
+//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
     while (window.isOpen()) {
 
@@ -52,15 +53,15 @@ int main() {
 
         sf::Vector2f direction;
 
-        for (Platform &platform: platforms) {
+        for (auto &platform: map.getPlatforms()) {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
-                if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
+                if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
                     worm.hasshot = false;
                     worm.getBullet().onCollision(direction);
                 }
             }
-            if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
+            if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
             }
         }
@@ -70,9 +71,9 @@ int main() {
 
         // draw
         window.clear(sf::Color(150, 150, 150));
-        window.setView(view);
-        for (Platform &platform: platforms) {
-            platform.draw(window);
+//        window.setView(view);
+        for (auto &platform: map.getPlatforms()) {
+            platform->draw(window);
         }
         worm.draw(window);
         window.display();

@@ -17,7 +17,7 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/Game.cpp src/Game.hh
         src/Constant.hh src/Constant.cpp
         src/Direction.hh
-        src/Bullet.cpp src/Bullet.hh)
+        src/Bullet.cpp src/Bullet.hh src/Map.cpp src/Map.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
