@@ -71,6 +71,7 @@ void Platform::initTextures(sf::Vector2f size, sf::Vector2f pos) {
 }
 
 void Platform::draw(sf::RenderWindow &window) {
+    cout << "aled" << endl;
     window.draw(*m_body);
     if (!m_isWall)
         window.draw(*m_text);

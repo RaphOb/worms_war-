@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include "Worm.hh"
 #include "Platform.hh"
+#include "Map.hh"
 
 class Game {
 private:
@@ -19,6 +20,7 @@ private:
     sf::RectangleShape m_rectGameTime;
     sf::Text m_textGameTime;
     sf::Font m_font;
+    Map m_map;
 
 public:
     Game();
@@ -27,6 +29,7 @@ public:
     void update(sf::RenderWindow &);
     void draw(sf::RenderWindow& window);
     string getFormatGameTime();
+    Map getMap();
 };
 
 

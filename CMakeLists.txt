@@ -28,7 +28,8 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/Monster/Spawner.cpp
         src/Monster/Spawner.hh
         src/TimeManager.hh
-        src/TimeManager.cpp)
+        src/TimeManager.cpp
+        src/Map.cpp src/Map.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

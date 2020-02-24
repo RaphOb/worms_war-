@@ -8,6 +8,8 @@
 #include "AnimatedSprite.hh"
 
 Game::Game() {
+    m_map = Map();
+    m_map.initMap();
     tm.Start();
     m_rectGameTime.setSize({100, 30});
     m_rectGameTime.setFillColor(sf::Color(200, 200, 200));
@@ -97,4 +99,8 @@ string Game::getFormatGameTime() {
     minutes = seconds / 60;
     hours = minutes / 60;
     return (int(minutes%60)<10?"0":"") + to_string(int(minutes%60)) + " : " + (int(seconds%60)<10?"0":"") + to_string(int(seconds%60));
+}
+
+Map Game::getMap() {
+    return m_map;
 }
