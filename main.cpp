@@ -29,9 +29,12 @@ int main() {
     sf::Clock frameClock;
     sf::Time frameTime;
     std::vector<Platform> platforms;
-    platforms.reserve(2);
-    platforms.emplace_back(sf::Vector2f(3000.f, 300.f), sf::Vector2f(1000.f, 850.f), false);
-    platforms.emplace_back(sf::Vector2f(300.f, 70.f), sf::Vector2f(600.f, 600.f), true);
+    srand (time(NULL));
+    platforms.reserve(3);
+    platforms.emplace_back(sf::Vector2f(3000.f, 50.f), sf::Vector2f(1000.f, 850.f), false, true);
+    platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(600.f, 600.f), true, false);
+    platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(1000.f, 500.f), false, false);
+
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
 
@@ -65,6 +68,7 @@ int main() {
             }
             if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
+                platform.onCollision(direction, true);
             }
 
             for (Monster* m : platform.getSpawner().getListMonsters()) {

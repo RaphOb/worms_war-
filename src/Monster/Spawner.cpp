@@ -40,7 +40,7 @@ void Spawner::update(sf::Time frameTime) {
         m->update(frameTime);
     }
     if (tm.FrequenceHit()) {
-        initMonster(); // CReation d'un monstre
+        initMonster(); // Creation d'un monstre
     }
 }
 

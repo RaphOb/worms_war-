@@ -31,17 +31,18 @@ bool MonsterFactory::initTextures() {
 Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& position) {
     if (name == "GroundMonster") {
         std::vector<sf::IntRect> leftMonster = {
-                sf::IntRect(0, 29, 44, 25),
-                sf::IntRect(44, 29, 44, 25),
-                sf::IntRect(88, 29, 44, 25)
+                sf::IntRect(0, 29, 37, 25),
+                sf::IntRect(37, 29, 37, 25),
+                sf::IntRect(74, 29, 37, 25)
         };
 
         std::vector<sf::IntRect> rightMonster = {
-                sf::IntRect(0, 54, 44, 25),
-                sf::IntRect(44, 54, 44, 25),
-                sf::IntRect(88, 54, 44, 25)
+                sf::IntRect(0, 54, 37, 25),
+                sf::IntRect(37, 54, 37, 25),
+                sf::IntRect(74, 54, 37, 25)
         };
 
+        // TODO jump position
         std::vector<sf::IntRect> jumpLeftMonster = {
                 sf::IntRect(0, 29, 44, 25),
                 sf::IntRect(44, 29, 44, 25),

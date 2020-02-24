@@ -8,13 +8,15 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include "Collider.hh"
 #include "Monster/Spawner.hh"
 #include "TimeManager.hh"
 
 class Platform : public AbstractEntity {
 public:
-    Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner);
+    Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner, bool isWall);
 
     void draw(sf::RenderWindow& window) override;
     void update(sf::Time frameTime) override;
@@ -23,13 +25,23 @@ public:
     Spawner getSpawner();
     std::string Serialize() override;
     void onCollision(sf::Vector2f direction) override;
+    void onCollision(sf::Vector2f direction, bool);
+    unsigned int getPercentCurse();
+    void initTextures(sf::Vector2f, sf::Vector2f);
+    void resetOnWalk();
+
 private:
-    sf::RectangleShape body;
-    sf::RectangleShape shape;
     int m_countDownToSpawner;
+    int m_initialCountDownToSpawner;
     Spawner m_spawner;
     bool m_isSpawner;
+    bool m_isWall;
     TimeManager tm;
+    sf::Texture m_bodyTextureDefault;
+    sf::Texture m_bodyTextureCursed;
+    sf::Texture m_bodyTextureSpawner;
+    sf::Font m_font;
+    sf::Text* m_text;
 
 };
 
