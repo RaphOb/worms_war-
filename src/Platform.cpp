@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Platform.hh"
+#include "Constant.hh"
 
 Platform::Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner, bool isWall) : m_isSpawner(isSpawner), m_isWall(isWall) {
     if (m_isWall) m_isSpawner=false; // prevent illogical issue
@@ -43,12 +44,12 @@ void Platform::initTextures(sf::Vector2f size, sf::Vector2f pos) {
     m_bodyTextureDefault.setRepeated(true);
     m_bodyTextureCursed.setRepeated(true);
     m_bodyTextureSpawner.setRepeated(true);
-    if (size.x != 50) {
-        m_body->setTextureRect(sf::IntRect(0, 0, size.x, 50));
-    } else if (size.y != 50) {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, size.y));
+    if (size.x != Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, Constant::BLOCK_SIZE));
+    } else if (size.y != Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, Constant::BLOCK_SIZE, size.y));
     } else {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, 50));
+        m_body->setTextureRect(sf::IntRect(0, 0, Constant::BLOCK_SIZE, Constant::BLOCK_SIZE));
     }
 
     if (!m_isWall) {
@@ -71,7 +72,6 @@ void Platform::initTextures(sf::Vector2f size, sf::Vector2f pos) {
 }
 
 void Platform::draw(sf::RenderWindow &window) {
-    cout << "aled" << endl;
     window.draw(*m_body);
     if (!m_isWall)
         window.draw(*m_text);

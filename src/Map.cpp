@@ -6,7 +6,6 @@
 #include "Constant.hh"
 
 void Map::initMap() {
-    cout << "gydifurg" << endl;
     platforms.reserve(Constant::NB_PLATFORMS);
     platforms.emplace_back(new Platform(sf::Vector2f(1920.f, 50.f), sf::Vector2f(740.f, 900.f), false, true));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 200.f), false, false));
