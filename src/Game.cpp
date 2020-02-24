@@ -8,6 +8,20 @@
 #include "AnimatedSprite.hh"
 
 Game::Game() {
+    tm.Start();
+    m_rectGameTime.setSize({100, 30});
+    m_rectGameTime.setFillColor(sf::Color(200, 200, 200));
+    m_rectGameTime.setOutlineColor(sf::Color::Black);
+    m_rectGameTime.setOutlineThickness(2);
+
+    if (!m_font.loadFromFile("../resources/fonts/arial.ttf"))
+    {
+        std::cout << "Failed to load game time font!" << std::endl;
+    }
+    m_textGameTime.setFont(m_font);
+    m_textGameTime.setOutlineColor(sf::Color::Black);
+    m_textGameTime.setOutlineThickness(2);
+    m_textGameTime.setCharacterSize(20);
     shape = sf::RectangleShape();
     if (!initTextures())
         exit(-1);
@@ -63,4 +77,24 @@ Worm Game::initWorm() {
 
 
     return Worm({walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
+}
+
+void Game::update(sf::RenderWindow &window) {
+    tm.Update();
+    m_rectGameTime.setPosition({window.getView().getCenter().x-m_rectGameTime.getSize().x/2, window.getView().getCenter().y-window.getView().getSize().y/2});
+    m_textGameTime.setString(getFormatGameTime());
+    m_textGameTime.setPosition({m_rectGameTime.getPosition().x+19, m_rectGameTime.getPosition().y+5});
+}
+
+void Game::draw(sf::RenderWindow &window) {
+    window.draw(m_rectGameTime);
+    window.draw(m_textGameTime);
+}
+
+string Game::getFormatGameTime() {
+    int seconds, hours, minutes;
+    seconds = tm.GetStartedTime()/1000;
+    minutes = seconds / 60;
+    hours = minutes / 60;
+    return (int(minutes%60)<10?"0":"") + to_string(int(minutes%60)) + " : " + (int(seconds%60)<10?"0":"") + to_string(int(seconds%60));
 }

@@ -15,11 +15,18 @@ private:
     sf::Texture m_walkingTexture;
     sf::Texture m_jumpingTexture;
     sf::RectangleShape shape;
+    TimeManager tm;
+    sf::RectangleShape m_rectGameTime;
+    sf::Text m_textGameTime;
+    sf::Font m_font;
 
 public:
     Game();
     bool initTextures();
     Worm initWorm();
+    void update(sf::RenderWindow &);
+    void draw(sf::RenderWindow& window);
+    string getFormatGameTime();
 };
 
 

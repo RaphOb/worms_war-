@@ -90,12 +90,15 @@ int main() {
         // draw
         window.clear(sf::Color(150, 150, 150));
         window.setView(view);
+        game.update(window); // have to be after setView
+
         for (Platform &platform: platforms) {
             platform.draw(window);
             platform.getSpawner().draw(window); // draw monsters
         }
 
         worm.draw(window);
+        game.draw(window);
         window.display();
 
         sf::Event event;
