@@ -32,14 +32,14 @@ Collider Bullet::getCollider() {
 
 void Bullet::update() {
     if (m_orientation == RIGHT) {
-        m_body->setPosition((m_body->getPosition().x + (speed/1.01f)),
-                           (m_body->getPosition().y) + 1.0f * clock1.getElapsedTime().asSeconds());
-        m_body->setRotation(m_body->getRotation() + 0.9f);
+        m_body->setPosition((m_body->getPosition().x + (speed/1.001f)),
+                           (m_body->getPosition().y) + 10.0f * clock1.getElapsedTime().asSeconds());
+        m_body->setRotation(m_body->getRotation() + 1.5f);
 
     } else {
-        m_body->setPosition((m_body->getPosition().x - (speed/1.01f)),
-                           (m_body->getPosition().y) + 1.0f * clock1.getElapsedTime().asSeconds());
-        m_body->setRotation(m_body->getRotation() - 0.9f);
+        m_body->setPosition((m_body->getPosition().x - (speed/1.001f)),
+                           (m_body->getPosition().y) + 10.0f * clock1.getElapsedTime().asSeconds());
+        m_body->setRotation(m_body->getRotation() - 1.5f);
     }
     speed = speed/1.1f;
 }
