@@ -67,7 +67,7 @@ int main() {
             platform->update(frameTime);
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
-                if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
+                if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
                     boom.setPosition(bullet.getPosition().x,bullet.getPosition().y);
                     std::cout<< "la pos de la bullet au momentde boom x : "<<bullet.getPosition().x << std::endl;
                     std::cout<< "la pos de la bullet au momentde boom y : "<<bullet.getPosition().y << std::endl;
@@ -110,9 +110,9 @@ int main() {
         game.update(window); // have to be after setView
 
         window.setView(view);
-        for (Platform &platform: platforms) {
-            platform.draw(window);
-            platform.getSpawner().draw(window); // draw monsters
+        for (auto &platform:  game.getMap().getPlatforms()) {
+            platform->draw(window);
+            platform->getSpawner().draw(window); // draw monsters
         }
 
         scene.draw(window);
