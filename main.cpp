@@ -9,8 +9,10 @@
 #include "src/Game.hh"
 #include "src/Monster/MonsterFactory.hh"
 #include "src/Monster/GroundMonster.hh"
-#include "src/InitBoomer.hh"
 #include "src/Scenes.hh"
+#include "src/Map.hh"
+#include "src/Loader/ResourceLoader.hh"
+#include "src/InitBoomer.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -23,18 +25,22 @@ int main() {
     sf::View view(sf::Vector2f(0.0f, 0.0f), Constant::SCREEN_DIMENSIONS);
     window.setFramerateLimit(60);
 
+    if (!ResourceLoader::getInstance().loadResources()) {
+        exit(-1);
+    }
+
     Game game;
     Worm worm = game.initWorm();
     auto scene = Scenes{};
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
-    std::vector<Platform> platforms;
-    srand (time(NULL));
-    platforms.reserve(3);
-    platforms.emplace_back(sf::Vector2f(3000.f, 50.f), sf::Vector2f(1000.f, 850.f), false, true);
-    platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(600.f, 600.f), true, false);
-    platforms.emplace_back(sf::Vector2f(300.f, 50.f), sf::Vector2f(1000.f, 500.f), false, false);
+    srand (time(nullptr));
+
+
+//    platforms.reserve(2);
+//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
+//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
@@ -57,8 +63,8 @@ int main() {
         sf::Vector2f direction;
         listMonsters = {};
 
-        for (Platform &platform: platforms) {
-            platform.update(frameTime);
+        for (auto &platform: game.getMap().getPlatforms()) {
+            platform->update(frameTime);
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform.getCollider().checkCollision(bullet, direction, 1.0f)) {
@@ -72,12 +78,12 @@ int main() {
 
                 }
             }
-            if (platform.getCollider().checkCollision(playerCollider, direction, 1.0f)) {
+            if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
-                platform.onCollision(direction, true);
+                platform->onCollision(direction);
             }
 
-            for (Monster* m : platform.getSpawner().getListMonsters()) {
+            for (Monster* m : platform->getSpawner().getListMonsters()) {
                 listMonsters.push_back(m);
             }
 
@@ -86,8 +92,8 @@ int main() {
         for (Monster* m: listMonsters) {
             Collider monsterCollider = m->getCollider();
             sf::Vector2f monsterDirection;
-            for (Platform &p: platforms) {
-                if (p.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
+            for (auto &p: game.getMap().getPlatforms()) {
+                if (p->getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
                     m->onCollision(direction);
                 }
                 if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
@@ -100,6 +106,8 @@ int main() {
 
 
         // draw
+        window.clear(sf::Color(150, 150, 150));
+        game.update(window); // have to be after setView
 
         window.setView(view);
         for (Platform &platform: platforms) {
@@ -109,6 +117,7 @@ int main() {
 
         scene.draw(window);
         worm.draw(window);
+        game.draw(window);
         window.display();
         scene.clean();
 

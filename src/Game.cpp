@@ -6,27 +6,22 @@
 #include "Game.hh"
 #include "Animation.hh"
 #include "AnimatedSprite.hh"
+#include "Loader/ResourceLoader.hh"
 
 Game::Game() {
-    shape = sf::RectangleShape();
-    if (!initTextures())
-        exit(-1);
+    m_map = Map();
+    m_map.initMap();
+    tm.Start();
+    m_rectGameTime.setSize({100, 30});
+    m_rectGameTime.setFillColor(sf::Color(200, 200, 200));
+    m_rectGameTime.setOutlineColor(sf::Color::Black);
+    m_rectGameTime.setOutlineThickness(2);
+
+    m_textGameTime.setFont(ResourceLoader::getInstance().getFont());
+    m_textGameTime.setOutlineColor(sf::Color::Black);
+    m_textGameTime.setOutlineThickness(2);
+    m_textGameTime.setCharacterSize(20);
     initWorm();
-}
-
-bool Game::initTextures() {
-    if (!m_walkingTexture.loadFromFile("../resources/worms_character2.png")) {
-        std::cout << "Failed to load worms spritesheet!" << std::endl;
-        return false;
-    }
-
-    sf::Texture jumpingTexture;
-    if (!m_jumpingTexture.loadFromFile("../resources/worms_jump.png")) {
-        std::cout << "Failed to load worms jumps" << std::endl;
-        return false;
-    }
-
-    return true;
 }
 
 Worm Game::initWorm() {
@@ -56,11 +51,35 @@ Worm Game::initWorm() {
             sf::IntRect(84, 52, 28, 52)
     };
 
-    Animation walkingAnimationLeft = Animation(left, m_walkingTexture);
-    Animation walkingAnimationRight = Animation(right, m_walkingTexture);
-    Animation jumpingAnimationLeft = Animation(jumpLeft, m_jumpingTexture);
-    Animation jumpingAnimationRight = Animation(jumpRight, m_jumpingTexture);
+    Animation walkingAnimationLeft = Animation(left, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
+    Animation walkingAnimationRight = Animation(right, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
+    Animation jumpingAnimationLeft = Animation(jumpLeft, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
+    Animation jumpingAnimationRight = Animation(jumpRight, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
 
 
     return Worm({walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
+}
+
+void Game::update(sf::RenderWindow &window) {
+    tm.Update();
+    m_rectGameTime.setPosition({window.getView().getCenter().x-m_rectGameTime.getSize().x/2, window.getView().getCenter().y-window.getView().getSize().y/2});
+    m_textGameTime.setString(getFormatGameTime());
+    m_textGameTime.setPosition({m_rectGameTime.getPosition().x+19, m_rectGameTime.getPosition().y+5});
+}
+
+void Game::draw(sf::RenderWindow &window) {
+    window.draw(m_rectGameTime);
+    window.draw(m_textGameTime);
+}
+
+string Game::getFormatGameTime() {
+    int seconds, hours, minutes;
+    seconds = tm.GetStartedTime()/1000;
+    minutes = seconds / 60;
+    hours = minutes / 60;
+    return (int(minutes%60)<10?"0":"") + to_string(int(minutes%60)) + " : " + (int(seconds%60)<10?"0":"") + to_string(int(seconds%60));
+}
+
+Map Game::getMap() {
+    return m_map;
 }

@@ -13,11 +13,8 @@ class MonsterFactory {
 public:
     MonsterFactory();
     Monster* Create(const std::string&, const sf::Vector2f&);
-    bool initTextures();
 
 private:
-    sf::Texture m_walkingTexture;
-    sf::Texture m_jumpingTexture;
 };
 
 #endif //LITTLEBIGGAME_MONSTERFACTORY_HH

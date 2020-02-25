@@ -7,25 +7,11 @@
 #include "../Character.hh"
 #include "GroundMonster.hh"
 #include "SkyMonster.hh"
+#include "../Loader/ResourceLoader.hh"
 
 using namespace std;
 
 MonsterFactory::MonsterFactory() {
-    initTextures();
-}
-
-bool MonsterFactory::initTextures() {
-    if (!m_walkingTexture.loadFromFile("../resources/ground_monster.png")) {
-        std::cout << "Failed to load monsters spritesheet!" << std::endl;
-        return false;
-    }
-
-    if (!m_jumpingTexture.loadFromFile("../resources/ground_monster.png")) {
-        std::cout << "Failed to load monster jumps" << std::endl;
-        return false;
-    }
-
-    return true;
 }
 
 Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& position) {
@@ -55,10 +41,10 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
                 sf::IntRect(88, 54, 44, 25)
         };
 
-        Animation walkingAnimationLeftMonster = Animation(leftMonster, m_walkingTexture);
-        Animation walkingAnimationRightMonster = Animation(rightMonster, m_walkingTexture);
-        Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, m_jumpingTexture);
-        Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, m_jumpingTexture);
+        Animation walkingAnimationLeftMonster = Animation(leftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation walkingAnimationRightMonster = Animation(rightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
 
         return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
     } else if (name == "SkyMonster") {
@@ -86,10 +72,10 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
                 sf::IntRect(88, 54, 44, 25)
         };
 
-        Animation walkingAnimationLeftMonster = Animation(leftMonster, m_walkingTexture);
-        Animation walkingAnimationRightMonster = Animation(rightMonster, m_walkingTexture);
-        Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, m_jumpingTexture);
-        Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, m_jumpingTexture);
+        Animation walkingAnimationLeftMonster = Animation(leftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation walkingAnimationRightMonster = Animation(rightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
+        Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
 
         return new SkyMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
     } else {
