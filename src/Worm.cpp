@@ -30,7 +30,6 @@ void Worm::draw(sf::RenderWindow &window) {
     }
     window.draw(sprite);
     window.draw(m_animatedSprite);
-    std::cout<< " il est la le worm" << m_body->getPosition().x <<std::endl;
 }
 
 void Worm::move(Direction d) {
