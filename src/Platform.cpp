@@ -141,3 +141,11 @@ void Platform::resetOnWalk() {
         m_body->setTexture(&m_bodyTextureDefault);
     }
 }
+
+sf::Vector2f Platform::getPos() {
+    return m_body->getPosition();
+}
+
+sf::Vector2f Platform::getSize() {
+    return m_body->getSize();
+}

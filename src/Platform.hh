@@ -29,6 +29,8 @@ public:
     unsigned int getPercentCurse();
     void initTextures(sf::Vector2f, sf::Vector2f);
     void resetOnWalk();
+    sf::Vector2f getPos();
+    sf::Vector2f getSize();
 
 private:
     int m_countDownToSpawner;

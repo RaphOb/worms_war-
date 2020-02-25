@@ -8,6 +8,7 @@
 
 #include <vector>
 #include "Platform.hh"
+#include "Constant.hh"
 
 class Map {
 public:
@@ -15,8 +16,14 @@ public:
     void initMap();
     void addPlatform(Platform*  p);
     std::vector<Platform*> getPlatforms();
+    void initGrid();
+    void displayGrid();
+
 private:
     std::vector<Platform*> platforms;
+    int** m_grid;
+    int m_rows;
+    int m_cols;
 };
 
 
