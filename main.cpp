@@ -69,9 +69,6 @@ int main() {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
                     boom.setPosition(bullet.getPosition().x,bullet.getPosition().y);
-                    std::cout<< "la pos de la bullet au momentde boom x : "<<bullet.getPosition().x << std::endl;
-                    std::cout<< "la pos de la bullet au momentde boom y : "<<bullet.getPosition().y << std::endl;
-                    std::cout<< "la pos de la bullet au momentde boom worm y : "<<worm.getPosition().y << std::endl;
                     scene.add(std::make_unique<Boom>(boom));
                     worm.hasshot = false;
                     worm.getBullet().onCollision(direction);

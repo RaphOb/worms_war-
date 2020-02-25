@@ -31,8 +31,6 @@ void Boom::loopAnimmation(sf::RenderWindow &window,sf::Time frameTime) {
 
 
 void Boom::draw(sf::RenderWindow &window) {
-    std::cout << "DRAW dans le update et la pos est y : "  << m_body->getPosition().y<<std::endl;
-    std::cout << " DRAW dans le update et la pos est x : "  << m_body->getPosition().x<<std::endl;
     window.draw(*m_body);
 
 }
@@ -48,9 +46,6 @@ void Boom::update(sf::Time frameTime) {
         destroy = true;
     }
 //    std::cout << "Current: "  << m_currentAnimation->getSize()<<std::endl;
-    std::cout << "dans le update et la pos est y : "  << m_body->getPosition().y<<std::endl;
-    std::cout << "dans le update et la pos est x : "  << m_body->getPosition().x<<std::endl;
-    std::cout << "dans le update et la pos est x : "  << m_body->getSize().x<<std::endl;
 
 }
 
