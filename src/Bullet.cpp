@@ -61,4 +61,13 @@ void Bullet::onCollision(sf::Vector2f direction) {
 
 }
 
+sf::Vector2f Bullet::getposition() {
+    return m_body->getPosition();
+}
+
+void Bullet::setPosition(sf::Vector2f pos) {
+    m_body->setPosition(pos);
+
+}
+
 Bullet::~Bullet() = default;
