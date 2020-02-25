@@ -9,7 +9,10 @@
 #include "src/Game.hh"
 #include "src/Monster/MonsterFactory.hh"
 #include "src/Monster/GroundMonster.hh"
+#include "src/Scenes.hh"
 #include "src/Map.hh"
+#include "src/Loader/ResourceLoader.hh"
+#include "src/InitBoomer.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -22,19 +25,28 @@ int main() {
     sf::View view(sf::Vector2f(0.0f, 0.0f), Constant::SCREEN_DIMENSIONS);
     window.setFramerateLimit(60);
 
+    if (!ResourceLoader::getInstance().loadResources()) {
+        exit(-1);
+    }
+
     Game game;
     Worm worm = game.initWorm();
+    auto scene = Scenes{};
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
-    srand (time(NULL));
+    srand (time(nullptr));
+
+
 //    platforms.reserve(2);
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
     std::vector<Monster*> listMonsters;
-
+    InitBoomer initboomer = InitBoomer();
+    Boom boom =  initboomer.createBoom(sf::Vector2f(0.f,0));
     while (window.isOpen()) {
+        window.clear(sf::Color(150, 150, 150));
 
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
@@ -43,6 +55,8 @@ int main() {
         }
 
         worm.update(frameTime);
+
+        scene.update(frameTime);
 
         Collider playerCollider = worm.getCollider();
 
@@ -54,13 +68,16 @@ int main() {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
+                    boom.setPosition(bullet.getPosition().x,bullet.getPosition().y);
+                    scene.add(std::make_unique<Boom>(boom));
                     worm.hasshot = false;
                     worm.getBullet().onCollision(direction);
+
                 }
             }
             if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
-                platform->onCollision(direction, true);
+                platform->onCollision(direction);
             }
 
             for (Monster* m : platform->getSpawner().getListMonsters()) {
@@ -88,15 +105,18 @@ int main() {
         // draw
         window.clear(sf::Color(150, 150, 150));
         game.update(window); // have to be after setView
-//        window.setView(view);
-        for (auto &platform: game.getMap().getPlatforms()) {
+
+        window.setView(view);
+        for (auto &platform:  game.getMap().getPlatforms()) {
             platform->draw(window);
             platform->getSpawner().draw(window); // draw monsters
         }
 
+        scene.draw(window);
         worm.draw(window);
         game.draw(window);
         window.display();
+        scene.clean();
 
         sf::Event event;
         while (window.pollEvent(event)) {

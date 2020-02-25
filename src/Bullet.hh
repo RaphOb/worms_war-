@@ -24,12 +24,12 @@ public:
     void update(sf::Time frameTime) override ;
     std::string Serialize() override ;
     void  onCollision(sf::Vector2f direction) override;
+    sf::Vector2f getposition();
+    void setPosition(sf::Vector2f);
 
 
 private:
 //    sf::RectangleShape* body;
-    sf::Texture texture;
-    sf::Sprite sprite;
     sf::Clock clock1;
     float speed =  35;
     int m_orientation;

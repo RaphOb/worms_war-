@@ -13,10 +13,12 @@ public:
 	virtual void draw(sf::RenderWindow& window) = 0;
 	virtual void update(sf::Time frameTime) = 0;
 	virtual void onCollision(sf::Vector2f direction) = 0;
+	inline bool isDestroy() const {return destroy;};
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 protected:
     sf::RectangleShape* m_body;
+    bool destroy{false};
 };

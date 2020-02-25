@@ -6,6 +6,7 @@
 #include "Game.hh"
 #include "Animation.hh"
 #include "AnimatedSprite.hh"
+#include "Loader/ResourceLoader.hh"
 
 Game::Game() {
     m_map = Map();
@@ -16,33 +17,11 @@ Game::Game() {
     m_rectGameTime.setOutlineColor(sf::Color::Black);
     m_rectGameTime.setOutlineThickness(2);
 
-    if (!m_font.loadFromFile("../resources/fonts/arial.ttf"))
-    {
-        std::cout << "Failed to load game time font!" << std::endl;
-    }
-    m_textGameTime.setFont(m_font);
+    m_textGameTime.setFont(ResourceLoader::getInstance().getFont());
     m_textGameTime.setOutlineColor(sf::Color::Black);
     m_textGameTime.setOutlineThickness(2);
     m_textGameTime.setCharacterSize(20);
-    shape = sf::RectangleShape();
-    if (!initTextures())
-        exit(-1);
     initWorm();
-}
-
-bool Game::initTextures() {
-    if (!m_walkingTexture.loadFromFile("../resources/worms_character2.png")) {
-        std::cout << "Failed to load worms spritesheet!" << std::endl;
-        return false;
-    }
-
-    sf::Texture jumpingTexture;
-    if (!m_jumpingTexture.loadFromFile("../resources/worms_jump.png")) {
-        std::cout << "Failed to load worms jumps" << std::endl;
-        return false;
-    }
-
-    return true;
 }
 
 Worm Game::initWorm() {
@@ -72,10 +51,10 @@ Worm Game::initWorm() {
             sf::IntRect(84, 52, 28, 52)
     };
 
-    Animation walkingAnimationLeft = Animation(left, m_walkingTexture);
-    Animation walkingAnimationRight = Animation(right, m_walkingTexture);
-    Animation jumpingAnimationLeft = Animation(jumpLeft, m_jumpingTexture);
-    Animation jumpingAnimationRight = Animation(jumpRight, m_jumpingTexture);
+    Animation walkingAnimationLeft = Animation(left, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
+    Animation walkingAnimationRight = Animation(right, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
+    Animation jumpingAnimationLeft = Animation(jumpLeft, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
+    Animation jumpingAnimationRight = Animation(jumpRight, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
 
 
     return Worm({walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
