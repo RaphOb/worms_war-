@@ -10,6 +10,7 @@
 #include "src/Monster/MonsterFactory.hh"
 #include "src/Monster/GroundMonster.hh"
 #include "src/Map.hh"
+#include "src/Loader/ResourceLoader.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -22,12 +23,18 @@ int main() {
     sf::View view(sf::Vector2f(0.0f, 0.0f), Constant::SCREEN_DIMENSIONS);
     window.setFramerateLimit(60);
 
+    if (!ResourceLoader::getInstance().loadResources()) {
+        exit(-1);
+    }
+
     Game game;
     Worm worm = game.initWorm();
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
-    srand (time(NULL));
+    srand (time(nullptr));
+
+
 //    platforms.reserve(2);
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
@@ -60,7 +67,7 @@ int main() {
             }
             if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
                 worm.onCollision(direction);
-                platform->onCollision(direction, true);
+                platform->onCollision(direction);
             }
 
             for (Monster* m : platform->getSpawner().getListMonsters()) {

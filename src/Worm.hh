@@ -16,17 +16,7 @@ class Worm : public Character {
 private:
 
     sf::Sprite sprite;
-    sf::Clock lastShot{};
     Bullet* bullet;
-
-    sf::Texture bazookaTexture;
-
-    int textureLoad() {
-        if (!bazookaTexture.loadFromFile("../resources/bazooka.png")) {
-            std::cout << "Failed to load worms spritesheet!" << std::endl;
-            return -1;
-        }
-    };
 
 public:
     bool hasshot = false;
