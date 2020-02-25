@@ -9,8 +9,8 @@
 void Map::initMap() {
     platforms.reserve(Constant::NB_PLATFORMS);
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 50.f), sf::Vector2f(Constant::VIEW_WIDTH/2, 900.f), false, true));
-    platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 225.f), false, false));
-    /*platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 200.f), true, false));
+    platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 200.f), false, false));
+    platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 200.f), true, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(450.f, 300.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - 450.f, 300.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM,  400.f), true, false));
@@ -24,9 +24,9 @@ void Map::initMap() {
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - 450.f, 700.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 800.f), true, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 800.f), false, false));
-*/
+
     initGrid();
-    displayGrid();
+    //displayGrid();
 }
 
 void Map::addPlatform(Platform* p) {

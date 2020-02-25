@@ -50,12 +50,12 @@ void Platform::initText(sf::Vector2f pos) {
 }
 
 void Platform::initTextureRect(sf::Vector2f size) {
-    if (size.x != Constant::BLOCK_SIZE) {
-        m_body->setTextureRect(sf::IntRect(0, 0, size.x, 50));
-    } else if (size.y != Constant::BLOCK_SIZE) {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, size.y));
+    if (size.x != Constant::BLOCK_SIZE && size.y == Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, Constant::BLOCK_SIZE));
+    } else if (size.y != Constant::BLOCK_SIZE && size.x == Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, Constant::BLOCK_SIZE, size.y));
     } else {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, 50));
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, size.y));
     }
 }
 
