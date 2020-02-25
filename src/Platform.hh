@@ -27,7 +27,8 @@ public:
     void onCollision(sf::Vector2f direction) override;
     void onCollision(sf::Vector2f direction, bool);
     unsigned int getPercentCurse();
-    void initTextures(sf::Vector2f, sf::Vector2f);
+    void initTextureRect(sf::Vector2f size);
+    void initText(sf::Vector2f);
     void resetOnWalk();
 
 private:
@@ -37,10 +38,6 @@ private:
     bool m_isSpawner;
     bool m_isWall;
     TimeManager tm;
-    sf::Texture m_bodyTextureDefault;
-    sf::Texture m_bodyTextureCursed;
-    sf::Texture m_bodyTextureSpawner;
-    sf::Font m_font;
     sf::Text* m_text;
 
 };

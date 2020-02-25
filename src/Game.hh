@@ -12,13 +12,9 @@
 
 class Game {
 private:
-    sf::Texture m_walkingTexture;
-    sf::Texture m_jumpingTexture;
-    sf::RectangleShape shape;
 
 public:
     Game();
-    bool initTextures();
     Worm initWorm();
 };
 

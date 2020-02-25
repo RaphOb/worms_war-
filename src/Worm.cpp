@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Worm.hh"
 #include "Constant.hh"
+#include "Loader/ResourceLoader.hh"
 
 
 Worm::Worm(std::vector<Animation> animations) :
@@ -15,8 +16,7 @@ Worm::Worm(std::vector<Animation> animations) :
             sf::Vector2f(0.f, 0.f),
             200.f,
             300.f) {
-    Worm::textureLoad();
-    sprite.setTexture(bazookaTexture);
+    sprite.setTexture(ResourceLoader::getInstance().getTexture(BAZOOKA_TEXTURE));
     sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
 
     m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);

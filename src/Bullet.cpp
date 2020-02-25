@@ -7,16 +7,13 @@
 #include <math.h>
 #include "Bullet.hh"
 #include "Direction.hh"
+#include "Loader/ResourceLoader.hh"
 
 void Bullet::fireBullet(sf::Vector2f position) {
-    std::cout << "bidule" << std::endl;
-    m_body->setTexture(&texture);
-    std::cout << "bidule" << std::endl;
     if (m_orientation == RIGHT) {
         m_body->setTextureRect(sf::IntRect(0, 0, 11, 8));
     } else {
         m_body->setTextureRect(sf::IntRect(0, 8, 11, 8));
-
     }
     std::cout << "pos x" << position.x << "pos y" << position.y << std::endl;
     m_body->setPosition((position.x - 10), (position.y - 7));
@@ -25,11 +22,8 @@ void Bullet::fireBullet(sf::Vector2f position) {
 }
 
 Bullet::Bullet(int orientation): AbstractEntity() {
-    if (!texture.loadFromFile("../resources/bullet.png")) {
-        std::cout << "Failed to load worms spritesheet!" << std::endl;
-    }
     m_body->setOrigin(5, 5);
-    m_body->setTexture(nullptr);
+    m_body->setTexture(&ResourceLoader::getInstance().getTexture(BULLET_TEXTURE));
     m_body->setSize(sf::Vector2f(20.f, 15.f));
     m_orientation = orientation;
     std::cout << " bullet construit" << std::endl;
