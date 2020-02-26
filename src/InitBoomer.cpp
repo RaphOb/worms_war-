@@ -53,5 +53,5 @@ InitBoomer::InitBoomer() {
 }
 
 Boom InitBoomer::createBoom(sf::Vector2f pos) {
-    return Boom(animations, pos, AnimatedSprite(sf::seconds(0.1), true, false));
+    return Boom(animations, pos, AnimatedSprite(sf::seconds(0.05), true, false));
 }

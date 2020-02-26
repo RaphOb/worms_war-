@@ -20,12 +20,12 @@ private:
     Animation *m_currentAnimation{};
     AnimatedSprite m_animatedSprite;
     float age{0};
-    static constexpr float LIFE_TIME{2.5f};
+    static constexpr float LIFE_TIME{1.25f};
 
 public:
     void makeBoom(sf::Vector2f);
 
-    Boom(const Boom &other);
+    Boom(const Boom &other, sf::Vector2f);
 
     Boom(std::vector<Animation>, sf::Vector2f, AnimatedSprite);
 
