@@ -50,12 +50,12 @@ void Platform::initText(sf::Vector2f pos) {
 }
 
 void Platform::initTextureRect(sf::Vector2f size) {
-    if (size.x != Constant::BLOCK_SIZE) {
-        m_body->setTextureRect(sf::IntRect(0, 0, size.x, 50));
-    } else if (size.y != Constant::BLOCK_SIZE) {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, size.y));
+    if (size.x != Constant::BLOCK_SIZE && size.y == Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, Constant::BLOCK_SIZE));
+    } else if (size.y != Constant::BLOCK_SIZE && size.x == Constant::BLOCK_SIZE) {
+        m_body->setTextureRect(sf::IntRect(0, 0, Constant::BLOCK_SIZE, size.y));
     } else {
-        m_body->setTextureRect(sf::IntRect(0, 0, 50, 50));
+        m_body->setTextureRect(sf::IntRect(0, 0, size.x, size.y));
     }
 }
 
@@ -132,4 +132,12 @@ void Platform::resetOnWalk() {
         m_text->setFillColor(sf::Color(0, 255, 0));
         m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_DEFAULT_TEXTURE));
     }
+}
+
+sf::Vector2f Platform::getPos() {
+    return m_body->getPosition();
+}
+
+sf::Vector2f Platform::getSize() {
+    return m_body->getSize();
 }
