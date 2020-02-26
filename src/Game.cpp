@@ -21,6 +21,12 @@ Game::Game() {
     m_textGameTime.setOutlineColor(sf::Color::Black);
     m_textGameTime.setOutlineThickness(2);
     m_textGameTime.setCharacterSize(20);
+
+    m_textFPS.setFont(ResourceLoader::getInstance().getFont());
+    m_textFPS.setOutlineColor(sf::Color::Black);
+    m_textFPS.setOutlineThickness(2);
+    m_textFPS.setCharacterSize(30);
+    m_textFPS.setPosition(5.f, 0.f);
     initWorm();
 }
 
@@ -68,11 +74,13 @@ void Game::update(sf::RenderWindow &window) {
                                 window.getView().getCenter().y - window.getView().getSize().y / 2});
     m_textGameTime.setString(getFormatGameTime());
     m_textGameTime.setPosition({m_rectGameTime.getPosition().x + 19, m_rectGameTime.getPosition().y + 5});
+
 }
 
 void Game::draw(sf::RenderWindow &window) {
     window.draw(m_rectGameTime);
     window.draw(m_textGameTime);
+    window.draw(m_textFPS);
 }
 
 string Game::getFormatGameTime() {
@@ -86,4 +94,8 @@ string Game::getFormatGameTime() {
 
 Map Game::getMap() {
     return m_map;
+}
+
+void Game::setFPS(int fps) {
+    m_textFPS.setString(std::to_string(fps));
 }

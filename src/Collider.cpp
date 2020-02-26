@@ -44,13 +44,13 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
         if (intersectX > intersectY) {
             // Push on the x abscissa
             if (deltaX > 0.0f) {
-                std::cout << "pushing left" << std::endl;
+//                std::cout << "pushing left" << std::endl;
                 move(intersectX * (1.0f - push), 0.0f);
                 other.move(-intersectX * push, 0.0f);
                 direction.x = 1.0f;
                 direction.y = 0.0f;
             } else {
-                std::cout << "pushing right" << std::endl;
+//                std::cout << "pushing right" << std::endl;
                 move(-intersectX * (1.0f - push), 0.0f);
                 other.move(intersectX * push, 0.0f);
                 direction.x = -1.0f;

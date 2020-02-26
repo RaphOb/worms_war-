@@ -16,6 +16,7 @@ private:
     TimeManager tm;
     sf::RectangleShape m_rectGameTime;
     sf::Text m_textGameTime;
+    sf::Text m_textFPS;
     Map m_map;
 
 public:
@@ -25,6 +26,8 @@ public:
     void draw(sf::RenderWindow& window);
     string getFormatGameTime();
     Map getMap();
+
+    void setFPS(int fps);
 };
 
 

@@ -35,6 +35,12 @@ int main() {
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
+    sf::Text textNbMonster;
+    textNbMonster.setFont(ResourceLoader::getInstance().getFont());
+    textNbMonster.setOutlineColor(sf::Color::Black);
+    textNbMonster.setOutlineThickness(2.f);
+    textNbMonster.setCharacterSize(20);
+    textNbMonster.setPosition(Constant::VIEW_WIDTH - 50, 0.f);
     srand (time(nullptr));
 
 
@@ -48,6 +54,7 @@ int main() {
 
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
+        game.setFPS(int(1 / frameTime.asSeconds()));
         if (frameTime.asSeconds() > 1.0f / 60.0f) {
             frameTime = sf::seconds(1.0f / 60.0f);
         }
@@ -55,6 +62,8 @@ int main() {
         worm.update(frameTime);
 
         scene.update(frameTime);
+
+        textNbMonster.setString(std::to_string(listMonsters.size()));
 
         Collider playerCollider = worm.getCollider();
 
@@ -112,6 +121,7 @@ int main() {
             platform->getSpawner().draw(window); // draw monsters
         }
 
+        window.draw(textNbMonster);
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
