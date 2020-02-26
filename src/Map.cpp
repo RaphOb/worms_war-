@@ -30,8 +30,8 @@ void Map::initMap() {
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(0.f, Constant::VIEW_HEIGHT / 2.f), false, true));
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(Constant::VIEW_WIDTH, Constant::VIEW_HEIGHT / 2.f), false, true));
 
-//    initGrid();
-    //displayGrid();
+    initGrid();
+    displayGrid();
 }
 
 void Map::addPlatform(Platform* p) {
@@ -77,14 +77,14 @@ void Map::initGrid() {
 
         // Determination pour les x (la largeur)
         for (int h=(int)floor(posToTest.y) ; h<(int)ceil(posToTest.y + ceil(platform->getSize().y/Constant::BLOCK_SIZE)) ; h++) {
-            if (h<m_rows) {
+            if (h<m_rows && h>=0) {
                 targetY.push_back(h);
             }
         }
 
         // Determination pour les y (la hauteur)
         for (int l=(int)floor(posToTest.x) ; l<(int)ceil(posToTest.x + ceil(platform->getSize().x/Constant::BLOCK_SIZE)) ; l++) {
-            if (l<m_cols) {
+            if (l<m_cols && l>=0) {
                 targetX.push_back(l);
             }
         }
