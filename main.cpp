@@ -31,7 +31,7 @@ int main() {
 
     Game game;
     Worm worm = game.initWorm();
-    auto scene = Scenes{};
+    Scenes scene;
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
@@ -46,7 +46,6 @@ int main() {
     InitBoomer initboomer = InitBoomer();
     Boom boom =  initboomer.createBoom(sf::Vector2f(0.f,0));
     while (window.isOpen()) {
-        window.clear(sf::Color(150, 150, 150));
 
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
@@ -91,32 +90,35 @@ int main() {
             sf::Vector2f monsterDirection;
             for (auto &p: game.getMap().getPlatforms()) {
                 if (p->getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
-                    m->onCollision(direction);
+                    m->onCollision(monsterDirection);
                 }
                 if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
-                    m->onCollision(direction);
+                    m->onCollision(monsterDirection);
                 }
             }
         }
 
-        view.setCenter(worm.getPosition());
 
+        game.update(window); // have to be after setView
 
         // draw
         window.clear(sf::Color(150, 150, 150));
-        game.update(window); // have to be after setView
 
-        window.setView(view);
+        // c'est ça qui centre le vue sur le worm
+//        view.setCenter(worm.getPosition());
+//        window.setView(view);
+
+
         for (auto &platform:  game.getMap().getPlatforms()) {
             platform->draw(window);
             platform->getSpawner().draw(window); // draw monsters
         }
 
-        scene.draw(window);
+//        scene.draw(window);
         worm.draw(window);
         game.draw(window);
         window.display();
-        scene.clean();
+//        scene.clean();
 
         sf::Event event;
         while (window.pollEvent(event)) {

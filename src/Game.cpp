@@ -53,8 +53,10 @@ Worm Game::initWorm() {
 
     Animation walkingAnimationLeft = Animation(left, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
     Animation walkingAnimationRight = Animation(right, ResourceLoader::getInstance().getTexture(WORM_WALKING_TEXTURE));
-    Animation jumpingAnimationLeft = Animation(jumpLeft, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
-    Animation jumpingAnimationRight = Animation(jumpRight, ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
+    Animation jumpingAnimationLeft = Animation(jumpLeft,
+                                               ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
+    Animation jumpingAnimationRight = Animation(jumpRight,
+                                                ResourceLoader::getInstance().getTexture(WORM_JUMPING_TEXTURE));
 
 
     return Worm({walkingAnimationRight, walkingAnimationLeft, jumpingAnimationLeft, jumpingAnimationRight});
@@ -62,9 +64,10 @@ Worm Game::initWorm() {
 
 void Game::update(sf::RenderWindow &window) {
     tm.Update();
-    m_rectGameTime.setPosition({window.getView().getCenter().x-m_rectGameTime.getSize().x/2, window.getView().getCenter().y-window.getView().getSize().y/2});
+    m_rectGameTime.setPosition({window.getView().getCenter().x - m_rectGameTime.getSize().x / 2,
+                                window.getView().getCenter().y - window.getView().getSize().y / 2});
     m_textGameTime.setString(getFormatGameTime());
-    m_textGameTime.setPosition({m_rectGameTime.getPosition().x+19, m_rectGameTime.getPosition().y+5});
+    m_textGameTime.setPosition({m_rectGameTime.getPosition().x + 19, m_rectGameTime.getPosition().y + 5});
 }
 
 void Game::draw(sf::RenderWindow &window) {
@@ -74,10 +77,11 @@ void Game::draw(sf::RenderWindow &window) {
 
 string Game::getFormatGameTime() {
     int seconds, hours, minutes;
-    seconds = tm.GetStartedTime()/1000;
+    seconds = tm.GetStartedTime() / 1000;
     minutes = seconds / 60;
     hours = minutes / 60;
-    return (int(minutes%60)<10?"0":"") + to_string(int(minutes%60)) + " : " + (int(seconds%60)<10?"0":"") + to_string(int(seconds%60));
+    return (int(minutes % 60) < 10 ? "0" : "") + to_string(int(minutes % 60)) + " : " +
+           (int(seconds % 60) < 10 ? "0" : "") + to_string(int(seconds % 60));
 }
 
 Map Game::getMap() {
