@@ -36,7 +36,7 @@ void Boom::draw(sf::RenderWindow &window) {
 }
 
 void Boom::update(sf::Time frameTime) {
-    m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 1.1f);
+    m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 1.12f);
     age += frameTime.asSeconds();
     if ( age < LIFE_TIME) {
     m_animatedSprite.play(*m_currentAnimation);
@@ -63,7 +63,7 @@ void Boom::setPosition(float x, float y) {
 
 }
 
-Boom::Boom(const Boom &other)  : m_animations(other.m_animations),m_animatedSprite(other.m_animatedSprite),AbstractEntity(other) {
+Boom::Boom(const Boom &other, sf::Vector2f pos)  : m_animations(other.m_animations),m_animatedSprite(other.m_animatedSprite),AbstractEntity(other) {
     m_currentAnimation = &m_animations[0];
     std::cout << "COPY du BOOM"<< std::endl;
 

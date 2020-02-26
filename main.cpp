@@ -44,7 +44,6 @@ int main() {
 
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
-    Boom boom =  initboomer.createBoom(sf::Vector2f(0.f,0));
     while (window.isOpen()) {
 
         frameTime = frameClock.restart();
@@ -67,8 +66,7 @@ int main() {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
-                    boom.setPosition(bullet.getPosition().x,bullet.getPosition().y);
-                    scene.add(std::make_unique<Boom>(boom));
+                    scene.add(std::make_unique<Boom>(initboomer.createBoom(bullet.getPosition())));
                     worm.hasshot = false;
                     worm.getBullet().onCollision(direction);
 
