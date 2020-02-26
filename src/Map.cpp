@@ -30,8 +30,8 @@ void Map::initMap() {
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(0.f, Constant::VIEW_HEIGHT / 2.f), false, true));
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(Constant::VIEW_WIDTH, Constant::VIEW_HEIGHT / 2.f), false, true));
 
-    initGrid();
-    displayGrid();
+    //initGrid();
+    //displayGrid();
 }
 
 void Map::addPlatform(Platform* p) {
