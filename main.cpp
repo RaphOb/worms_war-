@@ -31,7 +31,7 @@ int main() {
 
     Game game;
     Worm worm = game.initWorm();
-    auto scene = Scenes{};
+    auto scene = Scenes();
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     sf::Time frameTime;
@@ -44,7 +44,6 @@ int main() {
 
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
-    Boom boom =  initboomer.createBoom(sf::Vector2f(0.f,0));
     while (window.isOpen()) {
         window.clear(sf::Color(150, 150, 150));
 
@@ -68,8 +67,7 @@ int main() {
             if (worm.hasshot) {
                 Collider bullet = worm.getBullet().getCollider();
                 if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
-                    boom.setPosition(bullet.getPosition().x,bullet.getPosition().y);
-                    scene.add(std::make_unique<Boom>(boom));
+                    scene.add(std::make_unique<Boom>(initboomer.createBoom(bullet.getPosition())));
                     worm.hasshot = false;
                     worm.getBullet().onCollision(direction);
 
