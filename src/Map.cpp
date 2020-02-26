@@ -8,22 +8,27 @@
 
 void Map::initMap() {
     platforms.reserve(Constant::NB_PLATFORMS);
-    platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 50.f), sf::Vector2f(Constant::VIEW_WIDTH/2, 900.f), false, true));
+    // Ground
+    platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 50.f), sf::Vector2f(Constant::VIEW_WIDTH / 2.f, 900.f), false, true));
+
+    // Platforms
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 200.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 200.f), true, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(450.f, 300.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - 450.f, 300.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM,  400.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 400.f), false, false));
-
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH / 2, 500.f), false,false));
-
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 600.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 600.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(450.f, 700.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - 450.f, 700.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 800.f), false, false));
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::VIEW_WIDTH - Constant::HALF_SIZE_PLATFORM, 800.f), false, false));
+
+    // Wall
+    platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(0.f, Constant::VIEW_HEIGHT / 2.f), false, true));
+    platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(Constant::VIEW_WIDTH, Constant::VIEW_HEIGHT / 2.f), false, true));
 
 //    initGrid();
     //displayGrid();
