@@ -39,12 +39,16 @@ void Worm::move(Direction d) {
         m_velocity.x += m_speed;
         if (m_canJump)
             m_currentAnimation = &m_animations[RIGHT];
+        else
+            m_currentAnimation = &m_animations[3];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
         sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
         m_velocity.x -= m_speed;
         if (m_canJump)
             m_currentAnimation = &m_animations[LEFT];
+        else
+            m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
     } else if (d == JUMP) {
         m_canJump = false;
