@@ -112,11 +112,11 @@ int main() {
             platform->getSpawner().draw(window); // draw monsters
         }
 
-//        scene.draw(window);
+        scene.draw(window);
         worm.draw(window);
         game.draw(window);
         window.display();
-//        scene.clean();
+        scene.clean();
 
         sf::Event event;
         while (window.pollEvent(event)) {
