@@ -16,7 +16,6 @@ Boom::Boom(std::vector<Animation> animations, sf::Vector2f pos, AnimatedSprite a
     m_currentAnimation = &m_animations[0];
 //    m_body->setSize(sf::Vector2f(10.f,10.f));
     m_body->setPosition(pos);
-    std::cout << "construction du BOOM"<< std::endl;
 
 }
 
@@ -42,7 +41,6 @@ void Boom::update(sf::Time frameTime) {
     m_animatedSprite.play(*m_currentAnimation);
     m_animatedSprite.update(frameTime);
     } else {
-        std::cout<< "dans le destroy "<< std::endl;
         destroy = true;
     }
 //    std::cout << "Current: "  << m_currentAnimation->getSize()<<std::endl;

@@ -43,7 +43,6 @@ InitBoomer::InitBoomer() {
                 sf::IntRect(960, 1163, 320, 232),
                 sf::IntRect(1280, 1163, 320, 232),
         };
-        std::cout << "ça passe bien ici" << std::endl;
         m_currentAnimation = new Animation(boomExplosion, texture);
         animations.reserve(1);
         animations.emplace_back(*m_currentAnimation);
