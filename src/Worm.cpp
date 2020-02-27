@@ -4,11 +4,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
+#include <windef.h>
+#include <winuser.h>
+#include <wingdi.h>
 #include "Worm.hh"
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
 
-
+float PI = 3.14159265359f;
 Worm::Worm(std::vector<Animation> animations) :
     Character(100,
             std::move(animations),
@@ -18,6 +21,7 @@ Worm::Worm(std::vector<Animation> animations) :
             300.f) {
     sprite.setTexture(ResourceLoader::getInstance().getTexture(BAZOOKA_TEXTURE));
     sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
+    sprite.setOrigin(52.f/2,28.f/2);
 
     m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
     m_body->setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
@@ -62,6 +66,26 @@ void Worm::move(Direction d) {
 }
 
 void Worm::update(sf::Time frameTime) {
+    POINT p;
+    sf::Vector2f b = sf::Vector2f(abs(getPosition().x - 1000),abs(getPosition().y));
+    sf::Vector2f c = sf::Vector2f(getPosition().x + 1000,getPosition().y);
+    if(GetCursorPos(&p)) {
+        POINTFLOAT pb = {b.x - p.x, b.y - p.y};
+        POINTFLOAT cb = {b.x - c.x, b.y - c.y};
+
+//        float dot = (pb.x * cb.x + pb.y * cb.y);
+//        float cross = (pb.x * cb.y - pb.y * cb.x);
+//        float alpha = atan2(cross, dot);
+//       float angle =  floor(alpha * 180. / PI);
+//        std::cout << "angle is " << angle << std::endl;
+        float angba = atan2(pb.y, pb.x);
+        float angbc = atan2(cb.y, cb.x);
+        float rslt = angbc - angba;
+        float rs = (rslt * 180) / PI;
+        std::cout << "angle is " << rs << std::endl;
+        sprite.setRotation(rs);
+
+    }
 
     bool noKeyWasPressed = true;
 
@@ -90,11 +114,11 @@ void Worm::update(sf::Time frameTime) {
         bullet->update();
     }
     // update pos bazooka
-    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
+    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     if(m_orientation == LEFT){
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     } else if (m_orientation == RIGHT) {
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 5, Worm::getPosition().y - 15));
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
     }
     // end update pos bazooka
 

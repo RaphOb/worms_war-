@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <unistd.h>
-#include "src/Tilemap.hh"
+#include <windef.h>
 #include "src/Animation.hh"
 #include "src/AnimatedSprite.hh"
 #include "src/Worm.hh"
@@ -29,6 +29,8 @@ int main() {
         exit(-1);
     }
 
+
+
     Game game;
     Worm worm = game.initWorm();
     Scenes scene;
@@ -51,7 +53,6 @@ int main() {
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
     while (window.isOpen()) {
-
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
         game.setFPS(int(1 / frameTime.asSeconds()));
