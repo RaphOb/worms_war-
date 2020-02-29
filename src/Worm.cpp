@@ -12,16 +12,17 @@
 #include "Loader/ResourceLoader.hh"
 
 float PI = 3.14159265359f;
+
 Worm::Worm(std::vector<Animation> animations) :
-    Character(100,
-            std::move(animations),
-            AnimatedSprite(sf::seconds(0.1), true, true),
-            sf::Vector2f(0.f, 0.f),
-            200.f,
-            300.f) {
+        Character(100,
+                  std::move(animations),
+                  AnimatedSprite(sf::seconds(0.1), true, true),
+                  sf::Vector2f(0.f, 0.f),
+                  200.f,
+                  300.f) {
     sprite.setTexture(ResourceLoader::getInstance().getTexture(BAZOOKA_TEXTURE));
     sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
-    sprite.setOrigin(52.f/2,28.f/2);
+    sprite.setOrigin(52.f / 2, 28.f / 2);
 
     m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
     m_body->setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
@@ -67,9 +68,10 @@ void Worm::move(Direction d) {
 
 void Worm::update(sf::Time frameTime) {
     POINT p;
-    sf::Vector2f b = sf::Vector2f(abs(getPosition().x - 1000),abs(getPosition().y));
-    sf::Vector2f c = sf::Vector2f(getPosition().x + 1000,getPosition().y);
-    if(GetCursorPos(&p)) {
+    std::cout << "orientation " << m_orientation << std::endl;
+    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y);
+    sf::Vector2f c = sf::Vector2f(getPosition().x - 5000, getPosition().y);
+    if (GetCursorPos(&p)) {
         POINTFLOAT pb = {b.x - p.x, b.y - p.y};
         POINTFLOAT cb = {b.x - c.x, b.y - c.y};
 
@@ -78,12 +80,32 @@ void Worm::update(sf::Time frameTime) {
 //        float alpha = atan2(cross, dot);
 //       float angle =  floor(alpha * 180. / PI);
 //        std::cout << "angle is " << angle << std::endl;
-        float angba = atan2(pb.y, pb.x);
-        float angbc = atan2(cb.y, cb.x);
-        float rslt = angbc - angba;
-        float rs = (rslt * 180) / PI;
-        std::cout << "angle is " << rs << std::endl;
-        sprite.setRotation(rs);
+        if (m_orientation == 0) {
+            c = sf::Vector2f(m_body->getPosition().x + 5000, getPosition().y);
+        }
+
+//        std::cout << "angle is 1 eme methode " << rs << std::endl;
+
+        float numeroator = p.y * (b.x - c.x) + b.y * (c.x - p.x) + c.y * (p.x - b.x);
+        float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
+        float ratio = numeroator / denominator;
+        float anglerad = atan(ratio);
+        float agnledeg = ((anglerad * 180) / PI);
+        if (agnledeg > 90) {
+            agnledeg = 180 - agnledeg;
+        }
+        if (agnledeg < -90) {
+            agnledeg = -180 - agnledeg;
+        }
+        if (agnledeg >= -40.f && agnledeg <= 45.f) {
+        std::cout << "angle is 1eme methode " << agnledeg << std::endl;
+            if (m_orientation == 1) {
+                sprite.setRotation(agnledeg + 12);
+            } else {
+                sprite.setRotation(agnledeg - 12);
+
+            }
+        }
 
     }
 
@@ -110,12 +132,12 @@ void Worm::update(sf::Time frameTime) {
         hasshot = true;
         noKeyWasPressed = false;
     }
-    if(hasshot) {
+    if (hasshot) {
         bullet->update();
     }
     // update pos bazooka
     sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
-    if(m_orientation == LEFT){
+    if (m_orientation == LEFT) {
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     } else if (m_orientation == RIGHT) {
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
