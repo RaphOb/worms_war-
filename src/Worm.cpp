@@ -12,7 +12,7 @@
 #include "Loader/ResourceLoader.hh"
 
 float PI = 3.14159265359f;
-
+float angle;
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
                   std::move(animations),
@@ -90,19 +90,19 @@ void Worm::update(sf::Time frameTime) {
         float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
         float ratio = numeroator / denominator;
         float anglerad = atan(ratio);
-        float agnledeg = ((anglerad * 180) / PI);
-        if (agnledeg > 90) {
-            agnledeg = 180 - agnledeg;
+        angle = ((anglerad * 180) / PI);
+        if (angle > 90) {
+            angle = 180 - angle;
         }
-        if (agnledeg < -90) {
-            agnledeg = -180 - agnledeg;
+        if (angle < -90) {
+            angle = -180 - angle;
         }
-        if (agnledeg >= -40.f && agnledeg <= 45.f) {
-        std::cout << "angle is 1eme methode " << agnledeg << std::endl;
+        if (angle >= -40.f && angle <= 45.f) {
+            std::cout << "angle is 1eme methode " << angle << std::endl;
             if (m_orientation == 1) {
-                sprite.setRotation(agnledeg + 12);
+                sprite.setRotation(angle + 12);
             } else {
-                sprite.setRotation(agnledeg - 12);
+                sprite.setRotation(angle - 12);
 
             }
         }
@@ -128,7 +128,7 @@ void Worm::update(sf::Time frameTime) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
         bullet = new Bullet(m_orientation);
-        bullet->fireBullet(getPosition());
+        bullet->fireBullet(sprite.getPosition(),angle);
         hasshot = true;
         noKeyWasPressed = false;
     }

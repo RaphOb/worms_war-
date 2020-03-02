@@ -8,8 +8,9 @@
 #include "Bullet.hh"
 #include "Direction.hh"
 #include "Loader/ResourceLoader.hh"
-
-void Bullet::fireBullet(sf::Vector2f position) {
+const float PI = 3.14159265359f;
+void Bullet::fireBullet(sf::Vector2f position, float angle) {
+    m_angle = (angle*PI /180);
     if (m_orientation == RIGHT) {
         m_body->setTextureRect(sf::IntRect(0, 0, 11, 8));
     } else {
@@ -32,13 +33,13 @@ Collider Bullet::getCollider() {
 
 void Bullet::update() {
     if (m_orientation == RIGHT) {
-        m_body->setPosition((m_body->getPosition().x + (speed/1.001f)),
-                           (m_body->getPosition().y) + 10.0f * clock1.getElapsedTime().asSeconds());
+        m_body->setPosition((m_body->getPosition().x +(cos(m_angle  - 0.2617993878f)*15)),
+                           (m_body->getPosition().y) + sin(m_angle - 0.2617993878f)*20 + 10.0f * clock1.getElapsedTime().asSeconds());
         m_body->setRotation(m_body->getRotation() + 1.5f);
 
     } else {
-        m_body->setPosition((m_body->getPosition().x - (speed/1.001f)),
-                           (m_body->getPosition().y) + 10.0f * clock1.getElapsedTime().asSeconds());
+        m_body->setPosition((m_body->getPosition().x - (cos(m_angle +  0.2617993878f)*15)),
+                           (m_body->getPosition().y) + sin(-m_angle)*20 + 10.0f * clock1.getElapsedTime().asSeconds());
         m_body->setRotation(m_body->getRotation() - 1.5f);
     }
     speed = speed/1.1f;

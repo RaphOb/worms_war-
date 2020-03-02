@@ -17,7 +17,7 @@ class Bullet: public AbstractEntity {
 public:
     Bullet(int);
     ~Bullet() override;
-    void fireBullet(sf::Vector2f position);
+    void fireBullet(sf::Vector2f position, float angle);
     Collider getCollider();
     void update();
     void draw(sf::RenderWindow& window)  ;
@@ -33,6 +33,7 @@ private:
     sf::Clock clock1;
     float speed =  35;
     int m_orientation;
+    float m_angle;
 
 };
 
