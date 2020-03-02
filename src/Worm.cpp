@@ -3,21 +3,22 @@
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
+#include <windef.h>
+#include <winuser.h>
 #include "Worm.hh"
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
 
-
 Worm::Worm(std::vector<Animation> animations) :
-    Character(100,
-            std::move(animations),
-            AnimatedSprite(sf::seconds(0.1), true, true),
-            sf::Vector2f(0.f, 0.f),
-            200.f,
-            300.f) {
+        Character(100,
+                  std::move(animations),
+                  AnimatedSprite(sf::seconds(0.1), true, true),
+                  sf::Vector2f(0.f, 0.f),
+                  200.f,
+                  300.f) {
     sprite.setTexture(ResourceLoader::getInstance().getTexture(BAZOOKA_TEXTURE));
     sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
+    sprite.setOrigin(52.f / 2, 28.f / 2);
 
     m_body->setOrigin(m_currentAnimation->getFrame(0).width / 2.f, m_currentAnimation->getFrame(0).height / 2.f);
     m_body->setPosition(Constant::SCREEN_DIMENSIONS / 2.f);
@@ -25,7 +26,6 @@ Worm::Worm(std::vector<Animation> animations) :
 
 void Worm::draw(sf::RenderWindow &window) {
     if (hasshot) {
-//        window.draw(bullet);
         bullet->draw(window);
     }
     window.draw(sprite);
@@ -33,7 +33,6 @@ void Worm::draw(sf::RenderWindow &window) {
 }
 
 void Worm::move(Direction d) {
-    //std::cout << "move "<< std::endl;
     if (d == RIGHT) {
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
@@ -62,6 +61,37 @@ void Worm::move(Direction d) {
 }
 
 void Worm::update(sf::Time frameTime) {
+    POINT p;
+    HWND hwnd = GetActiveWindow();
+//    std::cout << "orientation " << m_orientation << std::endl;
+    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y);
+    sf::Vector2f c = sf::Vector2f(getPosition().x - 5000, getPosition().y);
+    GetCursorPos(&p);
+    if (ScreenToClient(hwnd, &p)) {
+        if (m_orientation == 0) {
+            c = sf::Vector2f(m_body->getPosition().x + 5000, getPosition().y);
+        }
+
+        float numeroator = p.y * (b.x - c.x) + b.y * (c.x - p.x) + c.y * (p.x - b.x);
+        float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
+        float ratio = numeroator / denominator;
+        float anglerad = atan(ratio);
+        angle = ((anglerad * 180) / Constant::PI);
+        if (angle > 90) {
+            angle = 180 - angle;
+        }
+        if (angle < -90) {
+            angle = 180 + angle;
+        }
+        if (angle >= -40.f && angle <= 45.f) {
+            if (m_orientation == 1) {
+                sprite.setRotation(angle + 12);
+            } else {
+                sprite.setRotation(angle - 12);
+
+            }
+        }
+    }
 
     bool noKeyWasPressed = true;
 
@@ -82,19 +112,19 @@ void Worm::update(sf::Time frameTime) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
         bullet = new Bullet(m_orientation);
-        bullet->fireBullet(getPosition());
+        bullet->fireBullet(sprite.getPosition(), angle);
         hasshot = true;
         noKeyWasPressed = false;
     }
-    if(hasshot) {
+    if (hasshot) {
         bullet->update();
     }
     // update pos bazooka
-    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
-    if(m_orientation == LEFT){
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 47, Worm::getPosition().y - 15));
+    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
+    if (m_orientation == LEFT) {
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     } else if (m_orientation == RIGHT) {
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 5, Worm::getPosition().y - 15));
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
     }
     // end update pos bazooka
 
