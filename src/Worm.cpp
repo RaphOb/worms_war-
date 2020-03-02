@@ -9,10 +9,12 @@
 #include <wingdi.h>
 #include "Worm.hh"
 #include "Constant.hh"
+#include <windows.h>
 #include "Loader/ResourceLoader.hh"
 
 float PI = 3.14159265359f;
 float angle;
+
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
                   std::move(animations),
@@ -68,23 +70,15 @@ void Worm::move(Direction d) {
 
 void Worm::update(sf::Time frameTime) {
     POINT p;
-    std::cout << "orientation " << m_orientation << std::endl;
+    HWND hwnd = GetActiveWindow();
+//    std::cout << "orientation " << m_orientation << std::endl;
     sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y);
     sf::Vector2f c = sf::Vector2f(getPosition().x - 5000, getPosition().y);
-    if (GetCursorPos(&p)) {
-        POINTFLOAT pb = {b.x - p.x, b.y - p.y};
-        POINTFLOAT cb = {b.x - c.x, b.y - c.y};
-
-//        float dot = (pb.x * cb.x + pb.y * cb.y);
-//        float cross = (pb.x * cb.y - pb.y * cb.x);
-//        float alpha = atan2(cross, dot);
-//       float angle =  floor(alpha * 180. / PI);
-//        std::cout << "angle is " << angle << std::endl;
+    GetCursorPos(&p);
+    if (ScreenToClient(hwnd, &p)) {
         if (m_orientation == 0) {
             c = sf::Vector2f(m_body->getPosition().x + 5000, getPosition().y);
         }
-
-//        std::cout << "angle is 1 eme methode " << rs << std::endl;
 
         float numeroator = p.y * (b.x - c.x) + b.y * (c.x - p.x) + c.y * (p.x - b.x);
         float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
@@ -95,10 +89,9 @@ void Worm::update(sf::Time frameTime) {
             angle = 180 - angle;
         }
         if (angle < -90) {
-            angle = -180 - angle;
+            angle = 180 + angle;
         }
         if (angle >= -40.f && angle <= 45.f) {
-            std::cout << "angle is 1eme methode " << angle << std::endl;
             if (m_orientation == 1) {
                 sprite.setRotation(angle + 12);
             } else {
@@ -106,7 +99,6 @@ void Worm::update(sf::Time frameTime) {
 
             }
         }
-
     }
 
     bool noKeyWasPressed = true;
@@ -128,7 +120,7 @@ void Worm::update(sf::Time frameTime) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
         bullet = new Bullet(m_orientation);
-        bullet->fireBullet(sprite.getPosition(),angle);
+        bullet->fireBullet(sprite.getPosition(), angle);
         hasshot = true;
         noKeyWasPressed = false;
     }
