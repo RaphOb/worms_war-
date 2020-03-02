@@ -16,6 +16,7 @@ public:
     static const float BLOCK_SIZE;
     static const sf::Vector2f PLATFORM_SIZE;
     static const float HALF_SIZE_PLATFORM;
+    static const float PI;
 };
 
 #endif //LITTLEBIGGAME_CONSTANT_HH

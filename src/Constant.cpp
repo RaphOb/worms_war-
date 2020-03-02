@@ -10,3 +10,5 @@ const size_t Constant::NB_PLATFORMS = 16;
 const float Constant::BLOCK_SIZE = 30.0f;
 const sf::Vector2f Constant::PLATFORM_SIZE(210.f, Constant::BLOCK_SIZE);
 const float Constant::HALF_SIZE_PLATFORM = Constant::PLATFORM_SIZE.x / 2;
+const float Constant::PI = 3.14159265359f;
+

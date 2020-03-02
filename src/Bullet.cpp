@@ -2,14 +2,15 @@
 // Created by oraph on 19/02/2020.
 //
 
+#include <cmath>
 #include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <math.h>
+#include <cmath>
 #include "Bullet.hh"
 #include "Direction.hh"
 #include "Loader/ResourceLoader.hh"
+#include "Constant.hh"
 
-const float PI = 3.14159265359f;
 
 void Bullet::fireBullet(sf::Vector2f position, float angle) {
     if (angle > 45.f) {
@@ -17,7 +18,7 @@ void Bullet::fireBullet(sf::Vector2f position, float angle) {
     } else if (angle < -40.f) {
         angle = -40.f;
     }
-    m_angle = (angle * PI / 180);
+    m_angle = (angle * Constant::PI / 180);
     if (m_orientation == RIGHT) {
         m_body->setTextureRect(sf::IntRect(0, 0, 11, 8));
     } else {
@@ -41,18 +42,17 @@ Collider Bullet::getCollider() {
 
 void Bullet::update() {
     if (m_orientation == RIGHT) {
-        m_body->setPosition((m_body->getPosition().x + (cos(m_angle - 0.2617993878f) * 15)),
-                            (m_body->getPosition().y) + sin(m_angle - 0.2617993878f) * 20 +
+        m_body->setPosition((m_body->getPosition().x + std::cos(m_angle - 0.2617993878f) * 15.f),
+                            (m_body->getPosition().y) + std::sin(m_angle - 0.2617993878f) * 20.f +
                             10.0f * clock1.getElapsedTime().asSeconds());
         m_body->setRotation(m_body->getRotation() + 1.5f);
 
     } else {
-        m_body->setPosition((m_body->getPosition().x - (cos(m_angle + 0.2617993878f) * 15)),
-                            (m_body->getPosition().y) + sin(-m_angle) * 20 +
+        m_body->setPosition((m_body->getPosition().x - (std::cos(m_angle + 0.2617993878f) * 15.f)),
+                            (m_body->getPosition().y) + std::sin(-m_angle) * 20.f +
                             10.0f * clock1.getElapsedTime().asSeconds());
         m_body->setRotation(m_body->getRotation() - 1.5f);
     }
-    speed = speed / 1.1f;
 }
 
 void Bullet::draw(sf::RenderWindow &window) {

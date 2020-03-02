@@ -3,17 +3,11 @@
 #include <cmath>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
 #include <windef.h>
 #include <winuser.h>
-#include <wingdi.h>
 #include "Worm.hh"
 #include "Constant.hh"
-#include <windows.h>
 #include "Loader/ResourceLoader.hh"
-
-float PI = 3.14159265359f;
-float angle;
 
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
@@ -32,7 +26,6 @@ Worm::Worm(std::vector<Animation> animations) :
 
 void Worm::draw(sf::RenderWindow &window) {
     if (hasshot) {
-//        window.draw(bullet);
         bullet->draw(window);
     }
     window.draw(sprite);
@@ -40,7 +33,6 @@ void Worm::draw(sf::RenderWindow &window) {
 }
 
 void Worm::move(Direction d) {
-    //std::cout << "move "<< std::endl;
     if (d == RIGHT) {
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
@@ -84,7 +76,7 @@ void Worm::update(sf::Time frameTime) {
         float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
         float ratio = numeroator / denominator;
         float anglerad = atan(ratio);
-        angle = ((anglerad * 180) / PI);
+        angle = ((anglerad * 180) / Constant::PI);
         if (angle > 90) {
             angle = 180 - angle;
         }
