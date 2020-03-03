@@ -7,7 +7,8 @@
 
 bool ResourceLoader::loadResources() {
     return loadTextures()
-        && loadFont();
+        && loadFont()
+        && openMusicFile();
 }
 
 bool ResourceLoader::loadTextures() {
@@ -111,4 +112,12 @@ sf::Texture& ResourceLoader::getTexture(TextureName textureName) {
 
 ResourceLoader::ResourceLoader() {
     m_textures.reserve(8);
+}
+
+bool ResourceLoader::openMusicFile() {
+    return background_music.openFromFile("../resources/sound/Waterflame - Glorious morning.wav");
+}
+
+sf::Music &ResourceLoader::getMusic() {
+    return background_music;
 }

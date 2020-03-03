@@ -8,8 +8,11 @@
 
 void Map::initMap() {
     platforms.reserve(Constant::NB_PLATFORMS);
-    // Ground
-    platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 50.f), sf::Vector2f(Constant::VIEW_WIDTH / 2.f, 900.f), false, true));
+    // Floor
+    platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 30.f), sf::Vector2f(Constant::VIEW_WIDTH / 2.f, 900.f), false, true));
+    // Roof
+    platforms.emplace_back(new Platform(sf::Vector2f(Constant::VIEW_WIDTH, 30.f), sf::Vector2f(Constant::VIEW_WIDTH / 2.f, 0.f), false, true));
+
 
     // Platforms
     platforms.emplace_back(new Platform(Constant::PLATFORM_SIZE, sf::Vector2f(Constant::HALF_SIZE_PLATFORM, 200.f), false, false));

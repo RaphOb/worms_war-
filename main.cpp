@@ -52,6 +52,10 @@ int main() {
 
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
+
+    ResourceLoader::getInstance().getMusic().setLoop(true);
+    ResourceLoader::getInstance().getMusic().play();
+
     while (window.isOpen()) {
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
