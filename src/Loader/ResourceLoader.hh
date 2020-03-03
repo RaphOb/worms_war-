@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Audio.hpp>
 
 enum TextureName {
     WORM_WALKING_TEXTURE,
@@ -26,7 +27,7 @@ private:
     std::vector<sf::Texture> m_textures;
 
     sf::Font m_font;
-
+    sf::Music background_music;
 public:
     static ResourceLoader& getInstance() {
         static ResourceLoader singleton;
@@ -37,6 +38,7 @@ public:
     bool loadResources();
     sf::Texture& getTexture(TextureName textureName);
     sf::Font& getFont();
+    sf::Music& getMusic();
 
 private:
     ResourceLoader(const ResourceLoader &old);
@@ -48,6 +50,7 @@ private:
     bool loadMonsterTexture();
     bool loadPlatformTexture();
     bool loadWeaponTexture();
+    bool openMusicFile();
 };
 
 
