@@ -13,6 +13,8 @@
 #include "src/Map.hh"
 #include "src/Loader/ResourceLoader.hh"
 #include "src/InitBoomer.hh"
+#include "src/Audio/AudioLoader.hh"
+#include "src/Audio/AudioManager.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -25,7 +27,7 @@ int main() {
     sf::View view(sf::Vector2f(0.0f, 0.0f), Constant::SCREEN_DIMENSIONS);
     window.setFramerateLimit(60);
 
-    if (!ResourceLoader::getInstance().loadResources()) {
+    if (!ResourceLoader::getInstance().loadResources() || !AudioLoader::getInstance().loadAudio()) {
         exit(-1);
     }
 
@@ -53,8 +55,18 @@ int main() {
     std::vector<Monster*> listMonsters;
     InitBoomer initboomer = InitBoomer();
 
-    ResourceLoader::getInstance().getMusic().setLoop(true);
-    ResourceLoader::getInstance().getMusic().play();
+    AudioLoader::getInstance().getMusic().setLoop(true);
+//    AudioLoader::getInstance().getMusic().play();
+
+
+//
+    AudioManager::getInstance().addSound(WORM_WALKING_BUFFER);
+//    AudioManager::getInstance().playSounds();
+//    sf::Sound sound;
+//    sound.setBuffer(AudioLoader::getInstance().getBuffer(WORM_WALKING_BUFFER));
+//    sound.setLoop(true);
+//    sound.play();
+
 
     while (window.isOpen()) {
         frameTime = frameClock.restart();
@@ -65,13 +77,13 @@ int main() {
         }
 
         worm.update(frameTime);
-
         scene.update(frameTime);
-
+        game.update(window); // have to be after setView
         textNbMonster.setString(std::to_string(listMonsters.size()));
 
-        Collider playerCollider = worm.getCollider();
+        AudioManager::getInstance().playSounds();
 
+        Collider playerCollider = worm.getCollider();
         sf::Vector2f direction;
         listMonsters = {};
 
@@ -111,7 +123,6 @@ int main() {
         }
 
 
-        game.update(window); // have to be after setView
 
         // draw
         window.clear(sf::Color(150, 150, 150));

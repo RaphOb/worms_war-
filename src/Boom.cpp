@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Boom.hh"
+#include "Audio/AudioManager.hh"
 
 void Boom::makeBoom(sf::Vector2f position) {
 
@@ -14,6 +15,7 @@ Boom::Boom(std::vector<Animation> animations, sf::Vector2f pos, AnimatedSprite a
         AbstractEntity(&animatedSprite.getBody())
 {
     m_currentAnimation = &m_animations[0];
+    AudioManager::getInstance().addSound(EXPLOSION_BUFFER, 10.f);
 //    m_body->setSize(sf::Vector2f(10.f,10.f));
     m_body->setPosition(pos);
 

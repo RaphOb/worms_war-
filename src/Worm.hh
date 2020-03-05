@@ -18,6 +18,7 @@ private:
     sf::Sprite sprite;
     Bullet* bullet;
     float angle;
+    double distance_covered;
 
 public:
     bool hasshot = false;

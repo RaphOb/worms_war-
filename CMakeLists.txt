@@ -31,7 +31,13 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/TimeManager.cpp
         src/Map.cpp src/Map.hh
         src/Loader/ResourceLoader.cpp src/Loader/ResourceLoader.hh
-        src/TimeManager.cpp src/Boom.cpp src/Boom.hh src/InitBoomer.cpp src/InitBoomer.hh src/Scenes.cpp src/Scenes.hh)
+        src/TimeManager.cpp
+        src/Boom.cpp src/Boom.hh
+        src/InitBoomer.cpp src/InitBoomer.hh
+        src/Scenes.cpp src/Scenes.hh
+        src/Audio/AudioLoader.cpp src/Audio/AudioLoader.hh
+        src/Audio/AudioManager.cpp src/Audio/AudioManager.hh
+        src/Audio/SoundWrapper.cpp src/Audio/SoundWrapper.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
