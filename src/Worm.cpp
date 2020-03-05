@@ -103,11 +103,11 @@ void Worm::update(sf::Time frameTime) {
 //     m_velocity.x *= 0.5f;
     m_velocity.x = 0.0f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         move(LEFT);
         noKeyWasPressed = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         move(RIGHT);
         noKeyWasPressed = false;
     }
