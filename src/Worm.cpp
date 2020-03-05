@@ -8,6 +8,7 @@
 #include "Worm.hh"
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
+#include "Audio/AudioManager.hh"
 
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
@@ -36,16 +37,20 @@ void Worm::move(Direction d) {
     if (d == RIGHT) {
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
-        if (m_canJump)
+        if (m_canJump) {
+            distance_covered += m_speed;
             m_currentAnimation = &m_animations[RIGHT];
+        }
         else
             m_currentAnimation = &m_animations[3];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
         sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
         m_velocity.x -= m_speed;
-        if (m_canJump)
+        if (m_canJump) {
+            distance_covered += m_speed;
             m_currentAnimation = &m_animations[LEFT];
+        }
         else
             m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
@@ -119,8 +124,13 @@ void Worm::update(sf::Time frameTime) {
     if (hasshot) {
         bullet->update();
     }
+
+    if (distance_covered > 4000.f) {
+        AudioManager::getInstance().addSound(WORM_WALKING_BUFFER);
+        distance_covered = 0;
+    }
     // update pos bazooka
-    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
+//    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     if (m_orientation == LEFT) {
         sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
     } else if (m_orientation == RIGHT) {
