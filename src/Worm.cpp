@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <windef.h>
 #include <winuser.h>
+#include <SFML/Window/Event.hpp>
 #include "Worm.hh"
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
@@ -115,7 +116,7 @@ void Worm::update(sf::Time frameTime) {
         move(JUMP);
         noKeyWasPressed = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && !hasshot) {
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasshot) {
         bullet = new Bullet(m_orientation);
         bullet->fireBullet(sprite.getPosition(), angle);
         hasshot = true;
