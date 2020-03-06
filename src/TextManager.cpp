@@ -5,6 +5,8 @@
 #include "TextManager.hh"
 #include "Loader/ResourceLoader.hh"
 #include "Constant.hh"
+#include <fstream>
+#include <iostream>
 
 void TextManager::setText(const std::string &string, TypeText type) {
     if(type == TypeText::MONSTER) {
@@ -41,9 +43,23 @@ TextManager::TextManager() {
 }
 
 void TextManager::loadFileScore() {
-
+    std::string line;
+    std::ifstream myfile ("test.txt");
+    if (myfile.is_open())
+    {
+        while ( getline (myfile,line) )
+        {
+            lastScores.setString(line);
+        }
+        myfile.close();
+    }
 }
 
 void TextManager::saveScore() {
+    std::ofstream ofs;
+    ofs.open ("test.txt", std::ofstream::out | std::ofstream::trunc);
+    std::string c  = nbScores.getString();
+    ofs << c;
 
+    ofs.close();
 }
