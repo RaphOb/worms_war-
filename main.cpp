@@ -40,6 +40,7 @@ int main() {
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     TextManager textManager;
+    textManager.loadFileScore();
     sf::Time frameTime;
     srand (time(nullptr));
 
@@ -77,8 +78,7 @@ int main() {
         game.update(window); // have to be after setView
 
         textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
-        textManager.setText("SCORE :" + std::to_string(20), TypeText::SCORES);
-        textManager.setText("LAST SCORES :" + std::to_string(10), TypeText::LASTSCORE);
+        textManager.setText("SCORE : " + std::to_string(listMonsters.size()), TypeText::SCORES); //TODO le Nb de monstre tué
         AudioManager::getInstance().playSounds();
 
         Collider playerCollider = worm.getCollider();
@@ -152,6 +152,6 @@ int main() {
                 resizeView(window, view);
         }
     }
-
+    textManager.saveScore();
     return 0;
 }
