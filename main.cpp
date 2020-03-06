@@ -15,6 +15,7 @@
 #include "src/InitBoomer.hh"
 #include "src/Audio/AudioLoader.hh"
 #include "src/Audio/AudioManager.hh"
+#include "src/TextManager.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -38,13 +39,8 @@ int main() {
     Scenes scene;
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
+    TextManager textManager;
     sf::Time frameTime;
-    sf::Text textNbMonster;
-    textNbMonster.setFont(ResourceLoader::getInstance().getFont());
-    textNbMonster.setOutlineColor(sf::Color::Black);
-    textNbMonster.setOutlineThickness(2.f);
-    textNbMonster.setCharacterSize(20);
-    textNbMonster.setPosition(Constant::VIEW_WIDTH - 50, 0.f);
     srand (time(nullptr));
 
 
@@ -79,8 +75,10 @@ int main() {
         worm.update(frameTime);
         scene.update(frameTime);
         game.update(window); // have to be after setView
-        textNbMonster.setString(std::to_string(listMonsters.size()));
 
+        textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
+        textManager.setText("SCORE :" + std::to_string(20), TypeText::SCORES);
+        textManager.setText("LAST SCORES :" + std::to_string(10), TypeText::LASTSCORE);
         AudioManager::getInstance().playSounds();
 
         Collider playerCollider = worm.getCollider();
@@ -137,7 +135,7 @@ int main() {
             platform->getSpawner().draw(window); // draw monsters
         }
 
-        window.draw(textNbMonster);
+        textManager.draw(window);
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
