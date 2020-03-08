@@ -73,3 +73,7 @@ void Monster::update(sf::Time frameTime) {
 sf::Vector2f Monster::getPosition() const {
     return m_body->getPosition();
 }
+
+Pathfinding *Monster::getPathfinding() {
+    return m_pathfinding;
+}

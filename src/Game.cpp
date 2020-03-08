@@ -27,7 +27,9 @@ Game::Game() {
     m_textFPS.setOutlineThickness(2);
     m_textFPS.setCharacterSize(30);
     m_textFPS.setPosition(5.f, 0.f);
-    initWorm();
+    Worm worm = initWorm();
+    Pathfinding pathfinding = Pathfinding(&m_map, &worm);
+    m_map.setPathfinding(&pathfinding);
 }
 
 Worm Game::initWorm() {

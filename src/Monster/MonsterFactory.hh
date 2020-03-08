@@ -13,8 +13,10 @@ class MonsterFactory {
 public:
     MonsterFactory();
     Monster* Create(const std::string&, const sf::Vector2f&);
+    void setPathfinding(Pathfinding *);
 
 private:
+    Pathfinding *m_pathfinding;
 };
 
 #endif //LITTLEBIGGAME_MONSTERFACTORY_HH

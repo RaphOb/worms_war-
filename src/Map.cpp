@@ -33,8 +33,8 @@ void Map::initMap() {
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(0.f, Constant::VIEW_HEIGHT / 2.f), nullptr, true));
     platforms.emplace_back(new Platform(sf::Vector2f(Constant::BLOCK_SIZE, Constant::VIEW_HEIGHT + 400.f), sf::Vector2f(Constant::VIEW_WIDTH, Constant::VIEW_HEIGHT / 2.f), nullptr, true));
 
-    //initGrid();
-    //displayGrid();
+    initGrid();
+    displayGrid();
 }
 
 void Map::addPlatform(Platform* p) {
@@ -48,6 +48,10 @@ std::vector<Platform*> Map::getPlatforms() {
 }
 
 Map::Map() {
+}
+
+void Map::setPathfinding(Pathfinding *pathfinding) {
+    m_monsterFactory.setPathfinding(pathfinding);
 }
 
 void Map::initGrid() {
@@ -66,6 +70,7 @@ void Map::initGrid() {
     for (int y=0 ; y<m_rows ; y++) {
         for (int x=0 ; x<m_cols ; x++) {
             m_grid[y][x] = 0;
+            m_nodeGrid.emplace_back(Node(y, x));
         }
     }
 
@@ -96,9 +101,16 @@ void Map::initGrid() {
         for (int y : targetY) {
             for (int x : targetX) {
                 m_grid[y][x] = 1;
+                getNodeByPos(y, x).setStatus(1);
             }
         }
     }
+}
+
+Node& Map::getNodeByPos(int y, int x) {
+    auto it = find_if(m_nodeGrid.begin(), m_nodeGrid.end(), [&x, &y](Node obj) {return obj.getX() == x && obj.getY() == y;});
+    auto index = std::distance(m_nodeGrid.begin(), it);
+    return m_nodeGrid.at(index);
 }
 
 /**
@@ -121,8 +133,10 @@ void Map::displayGrid() {
 
     for (int y=0 ; y<m_rows ; y++) {
         for (int x=0 ; x<m_cols ; x++) {
-            cout << m_grid[y][x];
+            //cout << m_grid[y][x];
+            cout << getNodeByPos(y, x).getStatus();
         }
         cout << endl;
     }
 }
+

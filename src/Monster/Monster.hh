@@ -9,6 +9,7 @@
 #include "../AnimatedSprite.hh"
 #include "../Character.hh"
 #include "../Collider.hh"
+#include "../PathFinding/Pathfinding.hh"
 
 class Monster : public Character {
 public:
@@ -21,8 +22,10 @@ public:
     void update(sf::Time) override;
 
     void draw(sf::RenderWindow &) override;
-private:
 
+    Pathfinding *getPathfinding();
+private:
+    Pathfinding *m_pathfinding;
 };
 
 #endif //LITTLEBIGGAME_MONSTER_HH

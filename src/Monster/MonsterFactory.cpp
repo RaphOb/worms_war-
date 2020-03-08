@@ -82,3 +82,7 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
         return nullptr;
     }
 }
+
+void MonsterFactory::setPathfinding(Pathfinding *pathfinding) {
+    m_pathfinding = pathfinding;
+}

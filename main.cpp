@@ -37,6 +37,8 @@ int main() {
     Game game;
     Worm worm = game.initWorm();
     Scenes scene;
+    Node *n = new Node(1,1);
+    n->initTextures();
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     TextManager textManager;
@@ -139,6 +141,7 @@ int main() {
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
+        n->draw(window);
         window.display();
         scene.clean();
 
