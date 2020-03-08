@@ -7,8 +7,8 @@
 #include "Loader/ResourceLoader.hh"
 #include "Constant.hh"
 
-Platform::Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner, bool isWall) : m_isSpawner(isSpawner),
-                                                                                       m_isWall(isWall) {
+Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterFactory, bool isWall) : m_isWall(isWall) {
+    m_isSpawner = monsterFactory != nullptr;
     if (m_isWall) m_isSpawner = false; // prevent illogical issue
     if (m_isSpawner) m_isWall = false; // prevent illogical issue
     initTextureRect(size);
@@ -29,6 +29,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f pos, bool isSpawner, bool isW
         m_spawner.setNameMonster("GroundMonster");
 
         if (m_isSpawner) {
+            m_spawner.setMonsterFactory(monsterFactory);
             m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_SPAWNER_TEXTURE));
         }
     }

@@ -11,13 +11,15 @@ Spawner::Spawner() {
 }
 
 void Spawner::initMonster() {
-    Monster *newMonster = m_monsterFactory.Create(m_nameMonster, m_position);
+    Monster *newMonster = m_monsterFactory->Create(m_nameMonster, m_position);
     if (newMonster== nullptr) {
         std::cout << "Ce monstre n'existe pas. Création impossible" << std::endl;
     } else {
         m_listMonster.push_back(newMonster);
     }
 }
+
+void Spawner::setMonsterFactory(MonsterFactory *monsterFactory) { m_monsterFactory = monsterFactory; }
 
 std::vector<Monster*> Spawner::getListMonsters() {
     return m_listMonster;

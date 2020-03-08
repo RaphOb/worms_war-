@@ -24,6 +24,7 @@ private:
     int** m_grid;
     int m_rows;
     int m_cols;
+    MonsterFactory m_monsterFactory;
 };
 
 

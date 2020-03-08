@@ -22,9 +22,10 @@ public:
     void setNameMonster(const string&);
     void update(sf::Time);
     void draw(sf::RenderWindow &);
+    void setMonsterFactory(MonsterFactory *);
 
 private:
-    MonsterFactory m_monsterFactory;
+    MonsterFactory *m_monsterFactory;
     std::vector<Monster*> m_listMonster;
     sf::Vector2f m_position;
     int m_difficulty;
