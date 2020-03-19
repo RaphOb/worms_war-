@@ -41,8 +41,7 @@ void Worm::move(Direction d) {
         if (m_canJump) {
             distance_covered += m_speed;
             m_currentAnimation = &m_animations[RIGHT];
-        }
-        else
+        } else
             m_currentAnimation = &m_animations[3];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
@@ -51,8 +50,7 @@ void Worm::move(Direction d) {
         if (m_canJump) {
             distance_covered += m_speed;
             m_currentAnimation = &m_animations[LEFT];
-        }
-        else
+        } else
             m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
     } else if (d == JUMP) {
@@ -83,11 +81,27 @@ void Worm::update(sf::Time frameTime) {
         float ratio = numeroator / denominator;
         float anglerad = atan(ratio);
         angle = ((anglerad * 180) / Constant::PI);
-        if (angle > 90) {
-            angle = 180 - angle;
-        }
-        if (angle < -90) {
-            angle = 180 + angle;
+        std::cout << " angle " << angle << std::endl;
+
+//        if (angle > 90) {
+//            angle = 180 - angle;
+//        }
+//        if (angle < -90) {
+//            m_orientation = LEFT;
+//            angle = 180 + angle;
+//        }
+        if (angle >= 80 && m_orientation == LEFT) {
+            std::cout << "icicici" << std::endl;
+            angle +=40;
+            m_orientation = RIGHT;
+            sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
+            sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
+        } else  if(angle < -80 && m_orientation == RIGHT) {
+            angle-= 40;
+            m_orientation = LEFT;
+            std::cout << "llllalala" << std::endl;
+            sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
+            sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
         }
         if (angle >= -40.f && angle <= 45.f) {
             if (m_orientation == 1) {
