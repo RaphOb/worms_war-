@@ -65,10 +65,10 @@ void Worm::move(Direction d) {
 }
 
 void Worm::update(sf::Time frameTime) {
-    POINT p;
-    HWND hwnd = GetActiveWindow();
+    POINT p; // cursor
+    HWND hwnd = GetActiveWindow(); // windows listener
 //    std::cout << "orientation " << m_orientation << std::endl;
-    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y);
+    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y); //worms
     sf::Vector2f c = sf::Vector2f(getPosition().x - 5000, getPosition().y);
     GetCursorPos(&p);
     if (ScreenToClient(hwnd, &p)) {
@@ -76,33 +76,23 @@ void Worm::update(sf::Time frameTime) {
             c = sf::Vector2f(m_body->getPosition().x + 5000, getPosition().y);
         }
 
+        if (p.x > b.x) {
+            m_orientation = RIGHT;
+            sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
+            sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
+        }
+        if(p.x < b.x) {
+            m_orientation = LEFT;
+            sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
+            sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
+        }
+
         float numeroator = p.y * (b.x - c.x) + b.y * (c.x - p.x) + c.y * (p.x - b.x);
         float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
         float ratio = numeroator / denominator;
         float anglerad = atan(ratio);
         angle = ((anglerad * 180) / Constant::PI);
-        std::cout << " angle " << angle << std::endl;
 
-//        if (angle > 90) {
-//            angle = 180 - angle;
-//        }
-//        if (angle < -90) {
-//            m_orientation = LEFT;
-//            angle = 180 + angle;
-//        }
-        if (angle >= 80 && m_orientation == LEFT) {
-            std::cout << "icicici" << std::endl;
-            angle +=40;
-            m_orientation = RIGHT;
-            sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
-            sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
-        } else  if(angle < -80 && m_orientation == RIGHT) {
-            angle-= 40;
-            m_orientation = LEFT;
-            std::cout << "llllalala" << std::endl;
-            sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
-            sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
-        }
         if (angle >= -40.f && angle <= 45.f) {
             if (m_orientation == 1) {
                 sprite.setRotation(angle + 12);
