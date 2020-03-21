@@ -36,6 +36,7 @@ void Spawner::setNameMonster(const string &s) {
 }
 
 void Spawner::update(sf::Time frameTime) {
+    cleanList();
     for (Monster *m: m_listMonster) {
         m->update(frameTime);
     }
@@ -49,3 +50,20 @@ void Spawner::draw(sf::RenderWindow &window) {
         m->draw(window);
     }
 }
+
+void Spawner::cleanList() {
+    auto finTableau = std::remove_if(std::begin(m_listMonster), std::end(m_listMonster),
+                                     [](auto &element) {if (element->isDestroyed){element->onDestroy();} return element->isDestroyed; });
+
+    m_listMonster.erase(finTableau, std::end(m_listMonster));
+}
+
+void Spawner::clearMonster() {
+    for (auto m: m_listMonster) {
+        if (m->isDestroyed) {
+            std::cout << " ici" << std::endl;
+            m->onDestroy();
+        }
+    }
+}
+

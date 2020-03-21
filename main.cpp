@@ -33,8 +33,8 @@ int main() {
     }
 
 
-
     Game game;
+    int score = 0;
     Worm worm = game.initWorm();
     Scenes scene;
 //     TODO replace this by the time manager did in the steps ?
@@ -42,14 +42,14 @@ int main() {
     TextManager textManager;
     textManager.loadFileScore();
     sf::Time frameTime;
-    srand (time(nullptr));
+    srand(time(nullptr));
 
 
 //    platforms.reserve(2);
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
 //    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
-    std::vector<Monster*> listMonsters;
+    std::vector<Monster *> listMonsters;
     InitBoomer initboomer = InitBoomer();
 
     AudioLoader::getInstance().getMusic().setLoop(true);
@@ -78,8 +78,8 @@ int main() {
         game.update(window); // have to be after setView
 
         textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
-        textManager.setNbScores(listMonsters.size());
-        textManager.setText(std::to_string(listMonsters.size()), TypeText::SCORES); //TODO le Nb de monstre tué
+        textManager.setNbScores(score);
+        textManager.setText(std::to_string(score), TypeText::SCORES); //TODO le Nb de monstre tué
         AudioManager::getInstance().playSounds();
 
         Collider playerCollider = worm.getCollider();
@@ -102,13 +102,13 @@ int main() {
                 platform->onCollision(direction);
             }
 
-            for (Monster* m : platform->getSpawner().getListMonsters()) {
+            for (Monster *m : platform->getSpawner().getListMonsters()) {
                 listMonsters.push_back(m);
             }
 
         }
 
-        for (Monster* m: listMonsters) {
+        for (Monster *m: listMonsters) {
             Collider monsterCollider = m->getCollider();
             sf::Vector2f monsterDirection;
             for (auto &p: game.getMap().getPlatforms()) {
@@ -117,6 +117,14 @@ int main() {
                 }
                 if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
                     m->onCollision(monsterDirection);
+                }
+            }
+            if (worm.hasshot) {
+                Collider bullet = worm.getBullet().getCollider();
+                if (m->getCollider().checkCollision(bullet, monsterDirection, 0)) {
+                    m->isDestroyed = true;
+                    score +=1;
+                    listMonsters.erase(std::remove(listMonsters.begin(), listMonsters.end(), m), listMonsters.end());
                 }
             }
         }
@@ -136,12 +144,15 @@ int main() {
             platform->getSpawner().draw(window); // draw monsters
         }
 
+
+
         textManager.draw(window);
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
         window.display();
         scene.clean();
+
 
         sf::Event event;
         while (window.pollEvent(event)) {
