@@ -73,3 +73,12 @@ void Monster::update(sf::Time frameTime) {
 sf::Vector2f Monster::getPosition() const {
     return m_body->getPosition();
 }
+
+void Monster::onDestroy() {
+    delete(this);
+
+}
+
+Monster::~Monster() {
+
+}
