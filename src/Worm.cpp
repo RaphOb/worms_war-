@@ -121,10 +121,13 @@ void Worm::update(sf::Time frameTime) {
         noKeyWasPressed = false;
     }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasshot) {
-        bullet = new Bullet(m_orientation);
-        bullet->fireBullet(sprite.getPosition(), angle);
-        hasshot = true;
-        noKeyWasPressed = false;
+        if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
+            bullet = new Bullet(m_orientation);
+            bullet->fireBullet(sprite.getPosition(), angle);
+            hasshot = true;
+            noKeyWasPressed = false;
+            bulletTime.restart();
+        }
     }
     if (hasshot) {
         bullet->update();

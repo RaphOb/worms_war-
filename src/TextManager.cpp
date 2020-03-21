@@ -9,10 +9,10 @@
 #include <iostream>
 
 void TextManager::setText(const std::string &string, TypeText type) {
-    if(type == TypeText::MONSTER) {
+    if (type == TypeText::MONSTER) {
         textNbMonster.setString(string);
-    } else if(type == TypeText::SCORES) {
-        nbScores.setString(string);
+    } else if (type == TypeText::SCORES) {
+        nbScores.setString( "SCORE : " + string);
     } else if (type == TypeText::LASTSCORE) {
         lastScores.setString(string);
     }
@@ -44,22 +44,33 @@ TextManager::TextManager() {
 
 void TextManager::loadFileScore() {
     std::string line;
-    std::ifstream myfile ("test.txt");
-    if (myfile.is_open())
-    {
-        while ( getline (myfile,line) )
-        {
-            lastScores.setString(line);
+    std::ifstream myfile("test.txt");
+    if (myfile.is_open()) {
+        while (getline(myfile, line)) {
+            lastScoresStr = line;
+            lastScores.setString("BEST SCORE : " + lastScoresStr);
         }
         myfile.close();
     }
 }
 
 void TextManager::saveScore() {
-    std::ofstream ofs;
-    ofs.open ("test.txt", std::ofstream::out | std::ofstream::trunc);
-    std::string c  = nbScores.getString();
-    ofs << c;
+//    sf::Text z;
+//    std::string c = "12";
+//    z.setString(c);
+//    std::string f = z.getString();
+//    int a = std::stoi(f);
+//    std::cout << a << std::endl;
+    std::string c = nbScores.getString();
+    std::string l = lastScores.getString();
+    if (std::stoi(lastScoresStr) < nbScoresInt) {
+        std::ofstream ofs;
+        ofs.open("test.txt", std::ofstream::out | std::ofstream::trunc);
+        ofs << nbScoresInt;
+        ofs.close();
+    }
+}
 
-    ofs.close();
+void TextManager::setNbScores(int s) {
+    nbScoresInt = s;
 }

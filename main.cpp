@@ -78,7 +78,8 @@ int main() {
         game.update(window); // have to be after setView
 
         textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
-        textManager.setText("SCORE : " + std::to_string(listMonsters.size()), TypeText::SCORES); //TODO le Nb de monstre tué
+        textManager.setNbScores(listMonsters.size());
+        textManager.setText(std::to_string(listMonsters.size()), TypeText::SCORES); //TODO le Nb de monstre tué
         AudioManager::getInstance().playSounds();
 
         Collider playerCollider = worm.getCollider();

@@ -15,12 +15,15 @@ private:
     sf::Text textNbMonster;
     sf::Text nbScores;
     sf::Text lastScores;
+    std::string lastScoresStr;
+    int nbScoresInt;
 public:
     void setText(const std::string&, TypeText type);
     TextManager();
     void draw(sf::RenderWindow&);
     void loadFileScore();
     void saveScore();
+    void setNbScores(int);
 
 };
 
