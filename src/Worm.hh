@@ -19,6 +19,7 @@ private:
     Bullet* bullet;
     float angle;
     double distance_covered;
+    sf::Clock bulletTime;
 
 public:
     bool hasshot = false;
