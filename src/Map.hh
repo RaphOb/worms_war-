@@ -21,8 +21,13 @@ public:
     std::vector<Platform*> getPlatforms();
     void initGrid();
     void displayGrid();
-    Node& getNodeByPos(int y, int x);
+    void drawGrid(sf::RenderWindow &window);
+    Node* getNodeByPos(int y, int x);
     void setPathfinding(Pathfinding *);
+    MonsterFactory *getMonsterFactory();
+    std::vector<Node>* getNodeGrid();
+    int getRows();
+    int getCols();
 
 private:
     std::vector<Platform*> platforms;

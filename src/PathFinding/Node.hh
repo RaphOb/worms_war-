@@ -23,9 +23,10 @@ private:
     sf::Text* m_textG;
     sf::Text* m_textH;
     sf::Text* m_textF;
+    Node *m_parent;
 public:
     Node(int y, int x);
-    int getX();
+    int getX() const;
     int getY();
     int getStatus();
     void setStatus(int);
@@ -33,11 +34,16 @@ public:
     int setGCost(int);
     int getHCost();
     int setHCost(int);
-    int getFCost();
+    int getFCost() const;
     int setFCost(int);
     void initTextures();
     void draw(sf::RenderWindow& window);
-
+    void resetNode();
+    void setCostByNode(Node*, Node*);
+    sf::RectangleShape* getRect();
+    void setColorByStatus();
+    void setParent(Node *);
+    Node *getParent();
 };
 
 #endif //LITTLEBIGGAME_NODE_HH

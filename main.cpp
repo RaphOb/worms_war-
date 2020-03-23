@@ -36,9 +36,9 @@ int main() {
 
     Game game;
     Worm worm = game.initWorm();
+    game.setWorm(&worm);
+    game.initPathfinding();
     Scenes scene;
-    Node *n = new Node(1,1);
-    n->initTextures();
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     TextManager textManager;
@@ -66,6 +66,7 @@ int main() {
 //    sound.setLoop(true);
 //    sound.play();
 
+    Monster *m = game.getMap().getMonsterFactory()->Create("GroundMonster", {100.0, 400.0});
 
     while (window.isOpen()) {
         frameTime = frameClock.restart();
@@ -76,6 +77,7 @@ int main() {
         }
 
         worm.update(frameTime);
+        m->update(frameTime);
         scene.update(frameTime);
         game.update(window); // have to be after setView
 
@@ -86,6 +88,7 @@ int main() {
         Collider playerCollider = worm.getCollider();
         sf::Vector2f direction;
         listMonsters = {};
+        listMonsters.push_back(m);
 
         for (auto &platform: game.getMap().getPlatforms()) {
             platform->update(frameTime);
@@ -141,7 +144,8 @@ int main() {
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
-        n->draw(window);
+        m->draw(window);
+        m->getPathfinding()->getMap()->drawGrid(window);
         window.display();
         scene.clean();
 

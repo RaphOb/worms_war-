@@ -9,7 +9,6 @@
 #include "Loader/ResourceLoader.hh"
 
 Game::Game() {
-    m_map = Map();
     m_map.initMap();
     tm.Start();
     m_rectGameTime.setSize({100, 30});
@@ -27,9 +26,6 @@ Game::Game() {
     m_textFPS.setOutlineThickness(2);
     m_textFPS.setCharacterSize(30);
     m_textFPS.setPosition(5.f, 0.f);
-    Worm worm = initWorm();
-    Pathfinding pathfinding = Pathfinding(&m_map, &worm);
-    m_map.setPathfinding(&pathfinding);
 }
 
 Worm Game::initWorm() {
@@ -100,4 +96,14 @@ Map Game::getMap() {
 
 void Game::setFPS(int fps) {
     m_textFPS.setString(std::to_string(fps));
+}
+
+void Game::setWorm(Worm *worm) {
+    m_worm = worm;
+}
+
+void Game::initPathfinding() {
+    m_pathfinding.setMap(&m_map);
+    m_pathfinding.setTarget(m_worm);
+    m_map.setPathfinding(&m_pathfinding);
 }

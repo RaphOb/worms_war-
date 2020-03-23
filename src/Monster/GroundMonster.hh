@@ -11,7 +11,7 @@ using namespace std;
 
 class GroundMonster : public Monster {
 public:
-    GroundMonster(std::vector<Animation>, const sf::Vector2f&);
+    GroundMonster(std::vector<Animation>, const sf::Vector2f&, Pathfinding*);
 };
 
 #endif //LITTLEBIGGAME_GROUNDMONSTER_HH

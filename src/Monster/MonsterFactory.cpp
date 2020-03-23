@@ -12,6 +12,7 @@
 using namespace std;
 
 MonsterFactory::MonsterFactory() {
+    cout << "allo" << endl;
 }
 
 Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& position) {
@@ -46,7 +47,7 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
         Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
         Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
 
-        return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
+        return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position, m_pathfinding);
     } else if (name == "SkyMonster") {
         std::vector<sf::IntRect> leftMonster = {
                 sf::IntRect(0, 29, 44, 25),
@@ -77,7 +78,7 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
         Animation jumpingAnimationLeftMonster = Animation(jumpLeftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
         Animation jumpingAnimationRightMonster = Animation(jumpRightMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));
 
-        return new SkyMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position);
+        return new SkyMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position, m_pathfinding);
     } else {
         return nullptr;
     }
@@ -85,4 +86,8 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
 
 void MonsterFactory::setPathfinding(Pathfinding *pathfinding) {
     m_pathfinding = pathfinding;
+}
+
+Pathfinding *MonsterFactory::getPathfinding() {
+    return m_pathfinding;
 }

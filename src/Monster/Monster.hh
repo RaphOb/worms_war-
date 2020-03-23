@@ -13,7 +13,7 @@
 
 class Monster : public Character {
 public:
-    explicit Monster(std::vector<Animation>, const sf::Vector2f&);
+    explicit Monster(std::vector<Animation>, const sf::Vector2f&, Pathfinding*);
 
     sf::Vector2f getPosition() const;
 
@@ -26,6 +26,7 @@ public:
     Pathfinding *getPathfinding();
 private:
     Pathfinding *m_pathfinding;
+    Node *m_currentNode;
 };
 
 #endif //LITTLEBIGGAME_MONSTER_HH

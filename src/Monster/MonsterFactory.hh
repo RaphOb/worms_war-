@@ -14,6 +14,7 @@ public:
     MonsterFactory();
     Monster* Create(const std::string&, const sf::Vector2f&);
     void setPathfinding(Pathfinding *);
+    Pathfinding* getPathfinding();
 
 private:
     Pathfinding *m_pathfinding;

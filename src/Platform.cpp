@@ -29,7 +29,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterF
         m_spawner.setNameMonster("GroundMonster");
 
         if (m_isSpawner) {
-            m_spawner.setMonsterFactory(monsterFactory);
+            //m_spawner.setMonsterFactory(monsterFactory);
             m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_SPAWNER_TEXTURE));
         }
     }
