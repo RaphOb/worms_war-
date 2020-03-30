@@ -105,7 +105,7 @@ void Worm::update(sf::Time frameTime) {
     }
 
 
-     m_velocity.x *= 0.5f;
+     m_velocity.x *= 0.6f;
 //    m_velocity.x = 0.0f;
 
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
