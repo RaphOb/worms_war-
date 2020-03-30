@@ -105,7 +105,7 @@ void Worm::update(sf::Time frameTime) {
     }
 
 
-     m_velocity.x *= 0.6f;
+    m_velocity.x *= 0.6f;
 //    m_velocity.x = 0.0f;
 
 //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
@@ -180,8 +180,8 @@ void Worm::onNotify(Direction e) {
             if (m_canJump) {
                 move(JUMP);
                 m_noKeyWasPressed = false;
-                break;
             }
+            break;
         case FIRE:
             if (!hasshot) {
                 if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
