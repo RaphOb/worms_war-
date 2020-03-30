@@ -37,7 +37,6 @@ void Worm::draw(sf::RenderWindow &window) {
 
 void Worm::move(Direction d) {
     if (d == RIGHT) {
-        std::cout << " ici " << std::endl;
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
         if (m_canJump) {
@@ -56,7 +55,6 @@ void Worm::move(Direction d) {
             m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
     } else if (d == JUMP) {
-        std::cout << "lalala" <<std::endl;
         m_canJump = false;
         m_velocity.y = -sqrtf(2.0f * 981.f * m_jumpHeight);
         if (m_orientation == LEFT) {
@@ -195,6 +193,9 @@ void Worm::onNotify(Direction e) {
                     break;
                 }
             }
+        case NOTHING:
+            m_noKeyWasPressed = true;
+            break;
     }
 
 

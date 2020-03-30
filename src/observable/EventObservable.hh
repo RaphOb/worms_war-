@@ -21,7 +21,7 @@ class EventObservable : public IObservable {
 public:
     void addObserver(IObserver*) override;
     void removeObserver(IObserver*) override;
-    void notify(Direction);
+    void notify(Direction) override ;
     void update();
 
 private:

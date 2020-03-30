@@ -17,28 +17,26 @@ void EventObservable::removeObserver(IObserver *o) {
 }
 
 void EventObservable::notify(Direction e) {
-    for(auto o : observers) {
+    for (auto o : observers) {
         o->onNotify(e);
     }
 }
 
 void EventObservable::update() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-      notify(LEFT);
-      std::cout <<"left"<<std::endl;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-       notify(RIGHT);
-        std::cout <<"right"<<std::endl;
+        notify(LEFT);
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        notify(RIGHT);
+    } else {
+            notify(NOTHING);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+            notify(JUMP);
+        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            notify(FIRE);
+        }
+
 
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-      notify(JUMP);
-        std::cout <<"jump"<<std::endl;
-    }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-       notify(FIRE);
-        std::cout <<"fire"<<std::endl;
-    }
-
-}
