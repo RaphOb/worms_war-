@@ -37,7 +37,7 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/Scenes.cpp src/Scenes.hh
         src/Audio/AudioLoader.cpp src/Audio/AudioLoader.hh
         src/Audio/AudioManager.cpp src/Audio/AudioManager.hh
-        src/Audio/SoundWrapper.cpp src/Audio/SoundWrapper.hh src/TextManager.cpp src/TextManager.hh)
+        src/Audio/SoundWrapper.cpp src/Audio/SoundWrapper.hh src/TextManager.cpp src/TextManager.hh src/observable/EventObservable.cpp src/observable/EventObservable.hh)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 

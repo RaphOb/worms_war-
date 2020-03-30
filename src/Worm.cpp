@@ -10,6 +10,7 @@
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
 #include "Audio/AudioManager.hh"
+#include "observable/EventObservable.hh"
 
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
@@ -36,6 +37,7 @@ void Worm::draw(sf::RenderWindow &window) {
 
 void Worm::move(Direction d) {
     if (d == RIGHT) {
+        std::cout << " ici " << std::endl;
         sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         m_velocity.x += m_speed;
         if (m_canJump) {
@@ -54,6 +56,7 @@ void Worm::move(Direction d) {
             m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
     } else if (d == JUMP) {
+        std::cout << "lalala" <<std::endl;
         m_canJump = false;
         m_velocity.y = -sqrtf(2.0f * 981.f * m_jumpHeight);
         if (m_orientation == LEFT) {
@@ -81,7 +84,7 @@ void Worm::update(sf::Time frameTime) {
             sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
             sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
         }
-        if(p.x < b.x) {
+        if (p.x < b.x) {
             m_orientation = LEFT;
             sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
             sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
@@ -103,32 +106,31 @@ void Worm::update(sf::Time frameTime) {
         }
     }
 
-    bool noKeyWasPressed = true;
 
-//     m_velocity.x *= 0.5f;
-    m_velocity.x = 0.0f;
+     m_velocity.x *= 0.5f;
+//    m_velocity.x = 0.0f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        move(LEFT);
-        noKeyWasPressed = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        move(RIGHT);
-        noKeyWasPressed = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canJump) {
-        move(JUMP);
-        noKeyWasPressed = false;
-    }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasshot) {
-        if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
-            bullet = new Bullet(m_orientation);
-            bullet->fireBullet(sprite.getPosition(), angle);
-            hasshot = true;
-            noKeyWasPressed = false;
-            bulletTime.restart();
-        }
-    }
+//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+//        move(LEFT);
+//        m_noKeyWasPressed = false;
+//    }
+//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+//        move(RIGHT);
+//        m_noKeyWasPressed = false;
+//    }
+//    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canJump) {
+//        move(JUMP);
+//        m_noKeyWasPressed = false;
+//    }
+//    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasshot) {
+//        if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
+//            bullet = new Bullet(m_orientation);
+//            bullet->fireBullet(sprite.getPosition(), angle);
+//            hasshot = true;
+//            m_noKeyWasPressed = false;
+//            bulletTime.restart();
+//        }
+//    }
     if (hasshot) {
         bullet->update();
     }
@@ -151,7 +153,7 @@ void Worm::update(sf::Time frameTime) {
     m_animatedSprite.play(*m_currentAnimation);
     m_body->move(m_velocity * frameTime.asSeconds());
 
-    if (noKeyWasPressed && m_canJump) {
+    if (m_noKeyWasPressed && m_canJump) {
         m_animatedSprite.stop();
     }
 
@@ -164,4 +166,36 @@ sf::Vector2f Worm::getPosition() const {
 
 Bullet &Worm::getBullet() const {
     return *bullet;
+}
+
+void Worm::onNotify(Direction e) {
+    switch (e) {
+        case LEFT:
+            move(LEFT);
+            m_noKeyWasPressed = false;
+            break;
+        case RIGHT:
+            move(RIGHT);
+            m_noKeyWasPressed = false;
+            break;
+        case JUMP:
+            if (m_canJump) {
+                move(JUMP);
+                m_noKeyWasPressed = false;
+                break;
+            }
+        case FIRE:
+            if (!hasshot) {
+                if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
+                    bullet = new Bullet(m_orientation);
+                    bullet->fireBullet(sprite.getPosition(), angle);
+                    hasshot = true;
+                    m_noKeyWasPressed = false;
+                    bulletTime.restart();
+                    break;
+                }
+            }
+    }
+
+
 }

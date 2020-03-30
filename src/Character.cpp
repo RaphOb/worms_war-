@@ -10,7 +10,6 @@ int Character::getLife() const {
 
 void Character::setLife(int life) {
     this->m_life = life;
-    this->NotifyAll();
 }
 
 void Character::draw(sf::RenderWindow& window) {
@@ -22,24 +21,6 @@ void Character::draw(sf::RenderWindow& window) {
 //}
 
 
-
-void Character::AddObserver(IObserver *obs) {
-    if (obs != nullptr) {
-        this->m_observers.emplace_back(obs);
-    }
-}
-
-void Character::RemoveObserver(IObserver *obs) {
-    if (obs != nullptr) {
-        this->m_observers.remove(obs);
-    }
-}
-
-void Character::NotifyAll() {
-    for (IObserver *obs: this->m_observers) {
-        obs->Notify(this);
-    }
-}
 
 //Character::Character() {
 //    this->m_life = 0;

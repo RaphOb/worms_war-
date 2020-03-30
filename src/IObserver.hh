@@ -6,13 +6,17 @@
 #define STEP07_IOBSERVER_HH
 
 #include "IObservable.hh"
+#include "Direction.hh"
+//#include "observable/EventObservable.hh"
 
 class IObservable;
+
+enum class TypeEvent;
 
 class IObserver {
 public:
     virtual ~IObserver() = default;
-    virtual void Notify(IObservable *) = 0;
+    virtual void onNotify(Direction) = 0;
 };
 
 

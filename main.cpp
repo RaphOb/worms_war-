@@ -16,6 +16,7 @@
 #include "src/Audio/AudioLoader.hh"
 #include "src/Audio/AudioManager.hh"
 #include "src/TextManager.hh"
+#include "src/observable/EventObservable.hh"
 
 
 void resizeView(const sf::RenderWindow &window, sf::View &view) {
@@ -36,6 +37,8 @@ int main() {
     Game game;
     int score = 0;
     Worm worm = game.initWorm();
+    EventObservable eventWatcher;
+    eventWatcher.addObserver(&worm);
     Scenes scene;
 //     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
@@ -73,6 +76,7 @@ int main() {
             frameTime = sf::seconds(1.0f / 60.0f);
         }
 
+        eventWatcher.update();
         worm.update(frameTime);
         scene.update(frameTime);
         game.update(window); // have to be after setView

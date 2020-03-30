@@ -5,13 +5,13 @@
 #ifndef STEP07_IOBSERVABLE_HH
 #define STEP07_IOBSERVABLE_HH
 
-#include "IObserver.hh"
+class IObserver;
 
 class IObservable {
 public:
     virtual ~IObservable() = default;
-    virtual void AddObserver(IObserver *) = 0;
-    virtual void RemoveObserver(IObserver *) = 0;
+    virtual void addObserver(IObserver *) = 0;
+    virtual void removeObserver(IObserver *) = 0;
 };
 
 
