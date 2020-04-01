@@ -3,7 +3,6 @@
 
 #include <list>
 #include "AbstractEntity.hh"
-#include "IObservable.hh"
 #include "Animation.hh"
 #include "AnimatedSprite.hh"
 #include "Collider.hh"
@@ -12,7 +11,7 @@
 
 class Worm;
 
-class Character : public AbstractEntity, public IObservable {
+class Character : public AbstractEntity {
 protected:
     /**
      * @var Life of the character
@@ -51,11 +50,6 @@ protected:
     */
     int m_orientation;
 
-private:
-    /**
-     * List of observers that would be notify when change occurs
-     */
-    std::list<IObserver *> m_observers;
 public:
 
 
@@ -79,12 +73,6 @@ public:
     void onCollision(sf::Vector2f direction) override ;
 
     Collider getCollider();
-
-    void AddObserver(IObserver *obs) override;
-
-    void RemoveObserver(IObserver *obs) override;
-
-    void NotifyAll();
 
     virtual void move(Direction d);
 

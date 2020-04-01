@@ -61,7 +61,6 @@ void Spawner::cleanList() {
 void Spawner::clearMonster() {
     for (auto m: m_listMonster) {
         if (m->isDestroyed) {
-            std::cout << " ici" << std::endl;
             m->onDestroy();
         }
     }

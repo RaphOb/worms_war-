@@ -6,7 +6,7 @@
 #define LITTLEBIGGAME_DIRECTION_HH
 
 enum Direction {
-    RIGHT = 0, LEFT = 1, JUMP = 2
+    RIGHT = 0, LEFT = 1, JUMP = 2, FIRE = 3, NOTHING = 4
 };
 
 #endif //LITTLEBIGGAME_DIRECTION_HH
