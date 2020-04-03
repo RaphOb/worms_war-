@@ -68,7 +68,6 @@ int main() {
 
     while (window.isOpen()) {
         if (worm.getLife() > 0) {
-            std::cout << "en vie" << std::endl;
             frameTime = frameClock.restart();
             // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
             game.setFPS(int(1 / frameTime.asSeconds()));

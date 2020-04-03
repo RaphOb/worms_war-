@@ -41,6 +41,7 @@ set(SOURCE_FILES main.cpp src/Tilemap.hh
         src/TextManager.cpp src/TextManager.hh
         src/PathFinding/Pathfinding.cpp src/PathFinding/Pathfinding.hh
         src/PathFinding/Node.cpp src/PathFinding/Node.hh
+        src/observable/EventObservable.cpp src/observable/EventObservable.hh
         )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
