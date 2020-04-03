@@ -121,5 +121,5 @@ sf::Texture& ResourceLoader::getTexture(TextureName textureName) {
 }
 
 ResourceLoader::ResourceLoader() {
-    m_textures.reserve(8);
+    m_textures.reserve(9);
 }
