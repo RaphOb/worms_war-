@@ -40,17 +40,14 @@ int main() {
     EventObservable eventWatcher;
     eventWatcher.addObserver(&worm);
     Scenes scene;
-//     TODO replace this by the time manager did in the steps ?
     sf::Clock frameClock;
     TextManager textManager;
     textManager.loadFileScore();
     sf::Time frameTime;
+    TimeManager timeManager;
+    timeManager.SetFrequenceHit(300);
     srand(time(nullptr));
 
-
-//    platforms.reserve(2);
-//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(500.f, 1000.f));
-//    platforms.emplace_back(nullptr, sf::Vector2f(400.f, 200.f), sf::Vector2f(800.f, 800.f));
 
     std::vector<Monster *> listMonsters;
     InitBoomer initboomer = InitBoomer();
@@ -69,94 +66,96 @@ int main() {
 
 
     while (window.isOpen()) {
-        frameTime = frameClock.restart();
-        // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
-        game.setFPS(int(1 / frameTime.asSeconds()));
-        if (frameTime.asSeconds() > 1.0f / 60.0f) {
-            frameTime = sf::seconds(1.0f / 60.0f);
-        }
+        if (worm.getLife() > 0) {
+            std::cout << "en vie" << std::endl;
+            frameTime = frameClock.restart();
+            // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
+            game.setFPS(int(1 / frameTime.asSeconds()));
+            game.setLife(worm.getLife());
+            if (frameTime.asSeconds() > 1.0f / 60.0f) {
+                frameTime = sf::seconds(1.0f / 60.0f);
+            }
 
-        eventWatcher.update();
-        worm.update(frameTime);
-        scene.update(frameTime);
-        game.update(window); // have to be after setView
+            eventWatcher.update();
+            worm.update(frameTime);
+            scene.update(frameTime);
+            game.update(window); // have to be after setView
 
-        textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
-        textManager.setNbScores(score);
-        textManager.setText(std::to_string(score), TypeText::SCORES); //TODO le Nb de monstre tué
-        AudioManager::getInstance().playSounds();
+            textManager.setText(std::to_string(listMonsters.size()), TypeText::MONSTER);
+            textManager.setNbScores(score);
+            textManager.setText(std::to_string(score), TypeText::SCORES); //TODO le Nb de monstre tué
+            AudioManager::getInstance().playSounds();
 
-        Collider playerCollider = worm.getCollider();
-        sf::Vector2f direction;
-        listMonsters = {};
+            Collider playerCollider = worm.getCollider();
+            sf::Vector2f direction;
+            listMonsters = {};
 
-        for (auto &platform: game.getMap().getPlatforms()) {
-            platform->update(frameTime);
-            if (worm.hasshot) {
-                Collider bullet = worm.getBullet().getCollider();
-                if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
-                    scene.add(std::make_unique<Boom>(initboomer.createBoom(bullet.getPosition())));
-                    worm.hasshot = false;
-                    worm.getBullet().onCollision(direction);
+            for (auto &platform: game.getMap().getPlatforms()) {
+                platform->update(frameTime);
+                if (worm.hasshot) {
+                    Collider bullet = worm.getBullet().getCollider();
+                    if (platform->getCollider().checkCollision(bullet, direction, 1.0f)) {
+                        scene.add(std::make_unique<Boom>(initboomer.createBoom(bullet.getPosition())));
+                        worm.hasshot = false;
+                        worm.getBullet().onCollision(direction);
 
+                    }
                 }
-            }
-            if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
-                worm.onCollision(direction);
-                platform->onCollision(direction);
+                if (platform->getCollider().checkCollision(playerCollider, direction, 1.0f)) {
+                    worm.onCollision(direction);
+                    platform->onCollision(direction);
+                }
+
+                for (Monster *m : platform->getSpawner().getListMonsters()) {
+                    listMonsters.push_back(m);
+                }
+
             }
 
-            for (Monster *m : platform->getSpawner().getListMonsters()) {
-                listMonsters.push_back(m);
-            }
+            for (Monster *m: listMonsters) {
+                Collider monsterCollider = m->getCollider();
+                sf::Vector2f monsterDirection;
+                for (auto &p: game.getMap().getPlatforms()) {
+                    if (p->getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
+                        m->onCollision(monsterDirection);
+                    }
+                }
 
-        }
-
-        for (Monster *m: listMonsters) {
-            Collider monsterCollider = m->getCollider();
-            sf::Vector2f monsterDirection;
-            for (auto &p: game.getMap().getPlatforms()) {
-                if (p->getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
+                if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 0.0f)) {
                     m->onCollision(monsterDirection);
+                    if (timeManager.FrequenceHit()) {
+                        worm.reduceLife();
+                    }
                 }
-                if (worm.getCollider().checkCollision(monsterCollider, monsterDirection, 1.0f)) {
-                    m->onCollision(monsterDirection);
+
+                if (worm.hasshot) {
+                    Collider bullet = worm.getBullet().getCollider();
+                    if (m->getCollider().checkCollision(bullet, monsterDirection, 0)) {
+                        m->isDestroyed = true;
+                        score +=1;
+                        listMonsters.erase(std::remove(listMonsters.begin(), listMonsters.end(), m), listMonsters.end());
+                    }
                 }
             }
-            if (worm.hasshot) {
-                Collider bullet = worm.getBullet().getCollider();
-                if (m->getCollider().checkCollision(bullet, monsterDirection, 0)) {
-                    m->isDestroyed = true;
-                    score +=1;
-                    listMonsters.erase(std::remove(listMonsters.begin(), listMonsters.end(), m), listMonsters.end());
-                }
+
+            // draw
+            window.clear(sf::Color(150, 150, 150));
+
+            for (auto &platform:  game.getMap().getPlatforms()) {
+                platform->draw(window);
+                platform->getSpawner().draw(window); // draw monsters
             }
+            textManager.draw(window);
+            scene.draw(window);
+            worm.draw(window);
+            game.draw(window);
+            window.display();
+            scene.clean();
+        } else {
+            window.clear(sf::Color(255, 255, 255));
+            game.drawGameOver(window);
+            window.display();
         }
-
-
-
-        // draw
-        window.clear(sf::Color(150, 150, 150));
-
-        // c'est ça qui centre le vue sur le worm
-//        view.setCenter(worm.getPosition());
-//        window.setView(view);
-
-
-        for (auto &platform:  game.getMap().getPlatforms()) {
-            platform->draw(window);
-            platform->getSpawner().draw(window); // draw monsters
-        }
-
-
-
-        textManager.draw(window);
-        scene.draw(window);
-        worm.draw(window);
-        game.draw(window);
-        window.display();
-        scene.clean();
-
 
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -168,6 +167,6 @@ int main() {
                 resizeView(window, view);
         }
     }
-    textManager.saveScore();
+//    textManager.saveScore();
     return 0;
 }

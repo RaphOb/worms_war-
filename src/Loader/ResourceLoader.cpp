@@ -14,7 +14,8 @@ bool ResourceLoader::loadTextures() {
     return loadMonsterTexture()
            && loadPlatformTexture()
            && loadWormTexture()
-           && loadWeaponTexture();
+           && loadWeaponTexture()
+           && loadGameOverTexture();
 }
 
 bool ResourceLoader::loadFont() {
@@ -97,6 +98,16 @@ bool ResourceLoader::loadWeaponTexture() {
 
     m_textures[BAZOOKA_TEXTURE] = bazookaTexture;
     m_textures[BULLET_TEXTURE]  = bulletTexture;
+    return true;
+}
+
+bool ResourceLoader::loadGameOverTexture() {
+    sf::Texture gameOverTexture;
+    if (!gameOverTexture.loadFromFile("../resources/game_over.png")) {
+        std::cout << "Failed to load game over png" << std::endl;
+        return false;
+    }
+    m_textures[GAME_OVER_TEXTURE] = gameOverTexture;
     return true;
 }
 

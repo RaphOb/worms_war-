@@ -40,6 +40,8 @@ public:
     void onNotify(Direction) override;
 
     Bullet &getBullet() const;
+
+    void reduceLife();
 };
 
 #endif //LITTLEBIGGAME_WORM_HH
