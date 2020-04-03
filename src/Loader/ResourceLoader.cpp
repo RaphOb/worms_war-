@@ -44,7 +44,7 @@ bool ResourceLoader::loadWormTexture() {
 
 bool ResourceLoader::loadMonsterTexture() {
     sf::Texture monsterWalkingTexture;
-    if (!monsterWalkingTexture.loadFromFile("../resources/ground_monster.png")) {
+    if (!monsterWalkingTexture.loadFromFile("../resources/sky_monster.png")) {
         std::cout << "Failed to load monsters spritesheet!" << std::endl;
         return false;
     }

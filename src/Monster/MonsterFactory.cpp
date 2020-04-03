@@ -49,27 +49,27 @@ Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& pos
         return new GroundMonster({walkingAnimationRightMonster, walkingAnimationLeftMonster, jumpingAnimationLeftMonster, jumpingAnimationRightMonster}, position, m_pathfinding);
     } else if (name == "SkyMonster") {
         std::vector<sf::IntRect> leftMonster = {
-                sf::IntRect(0, 29, 44, 25),
-                sf::IntRect(44, 29, 44, 25),
-                sf::IntRect(88, 29, 44, 25)
+                sf::IntRect(0, 44, 35, 44),
+                sf::IntRect(36, 44, 46, 44),
+                sf::IntRect(81, 44, 31, 44)
         };
 
         std::vector<sf::IntRect> rightMonster = {
-                sf::IntRect(0, 54, 44, 25),
-                sf::IntRect(44, 54, 44, 25),
-                sf::IntRect(88, 54, 44, 25)
+                sf::IntRect(0, 0, 30, 44),
+                sf::IntRect(31, 0, 45, 44),
+                sf::IntRect(76, 0, 35, 44)
         };
 
         std::vector<sf::IntRect> jumpLeftMonster = {
-                sf::IntRect(0, 29, 44, 25),
-                sf::IntRect(44, 29, 44, 25),
-                sf::IntRect(88, 29, 44, 25)
+                sf::IntRect(0, 44, 35, 44),
+                sf::IntRect(36, 44, 46, 44),
+                sf::IntRect(81, 44, 31, 44)
         };
 
         std::vector<sf::IntRect> jumpRightMonster = {
-                sf::IntRect(0, 54, 44, 25),
-                sf::IntRect(44, 54, 44, 25),
-                sf::IntRect(88, 54, 44, 25)
+                sf::IntRect(0, 0, 30, 44),
+                sf::IntRect(31, 0, 45, 44),
+                sf::IntRect(76, 0, 35, 44)
         };
 
         Animation walkingAnimationLeftMonster = Animation(leftMonster, ResourceLoader::getInstance().getTexture(MONSTER_WALKING_TEXTURE));

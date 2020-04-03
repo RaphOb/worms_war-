@@ -167,6 +167,6 @@ int main() {
                 resizeView(window, view);
         }
     }
-//    textManager.saveScore();
+    //textManager.saveScore();
     return 0;
 }

@@ -27,7 +27,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterF
         m_countDownToSpawner = m_initialCountDownToSpawner;
         m_spawner.setPosition(pos);
         m_spawner.setDifficulty(1);
-        m_spawner.setNameMonster("GroundMonster");
+        m_spawner.setNameMonster("SkyMonster");
 
         if (m_isSpawner) {
             m_spawner.setMonsterFactory(m_monsterFactory);
