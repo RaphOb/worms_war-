@@ -7,7 +7,7 @@
 
 Spawner::Spawner() {
     tm.Start();
-    tm.SetFrequenceHit(3000);
+    tm.SetFrequenceHit(5000);
 }
 
 void Spawner::initMonster() {

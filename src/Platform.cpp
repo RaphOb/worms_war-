@@ -23,7 +23,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterF
 
     if (!m_isWall) {
         initText(pos);
-        m_initialCountDownToSpawner = rand() % 60 + 30;
+        m_initialCountDownToSpawner = rand() % 60 + 80;
         m_countDownToSpawner = m_initialCountDownToSpawner;
         m_spawner.setPosition(pos);
         m_spawner.setDifficulty(1);
