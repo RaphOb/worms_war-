@@ -66,8 +66,6 @@ int main() {
 //    sound.setLoop(true);
 //    sound.play();
 
-    Monster *m = game.getMap().getMonsterFactory()->Create("GroundMonster", {100.0, 400.0});
-
     while (window.isOpen()) {
         frameTime = frameClock.restart();
         // fix a bug that when you shake the window you fall through the floor because the game is paused but not frameTime. So you move by a lot in one frame.
@@ -77,7 +75,6 @@ int main() {
         }
 
         worm.update(frameTime);
-        m->update(frameTime);
         scene.update(frameTime);
         game.update(window); // have to be after setView
 
@@ -88,7 +85,6 @@ int main() {
         Collider playerCollider = worm.getCollider();
         sf::Vector2f direction;
         listMonsters = {};
-        listMonsters.push_back(m);
 
         for (auto &platform: game.getMap().getPlatforms()) {
             platform->update(frameTime);
@@ -109,7 +105,6 @@ int main() {
             for (Monster* m : platform->getSpawner().getListMonsters()) {
                 listMonsters.push_back(m);
             }
-
         }
 
         for (Monster* m: listMonsters) {
@@ -124,8 +119,6 @@ int main() {
                 }
             }
         }
-
-
 
         // draw
         window.clear(sf::Color(150, 150, 150));
@@ -144,11 +137,8 @@ int main() {
         scene.draw(window);
         worm.draw(window);
         game.draw(window);
-        m->draw(window);
-        m->getPathfinding()->getMap()->drawGrid(window);
         window.display();
         scene.clean();
-
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)

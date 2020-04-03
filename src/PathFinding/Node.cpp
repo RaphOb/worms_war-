@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <iostream>
 #include "Node.hh"
 #include "../Loader/ResourceLoader.hh"
 #include "../Constant.hh"
@@ -29,14 +30,14 @@ void Node::initTextures() {
     m_textG->setString("99");
     m_textG->setPosition({x*Constant::BLOCK_SIZE, y*Constant::BLOCK_SIZE});
     m_textG->setFont(ResourceLoader::getInstance().getFont());
-    m_textG->setCharacterSize(8);
+    m_textG->setCharacterSize(9);
     m_textG->setFillColor(sf::Color(0, 0, 0));
 
     m_textH = new sf::Text();
     m_textH->setString("99");
     m_textH->setPosition({x*Constant::BLOCK_SIZE+18, y*Constant::BLOCK_SIZE});
     m_textH->setFont(ResourceLoader::getInstance().getFont());
-    m_textH->setCharacterSize(8);
+    m_textH->setCharacterSize(9);
     m_textH->setFillColor(sf::Color(0, 0, 0));
 
     m_textF = new sf::Text();
@@ -49,17 +50,20 @@ void Node::initTextures() {
 
 void Node::draw(sf::RenderWindow &window) {
     window.draw(m_rect);
-    //window.draw(*m_textG);
-    //window.draw(*m_textH);
-    //window.draw(*m_textF);
+    if (m_textG->getString() != "99")
+        window.draw(*m_textG);
+    if (m_textH->getString() != "99")
+        window.draw(*m_textH);
+    if (m_textF->getString() != "99")
+        window.draw(*m_textF);
     m_rect.setFillColor(sf::Color::Transparent);
 }
 
 int Node::getX() const { return x; }
 
-int Node::getY() { return y; }
+int Node::getY() const { return y; }
 
-int Node::getStatus() { return status; }
+int Node::getStatus() const { return status; }
 
 void Node::setStatus(int s) {
     status = s;
@@ -70,14 +74,14 @@ int Node::setGCost(int c) {
     m_textG->setString(std::to_string(gCost));
 }
 
-int Node::getGCost() { return gCost; }
+int Node::getGCost() const { return gCost; }
 
 int Node::setHCost(int c) {
     hCost = c;
     m_textH->setString(std::to_string(hCost));
 }
 
-int Node::getHCost() { return hCost; }
+int Node::getHCost() const { return hCost; }
 
 int Node::setFCost(int c) {
     fCost = c;
@@ -93,17 +97,37 @@ void Node::resetNode() {
     setFCost(99);
 }
 
+bool Node::isInDiagonale(Node *node) {
+    return (getX()!=node->getX() && getY()!=node->getY());
+}
+
 void Node::setCostByNode(Node *targetNode, Node *originNode) {
     setColorByStatus();
-    int c1GCost = std::pow(abs(originNode->getX()-this->getX()), 2);
-    int c2GCost = std::pow(abs(originNode->getY()-this->getY()), 2);
-    float c3GCost = std::sqrt(c1GCost+c2GCost);
-    int GCost = floor(c3GCost*10);
 
-    int c1HCost = std::pow(abs(targetNode->getX()-this->getX()), 2);
-    int c2HCost = std::pow(abs(targetNode->getY()-this->getY()), 2);
-    float c3HCost = std::sqrt(c1HCost+c2HCost);
-    int HCost = floor(c3HCost*10);
+    Node *travelNode = this;
+    int GCost = 0;
+    //std::cout << "=====NEW=====" << getX() << " -- " << getY() << std::endl;
+    while (travelNode->getParent()!= nullptr) {
+        //std::cout << GCost << std::endl;
+        if (isInDiagonale(travelNode->getParent())) {
+            GCost += 14;
+        } else {
+            GCost += 10;
+        }
+        travelNode = travelNode->getParent();
+    }
+    if (travelNode->getX()!=originNode->getX() && travelNode->getY()!=originNode->getY()) {
+        GCost += 14;
+    } else {
+        GCost += 10;
+    }
+
+    int HCost = 0;
+    int xAway = abs(getX()-targetNode->getX());
+    int yAway = abs(getY()-targetNode->getY());
+    int forwardNodeToTarget = abs(xAway-yAway);
+    int resteInDiagoToTarget = __min(xAway, yAway);
+    HCost = forwardNodeToTarget*10 + resteInDiagoToTarget*14;
 
     setGCost(GCost);
     setHCost(HCost);
@@ -129,3 +153,5 @@ void Node::setParent(Node *parent) {
 Node *Node::getParent() {
     return m_parent;
 }
+
+

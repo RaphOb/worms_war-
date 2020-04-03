@@ -12,7 +12,6 @@
 using namespace std;
 
 MonsterFactory::MonsterFactory() {
-    cout << "allo" << endl;
 }
 
 Monster* MonsterFactory::Create(const std::string &name, const sf::Vector2f& position) {

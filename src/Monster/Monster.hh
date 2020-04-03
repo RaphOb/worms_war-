@@ -26,7 +26,7 @@ public:
     Pathfinding *getPathfinding();
 private:
     Pathfinding *m_pathfinding;
-    Node *m_currentNode;
+    std::vector<Direction> m_old_directions;
 };
 
 #endif //LITTLEBIGGAME_MONSTER_HH

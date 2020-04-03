@@ -16,7 +16,7 @@
 
 class Platform : public AbstractEntity {
 public:
-    Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *, bool isWall);
+    Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *, bool isWall, bool isDefaultSpawner);
 
     void draw(sf::RenderWindow& window) override;
     void update(sf::Time frameTime) override;
@@ -41,7 +41,7 @@ private:
     bool m_isWall;
     TimeManager tm;
     sf::Text* m_text;
-
+    MonsterFactory *m_monsterFactory;
 };
 
 

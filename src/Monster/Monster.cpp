@@ -36,9 +36,11 @@ void Monster::move(Direction d) {
     if (d == RIGHT) {
         m_velocity.x += m_speed;
         m_orientation = RIGHT;
+        m_currentAnimation = &m_animations[RIGHT];
     } else if (d == LEFT) {
         m_velocity.x -= m_speed;
         m_orientation = LEFT;
+        m_currentAnimation = &m_animations[LEFT];
     } else if (d == UP) {
         m_velocity.y -= m_speed;
     } else if (d == DOWN) {
@@ -49,30 +51,19 @@ void Monster::move(Direction d) {
 void Monster::update(sf::Time frameTime) {
     m_velocity.x = 0.0f;
     m_velocity.y = 0.0f;
-    bool autoMode = true;
 
-    if (autoMode) {
-        Node *currentNode = getPathfinding()->getMap()->getNodeByPos(std::floor(getPosition().y/Constant::BLOCK_SIZE), std::floor(getPosition().x/Constant::BLOCK_SIZE));
-        std::vector<Direction> directions = getPathfinding()->getDirection(currentNode);
-        for (auto &dir : directions) {
-            move(dir);
-        }
+    Node *currentNode = getPathfinding()->getMap()->getNodeByPos(std::floor(getPosition().y/Constant::BLOCK_SIZE), std::floor(getPosition().x/Constant::BLOCK_SIZE));
+    std::vector<Direction> directions;
+    if ((int)this->getPosition().x != currentNode->getX()*(int)Constant::BLOCK_SIZE+15 && (int)this->getPosition().y != currentNode->getY()*(int)Constant::BLOCK_SIZE+15 && !m_old_directions.empty() ) {
+        directions = m_old_directions;
     } else {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-            move(LEFT);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
-            move(RIGHT);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
-            move(UP);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
-            move(DOWN);
-        }
+        directions = getPathfinding()->getDirection(currentNode);
+        m_old_directions = directions;
     }
 
-
+    for (auto &dir : directions) {
+        move(dir);
+    }
 
     m_animatedSprite.play(*m_currentAnimation);
     m_body->move(m_velocity * frameTime.asSeconds());

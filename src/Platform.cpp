@@ -7,8 +7,9 @@
 #include "Loader/ResourceLoader.hh"
 #include "Constant.hh"
 
-Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterFactory, bool isWall) : m_isWall(isWall) {
-    m_isSpawner = monsterFactory != nullptr;
+Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterFactory, bool isWall, bool isDefaultSpawner) : m_isWall(isWall) {
+    m_isSpawner = isDefaultSpawner;
+    m_monsterFactory = monsterFactory;
     if (m_isWall) m_isSpawner = false; // prevent illogical issue
     if (m_isSpawner) m_isWall = false; // prevent illogical issue
     initTextureRect(size);
@@ -29,7 +30,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f pos, MonsterFactory *monsterF
         m_spawner.setNameMonster("GroundMonster");
 
         if (m_isSpawner) {
-            //m_spawner.setMonsterFactory(monsterFactory);
+            m_spawner.setMonsterFactory(m_monsterFactory);
             m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_SPAWNER_TEXTURE));
         }
     }
@@ -81,6 +82,7 @@ void Platform::update(sf::Time frameTime) {
                 m_text->setFillColor(sf::Color(255, 255, 255));
                 if (m_countDownToSpawner <= 0) {
                     m_isSpawner = true;
+                    m_spawner.setMonsterFactory(m_monsterFactory);
                     m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_SPAWNER_TEXTURE));
                 } else if (getPercentCurse() >= 50) {
                     m_body->setTexture(&ResourceLoader::getInstance().getTexture(PLATFORM_CURSED_TEXTURE));

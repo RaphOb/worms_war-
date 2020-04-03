@@ -27,12 +27,12 @@ private:
 public:
     Node(int y, int x);
     int getX() const;
-    int getY();
-    int getStatus();
+    int getY() const;
+    int getStatus() const;
     void setStatus(int);
-    int getGCost();
+    int getGCost() const;
     int setGCost(int);
-    int getHCost();
+    int getHCost() const;
     int setHCost(int);
     int getFCost() const;
     int setFCost(int);
@@ -44,6 +44,7 @@ public:
     void setColorByStatus();
     void setParent(Node *);
     Node *getParent();
+    bool isInDiagonale(Node *node);
 };
 
 #endif //LITTLEBIGGAME_NODE_HH

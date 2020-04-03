@@ -16,6 +16,7 @@ class Pathfinding {
 private:
     Map* m_map;
     Worm *m_target;
+    Node *m_old_target;
 public:
     Pathfinding();
     Pathfinding(Map *context, Worm *target);
@@ -26,6 +27,7 @@ public:
     int getNodeWithLowestFCost(std::vector<const Node*>);
     std::vector<Node*> getNeighbourNodes(Node*);
     int awayFromOrigin(Node *);
+    bool isWallsAround(Node *);
 };
 
 #endif //LITTLEBIGGAME_PATHFINDING_HH
