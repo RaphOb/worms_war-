@@ -171,3 +171,7 @@ void Worm::onNotify(Direction e) {
 
 
 }
+
+void Worm::reduceLife() {
+    this->m_life -= 10;
+}

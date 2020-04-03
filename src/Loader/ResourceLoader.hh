@@ -18,7 +18,8 @@ enum TextureName {
     PLATFORM_CURSED_TEXTURE,
     PLATFORM_SPAWNER_TEXTURE,
     BAZOOKA_TEXTURE,
-    BULLET_TEXTURE
+    BULLET_TEXTURE,
+    GAME_OVER_TEXTURE
 };
 
 class ResourceLoader {
@@ -48,6 +49,7 @@ private:
     bool loadMonsterTexture();
     bool loadPlatformTexture();
     bool loadWeaponTexture();
+    bool loadGameOverTexture();
 };
 
 
