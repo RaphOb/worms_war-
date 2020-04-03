@@ -75,6 +75,15 @@ sf::Vector2f Monster::getPosition() const {
     return m_body->getPosition();
 }
 
+void Monster::onDestroy() {
+    delete(this);
+
+}
+
+Monster::~Monster() {
+
+}
+
 Pathfinding *Monster::getPathfinding() {
     return m_pathfinding;
 }

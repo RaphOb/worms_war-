@@ -14,6 +14,7 @@
 class Monster : public Character {
 public:
     explicit Monster(std::vector<Animation>, const sf::Vector2f&, Pathfinding*);
+    ~Monster();
 
     sf::Vector2f getPosition() const;
 
@@ -22,6 +23,10 @@ public:
     void update(sf::Time) override;
 
     void draw(sf::RenderWindow &) override;
+
+    void onDestroy();
+
+    bool isDestroyed = false;
 
     Pathfinding *getPathfinding();
 private:

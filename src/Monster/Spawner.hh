@@ -22,6 +22,8 @@ public:
     void setNameMonster(const string&);
     void update(sf::Time);
     void draw(sf::RenderWindow &);
+    void cleanList();
+    void clearMonster();
     void setMonsterFactory(MonsterFactory *);
 
 private:

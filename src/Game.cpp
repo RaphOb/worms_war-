@@ -26,6 +26,13 @@ Game::Game() {
     m_textFPS.setOutlineThickness(2);
     m_textFPS.setCharacterSize(30);
     m_textFPS.setPosition(5.f, 0.f);
+
+    m_textLife.setFont(ResourceLoader::getInstance().getFont());
+    m_textLife.setOutlineColor(sf::Color::Black);
+    m_textLife.setOutlineThickness(2);
+    m_textLife.setCharacterSize(30);
+    m_textLife.setPosition(200.f, 0.f);
+    initWorm();
 }
 
 Worm Game::initWorm() {
@@ -79,7 +86,9 @@ void Game::draw(sf::RenderWindow &window) {
     window.draw(m_rectGameTime);
     window.draw(m_textGameTime);
     window.draw(m_textFPS);
+    window.draw(m_textLife);
 }
+
 
 string Game::getFormatGameTime() {
     int seconds, hours, minutes;
@@ -96,6 +105,20 @@ Map Game::getMap() {
 
 void Game::setFPS(int fps) {
     m_textFPS.setString(std::to_string(fps));
+}
+
+void Game::setLife(int life) {
+    m_textLife.setString("Life: " + std::to_string(life));
+}
+
+void Game::drawGameOver(sf::RenderWindow &window) {
+    sf::Sprite gameOver;
+    float centerX = float(ResourceLoader::getInstance().getTexture(GAME_OVER_TEXTURE).getSize().x) / 2.f;
+    float centerY = float(ResourceLoader::getInstance().getTexture(GAME_OVER_TEXTURE).getSize().y) / 2.f;
+    gameOver.setTexture(ResourceLoader::getInstance().getTexture(GAME_OVER_TEXTURE));
+    gameOver.setOrigin(centerX, centerY);
+    gameOver.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    window.draw(gameOver);
 }
 
 void Game::setWorm(Worm *worm) {

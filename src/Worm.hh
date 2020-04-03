@@ -11,14 +11,19 @@
 #include "Collider.hh"
 #include "Bullet.hh"
 #include "Direction.hh"
+#include "IObserver.hh"
 
-class Worm : public Character {
+
+class Worm : public Character, public IObserver {
 private:
 
     sf::Sprite sprite;
     Bullet* bullet;
     float angle;
     double distance_covered;
+    sf::Clock bulletTime;
+    bool m_noKeyWasPressed = true;
+
 
 public:
     bool hasshot = false;
@@ -32,8 +37,11 @@ public:
     void update(sf::Time frameTime) override;
 
     void draw(sf::RenderWindow &window) override;
+    void onNotify(Direction) override;
 
     Bullet &getBullet() const;
+
+    void reduceLife();
 };
 
 #endif //LITTLEBIGGAME_WORM_HH

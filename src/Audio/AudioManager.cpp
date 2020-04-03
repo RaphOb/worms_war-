@@ -7,7 +7,7 @@
 
 void AudioManager::playSounds() {
 
-    //std::cout << "size: " << m_sounds.size() << std::endl;
+//    std::cout << "size: " << m_sounds.size() << std::endl;
     for (SoundWrapper &s: m_sounds) {
         if (s.isStopped() && !s.hasBeenPlayed()) {
             s.play();

@@ -17,6 +17,7 @@ private:
     sf::RectangleShape m_rectGameTime;
     sf::Text m_textGameTime;
     sf::Text m_textFPS;
+    sf::Text m_textLife;
     Map m_map;
     Worm *m_worm;
     Pathfinding m_pathfinding;
@@ -26,10 +27,12 @@ public:
     Worm initWorm();
     void update(sf::RenderWindow &);
     void draw(sf::RenderWindow& window);
+    void drawGameOver(sf::RenderWindow& window);
     string getFormatGameTime();
     Map getMap();
     void setWorm(Worm *);
     void setFPS(int fps);
+    void setLife(int life);
     void initPathfinding();
 };
 

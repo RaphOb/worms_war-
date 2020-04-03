@@ -10,6 +10,7 @@
 #include "Constant.hh"
 #include "Loader/ResourceLoader.hh"
 #include "Audio/AudioManager.hh"
+#include "observable/EventObservable.hh"
 
 Worm::Worm(std::vector<Animation> animations) :
         Character(100,
@@ -41,8 +42,7 @@ void Worm::move(Direction d) {
         if (m_canJump) {
             distance_covered += m_speed;
             m_currentAnimation = &m_animations[RIGHT];
-        }
-        else
+        } else
             m_currentAnimation = &m_animations[3];
         m_orientation = RIGHT;
     } else if (d == LEFT) {
@@ -51,8 +51,7 @@ void Worm::move(Direction d) {
         if (m_canJump) {
             distance_covered += m_speed;
             m_currentAnimation = &m_animations[LEFT];
-        }
-        else
+        } else
             m_currentAnimation = &m_animations[2];
         m_orientation = LEFT;
     } else if (d == JUMP) {
@@ -67,10 +66,16 @@ void Worm::move(Direction d) {
 }
 
 void Worm::update(sf::Time frameTime) {
-    POINT p;
-    HWND hwnd = GetActiveWindow();
-//    std::cout << "orientation " << m_orientation << std::endl;
-    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y);
+    if (m_orientation == LEFT) {
+        sprite.setTextureRect(sf::IntRect(52, 0, 52, 28));
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
+    } else if (m_orientation == RIGHT) {
+        sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
+        sprite.setTextureRect(sf::IntRect(0, 0, 52, 28));
+    }
+    POINT p; // cursor
+    HWND hwnd = GetActiveWindow(); // windows listener
+    sf::Vector2f b = sf::Vector2f(getPosition().x, getPosition().y); //worms
     sf::Vector2f c = sf::Vector2f(getPosition().x - 5000, getPosition().y);
     GetCursorPos(&p);
     if (ScreenToClient(hwnd, &p)) {
@@ -78,17 +83,19 @@ void Worm::update(sf::Time frameTime) {
             c = sf::Vector2f(m_body->getPosition().x + 5000, getPosition().y);
         }
 
+        if (p.x > b.x) {
+            m_orientation = RIGHT;
+        }
+        if (p.x < b.x) {
+            m_orientation = LEFT;
+        }
+
         float numeroator = p.y * (b.x - c.x) + b.y * (c.x - p.x) + c.y * (p.x - b.x);
         float denominator = (p.x - b.x) * (b.x - c.x) + (p.y - b.y) * (b.y - c.y);
         float ratio = numeroator / denominator;
         float anglerad = atan(ratio);
         angle = ((anglerad * 180) / Constant::PI);
-        if (angle > 90) {
-            angle = 180 - angle;
-        }
-        if (angle < -90) {
-            angle = 180 + angle;
-        }
+
         if (angle >= -40.f && angle <= 45.f) {
             if (m_orientation == 1) {
                 sprite.setRotation(angle + 12);
@@ -99,29 +106,8 @@ void Worm::update(sf::Time frameTime) {
         }
     }
 
-    bool noKeyWasPressed = true;
 
-//     m_velocity.x *= 0.5f;
-    m_velocity.x = 0.0f;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-        move(LEFT);
-        noKeyWasPressed = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        move(RIGHT);
-        noKeyWasPressed = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && m_canJump) {
-        move(JUMP);
-        noKeyWasPressed = false;
-    }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !hasshot) {
-        bullet = new Bullet(m_orientation);
-        bullet->fireBullet(sprite.getPosition(), angle);
-        hasshot = true;
-        noKeyWasPressed = false;
-    }
+    m_velocity.x *= 0.6f;
     if (hasshot) {
         bullet->update();
     }
@@ -130,21 +116,13 @@ void Worm::update(sf::Time frameTime) {
         AudioManager::getInstance().addSound(WORM_WALKING_BUFFER);
         distance_covered = 0;
     }
-    // update pos bazooka
-//    sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
-    if (m_orientation == LEFT) {
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x - 20, Worm::getPosition().y - 3));
-    } else if (m_orientation == RIGHT) {
-        sprite.setPosition(sf::Vector2f(Worm::getPosition().x + 20, Worm::getPosition().y - 3));
-    }
-    // end update pos bazooka
 
     m_velocity.y += 981.f * frameTime.asSeconds();
 
     m_animatedSprite.play(*m_currentAnimation);
     m_body->move(m_velocity * frameTime.asSeconds());
 
-    if (noKeyWasPressed && m_canJump) {
+    if (m_noKeyWasPressed && m_canJump) {
         m_animatedSprite.stop();
     }
 
@@ -157,4 +135,43 @@ sf::Vector2f Worm::getPosition() const {
 
 Bullet &Worm::getBullet() const {
     return *bullet;
+}
+
+void Worm::onNotify(Direction e) {
+    switch (e) {
+        case LEFT:
+            move(LEFT);
+            m_noKeyWasPressed = false;
+            break;
+        case RIGHT:
+            move(RIGHT);
+            m_noKeyWasPressed = false;
+            break;
+        case JUMP:
+            if (m_canJump) {
+                move(JUMP);
+                m_noKeyWasPressed = false;
+            }
+            break;
+        case FIRE:
+            if (!hasshot) {
+                if (bulletTime.getElapsedTime().asSeconds() > 0.5) {
+                    bullet = new Bullet(m_orientation);
+                    bullet->fireBullet(sprite.getPosition(), angle);
+                    hasshot = true;
+                    m_noKeyWasPressed = false;
+                    bulletTime.restart();
+                    break;
+                }
+            }
+        case NOTHING:
+            m_noKeyWasPressed = true;
+            break;
+    }
+
+
+}
+
+void Worm::reduceLife() {
+    this->m_life -= 10;
 }
