@@ -55,14 +55,6 @@ void TextManager::loadFileScore() {
 }
 
 void TextManager::saveScore() {
-//    sf::Text z;
-//    std::string c = "12";
-//    z.setString(c);
-//    std::string f = z.getString();
-//    int a = std::stoi(f);
-//    std::cout << a << std::endl;
-    std::string c = nbScores.getString();
-    std::string l = lastScores.getString();
     if (std::stoi(lastScoresStr) < nbScoresInt) {
         std::ofstream ofs;
         ofs.open("test.txt", std::ofstream::out | std::ofstream::trunc);

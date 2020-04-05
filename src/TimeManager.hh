@@ -22,9 +22,6 @@ private:
 
 public:
     TimeManager();
-    //TimeManager(TimeManager const&);
-    //TimeManager(TimeManager const&) = delete;
-    //void operator=(TimeManager const&) = delete;
     static TimeManager& GetInstance();
     void Start();
     void Update();

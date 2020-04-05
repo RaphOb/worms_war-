@@ -8,9 +8,7 @@
 #include "src/Constant.hh"
 #include "src/Game.hh"
 #include "src/Monster/MonsterFactory.hh"
-#include "src/Monster/GroundMonster.hh"
 #include "src/Scenes.hh"
-#include "src/Map.hh"
 #include "src/Loader/ResourceLoader.hh"
 #include "src/InitBoomer.hh"
 #include "src/Audio/AudioLoader.hh"
@@ -55,16 +53,7 @@ int main() {
     InitBoomer initboomer = InitBoomer();
 
     AudioLoader::getInstance().getMusic().setLoop(true);
-//    AudioLoader::getInstance().getMusic().play();
-
-
-//
     AudioManager::getInstance().addSound(WORM_WALKING_BUFFER);
-//    AudioManager::getInstance().playSounds();
-//    sf::Sound sound;
-//    sound.setBuffer(AudioLoader::getInstance().getBuffer(WORM_WALKING_BUFFER));
-//    sound.setLoop(true);
-//    sound.play();
 
     while (window.isOpen()) {
         if (worm.getLife() > 0) {
@@ -167,6 +156,6 @@ int main() {
                 resizeView(window, view);
         }
     }
-    //textManager.saveScore();
+    textManager.saveScore();
     return 0;
 }

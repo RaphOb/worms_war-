@@ -16,17 +16,6 @@ void Character::draw(sf::RenderWindow& window) {
     window.draw(m_animatedSprite);
 }
 
-//void Character::update(sf::Time frameTime) {
-//
-//}
-
-
-
-//Character::Character() {
-//    this->m_life = 0;
-//    this->m_x = 0;
-//    this->m_y = 0;
-//}
 
 std::string Character::Serialize() {
     std::string str;

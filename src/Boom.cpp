@@ -16,7 +16,6 @@ Boom::Boom(std::vector<Animation> animations, sf::Vector2f pos, AnimatedSprite a
 {
     m_currentAnimation = &m_animations[0];
     AudioManager::getInstance().addSound(EXPLOSION_BUFFER, 10.f);
-//    m_body->setSize(sf::Vector2f(10.f,10.f));
     m_body->setPosition(pos);
 
 }
@@ -45,7 +44,6 @@ void Boom::update(sf::Time frameTime) {
     } else {
         destroy = true;
     }
-//    std::cout << "Current: "  << m_currentAnimation->getSize()<<std::endl;
 
 }
 
